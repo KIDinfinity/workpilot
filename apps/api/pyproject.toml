@@ -1,0 +1,51 @@
+[project]
+name = "workpilot-api"
+version = "0.1.0"
+description = "WorkPilot API（FastAPI + Pydantic v2）"
+authors = [
+    { name = "infinity" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "boto3>=1.43.114",
+    "fastapi>=0.142.2",
+    "fastembed>=0.9.1",
+    "markdownify>=1.2.3",
+    "openai>=3.24.0",
+    "pydantic-settings>=2.15.0",
+    "pypdf>=6.21.1",
+    "python-multipart>=0.0.33",
+    "pyyaml>=6.0.3",
+    "qdrant-client>=1.19.1",
+    "sqlmodel>=0.0.48",
+    "tenacity>=9.1.4",
+    "trafilatura>=2.3.1",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.16.10",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]          # 让 tests 能 import app（本项目不作为包安装）
+testpaths = ["tests"]
+asyncio_mode = "auto"       # async def 测试无需逐个加 @pytest.mark.asyncio
+markers = ["live: 调用真实外部服务（LLM / Qdrant / Ollama），CI 中跳过"]
+addopts = "-m 'not live'"
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]   # 基础错误 + 未用变量 + import 排序 + 新语法 + 常见 bug

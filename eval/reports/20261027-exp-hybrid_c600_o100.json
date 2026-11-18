@@ -1,0 +1,695 @@
+{
+  "name": "exp-hybrid_c600_o100",
+  "date": "2026-10-26 09:01",
+  "config": {
+    "collection": "kb_exp_hybrid_c600_o100",
+    "chunk_size": 600,
+    "overlap": 100,
+    "top_k": 5,
+    "retrieval": "hybrid",
+    "embed_model": "bge-m3",
+    "answer_prompt": "qa_answer.v1",
+    "git_sha": "f10c970",
+    "dataset": "eval/datasets/kb_qa.jsonl"
+  },
+  "metrics": {
+    "hit@1": 0.605,
+    "hit@3": 0.816,
+    "hit@5": 0.816,
+    "mrr": 0.715,
+    "refusal_acc_out_of_kb": 1.0,
+    "false_refusal_in_kb": null,
+    "retrieve_p50_ms": 37,
+    "retrieve_p95_ms": 112,
+    "answer_p95_ms": 1228,
+    "cost_total": 0.009237,
+    "top1_mean_in_kb": 0.6201,
+    "top1_mean_out_of_kb": 0.5139
+  },
+  "rows": [
+    {
+      "id": "q001",
+      "type": "in_kb",
+      "retrieve_ms": 268,
+      "top1_score": 0.5,
+      "rank": 2,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 带路径或使用 `--entrypoint` CLI 选项的 `fastapi dev`¶",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 可选参数 { #optional-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "in_kb",
+      "retrieve_ms": 119,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables}",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 与生态系统共同成长 {#growing-with-the-ecosystem}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > HTML 环境变量替换 {#html-constant-replacement}"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "in_kb",
+      "retrieve_ms": 34,
+      "top1_score": 0.5769,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇） > 合规检查清单（Day15 执行时逐项打勾）"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "in_kb",
+      "retrieve_ms": 34,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 3. 明确不做（v0.x–v1.0）",
+        "oss/react/your-first-component.md#组件：UI 构成要素 {/*components-ui-building-blocks*/}",
+        "oss/react/state-a-components-memory.md#添加一个 state 变量 {/*adding-a-state-variable*/} > 遇见你的第一个 Hook {/*meet-your-first-hook*/}"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "in_kb",
+      "retrieve_ms": 33,
+      "top1_score": 0.5667,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 0. 一句话",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇） > 合规检查清单（Day15 执行时逐项打勾）"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "in_kb",
+      "retrieve_ms": 41,
+      "top1_score": 0.75,
+      "rank": 1,
+      "top3": [
+        "notes/PROJECT_STANDARD.md#项目规范 > §5 版本号与 tag",
+        "notes/PROJECT_STANDARD.md#项目规范 > §8 ADR 模板",
+        "oss/react/passing-props-to-a-component.md#给 prop 指定一个默认值 {/*specifying-a-default-value-for-a-prop*/}"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "in_kb",
+      "retrieve_ms": 32,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "team/release-runbook.md#发布流程 Runbook（团队样例） > 发布执行 > 灰度与回滚",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "in_kb",
+      "retrieve_ms": 31,
+      "top1_score": 1.0,
+      "rank": 1,
+      "top3": [
+        "team/component-usage.md#组件库使用约定（团队样例） > 使用原则 > 风格统一",
+        "team/api-integration.md#接口联调约定（团队样例） > 分页与筛选 > 分页参数",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的资料 {/*fix-a-broken-profile*/}"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "in_kb",
+      "retrieve_ms": 38,
+      "top1_score": 0.5,
+      "rank": 2,
+      "top3": [
+        "oss/fastapi/handling-errors.md#处理错误 { #handling-errors }",
+        "team/api-integration.md#接口联调约定（团队样例） > 响应约定 > 错误码",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr} > 设置开发服务器 {#setting-up-the-dev-server}"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "in_kb",
+      "retrieve_ms": 39,
+      "top1_score": 0.7,
+      "rank": 1,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "in_kb",
+      "retrieve_ms": 37,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/response-status-code.md#响应状态码 { #response-status-code }",
+        "html/fastapi-first-steps.html#第一步¶ > 带路径或使用 `--entrypoint` CLI 选项的 `fastapi dev`¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 6：部署¶ > 关于 FastAPI Cloud¶"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "in_kb",
+      "retrieve_ms": 36,
+      "top1_score": 0.6,
+      "rank": 1,
+      "top3": [
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)",
+        "oss/react/conditional-rendering.md#选择性地包含 JSX {/*conditionally-including-jsx*/} > 三目运算符（`? :`） {/*conditional-ternary-operator--*/} > 两个例子完全一样吗？ {/*are-these-two-examples-fully-equivalent*/}",
+        "oss/vite/features.md#功能 {#features} > 静态资源处理 {#static-assets}"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "out_of_kb",
+      "retrieve_ms": 67,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 3. 明确不做（v0.x–v1.0）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只提到 WorkPilot 明确「不上 Kubernetes」[2]，没有任何关于 HPA 扩容阈值配置的信息。",
+      "answer_ms": 758,
+      "cost": 0.001294,
+      "citations": [
+        2
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "out_of_kb",
+      "retrieve_ms": 78,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "oss/vite/troubleshooting.md#排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > 开发容器 / VS Code 端口转发 {#dev-containers-vs-code-port-forwarding}",
+        "oss/fastapi/first-steps.md#第一步 { #first-steps } > OpenAPI { #openapi } > API「模式」 { #api-schema }",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及开发服务器排错、OpenAPI 模式定义、SSR 集成和研发痛点池评分，没有关于站会决议或 API 网关迁移时间的信息。",
+      "answer_ms": 762,
+      "cost": 0.000446,
+      "citations": []
+    },
+    {
+      "id": "q015",
+      "type": "out_of_kb",
+      "retrieve_ms": 55,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/} > 在 `children` prop 中传递 JSX 代码 {/*passing-jsx-in-a-children-prop*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/} > 在 `children` prop 中传递 JSX 代码 {/*passing-jsx-in-a-children-prop*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。参考资料均为 React 组件与列表渲染相关内容，未涉及公司统一鉴权中心或 JWKS 地址的信息。",
+      "answer_ms": 904,
+      "cost": 0.000363,
+      "citations": []
+    },
+    {
+      "id": "q016",
+      "type": "out_of_kb",
+      "retrieve_ms": 74,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 3. 明确不做（v0.x–v1.0）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/fastapi/handling-errors.md#处理错误 { #handling-errors } > 覆盖默认异常处理器 { #override-the-default-exception-handlers } > 使用 `RequestValidationError` 的请求体 { #use-the-requestvalidationerror-body } > FastAPI 的 `HTTPException` vs Starlette 的 `HTTPException` { #fastapis-httpexception-vs-starlettes-httpexception }"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及 WorkPilot 的定义与边界、研发痛点池选型、FastAPI 异常处理，未包含 Kubernetes HPA 的配置方法。",
+      "answer_ms": 652,
+      "cost": 0.001429,
+      "citations": []
+    },
+    {
+      "id": "q017",
+      "type": "out_of_kb",
+      "retrieve_ms": 85,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及 React 的 Reducer/Context 状态管理、组件纯粹性以及 Vite 命令行选项，没有 FlatList 或下拉刷新（RefreshControl）相关的说明。",
+      "answer_ms": 782,
+      "cost": 0.001147,
+      "citations": []
+    },
+    {
+      "id": "q018",
+      "type": "confusing",
+      "retrieve_ms": 81,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "confusing",
+      "retrieve_ms": 43,
+      "top1_score": 0.5,
+      "rank": 3,
+      "top3": [
+        "oss/fastapi/first-steps.md#第一步 { #first-steps } > OpenAPI { #openapi } > OpenAPI 和 JSON Schema { #openapi-and-json-schema }",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交粒度",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交信息"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "confusing",
+      "retrieve_ms": 40,
+      "top1_score": 0.5,
+      "rank": 8,
+      "top3": [
+        "oss/react/keeping-components-pure.md#纯函数：组件作为公式 {/*purity-components-as-formulas*/}",
+        "oss/fastapi/body.md#请求体 { #request-body } > 请求体 + 路径 + 查询参数 { #request-body-path-query-parameters }",
+        "html/fastapi-first-steps.html#第一步¶ > 带路径或使用 `--entrypoint` CLI 选项的 `fastapi dev`¶"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "in_kb",
+      "retrieve_ms": 39,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}",
+        "oss/react/your-first-component.md#使用组件 {/*using-a-component*/} > 嵌套和组织组件 {/*nesting-and-organizing-components*/} > 万物皆组件 {/*components-all-the-way-down*/}",
+        "oss/vite/features.md#功能 {#features} > 框架支持 {#frameworks}"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "in_kb",
+      "retrieve_ms": 33,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名格式",
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名要求",
+        "notes/PROJECT_STANDARD.md#项目规范 > §3 分支与提交"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "in_kb",
+      "retrieve_ms": 28,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "oss/react/importing-and-exporting-components.md#组件的导入与导出",
+        "oss/react/importing-and-exporting-components.md#导出和导入一个组件 {/*exporting-and-importing-a-component*/}",
+        "oss/react/importing-and-exporting-components.md#导出和导入一个组件 {/*exporting-and-importing-a-component*/}"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "in_kb",
+      "retrieve_ms": 31,
+      "top1_score": 0.5,
+      "rank": 2,
+      "top3": [
+        "oss/react/keeping-components-pure.md#副作用：（不符合）预期的后果 {/*side-effects-unintended-consequences*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}",
+        "oss/react/state-a-components-memory.md#赋予一个组件多个 state 变量 {/*giving-a-component-multiple-state-variables*/} > React 如何知道返回哪个 state {/*how-does-react-know-which-state-to-return*/}"
+      ]
+    },
+    {
+      "id": "q025",
+      "type": "in_kb",
+      "retrieve_ms": 32,
+      "top1_score": 0.5,
+      "rank": 9,
+      "top3": [
+        "oss/react/passing-props-to-a-component.md#向组件传递 props {/*passing-props-to-a-component*/} > 步骤 2: 在子组件中读取 props {/*step-2-read-props-inside-the-child-component*/}",
+        "oss/vite/features.md#功能 {#features} > TypeScript {#typescript} > TypeScript 编译器选项 {#typescript-compiler-options} > `useDefineForClassFields`",
+        "oss/react/keeping-components-pure.md#副作用：（不符合）预期的后果 {/*side-effects-unintended-consequences*/} > 使用严格模式检测不纯的计算 {/*detecting-impure-calculations-with-strict-mode*/}"
+      ]
+    },
+    {
+      "id": "q026",
+      "type": "in_kb",
+      "retrieve_ms": 30,
+      "top1_score": 0.5,
+      "rank": 2,
+      "top3": [
+        "oss/react/your-first-component.md#使用组件 {/*using-a-component*/} > 嵌套和组织组件 {/*nesting-and-organizing-components*/} > 万物皆组件 {/*components-all-the-way-down*/}",
+        "oss/react/passing-props-to-a-component.md#将 Props 传递给组件",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/}"
+      ]
+    },
+    {
+      "id": "q027",
+      "type": "in_kb",
+      "retrieve_ms": 31,
+      "top1_score": 0.8333,
+      "rank": 1,
+      "top3": [
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}",
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}",
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 2. 标签必须闭合 {/*2-close-all-the-tags*/}"
+      ]
+    },
+    {
+      "id": "q028",
+      "type": "in_kb",
+      "retrieve_ms": 34,
+      "top1_score": 0.5625,
+      "rank": 1,
+      "top3": [
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 完成画廊组件 {/*complete-the-gallery*/}",
+        "oss/react/state-a-components-memory.md#State：组件的记忆",
+        "oss/react/state-a-components-memory.md#添加一个 state 变量 {/*adding-a-state-variable*/} > 剖析 `useState` {/*anatomy-of-usestate*/}"
+      ]
+    },
+    {
+      "id": "q029",
+      "type": "in_kb",
+      "retrieve_ms": 36,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "oss/react/managing-state.md#迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}",
+        "oss/react/managing-state.md#状态管理",
+        "oss/react/managing-state.md#选择 State 结构 {/*choosing-the-state-structure*/}"
+      ]
+    },
+    {
+      "id": "q030",
+      "type": "in_kb",
+      "retrieve_ms": 32,
+      "top1_score": 0.5,
+      "rank": 2,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 带路径或使用 `--entrypoint` CLI 选项的 `fastapi dev`¶",
+        "oss/fastapi/path-params.md#路径参数 { #path-parameters } > 预设值 { #predefined-values } > 声明*路径参数* { #declare-a-path-parameter }",
+        "oss/fastapi/path-params.md#路径参数 { #path-parameters } > 预设值 { #predefined-values } > 使用 Python *枚举* { #working-with-python-enumerations }"
+      ]
+    },
+    {
+      "id": "q031",
+      "type": "in_kb",
+      "retrieve_ms": 31,
+      "top1_score": 0.75,
+      "rank": 3,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 操作¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶",
+        "oss/fastapi/first-steps.md#第一步 { #first-steps } > 分步概括 { #recap-step-by-step } > 步骤 3：创建一个*路径操作* { #step-3-create-a-path-operation } > 定义一个*路径操作装饰器* { #define-a-path-operation-decorator }"
+      ]
+    },
+    {
+      "id": "q032",
+      "type": "in_kb",
+      "retrieve_ms": 32,
+      "top1_score": 0.5,
+      "rank": 7,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 带路径或使用 `--entrypoint` CLI 选项的 `fastapi dev`¶",
+        "html/fastapi-first-steps.html#第一步¶ > OpenAPI¶ > OpenAPI 的用途¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 6：部署¶ > 关于 FastAPI Cloud¶"
+      ]
+    },
+    {
+      "id": "q033",
+      "type": "in_kb",
+      "retrieve_ms": 36,
+      "top1_score": 0.7,
+      "rank": 7,
+      "top3": [
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 任意 `dict` 构成的请求体 { #bodies-of-arbitrary-dicts }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 嵌套模型 { #nested-models }",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type }"
+      ]
+    },
+    {
+      "id": "q034",
+      "type": "in_kb",
+      "retrieve_ms": 36,
+      "top1_score": 0.6,
+      "rank": 2,
+      "top3": [
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type } > `response_model` 参数 { #response-model-parameter }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 总结 { #recap }",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type }"
+      ]
+    },
+    {
+      "id": "q035",
+      "type": "in_kb",
+      "retrieve_ms": 36,
+      "top1_score": 0.5625,
+      "rank": 1,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite}",
+        "notes/runbook.md#Runbook",
+        "html/vite-guide.html#开始 > 手动安装"
+      ]
+    },
+    {
+      "id": "q036",
+      "type": "in_kb",
+      "retrieve_ms": 31,
+      "top1_score": 0.6111,
+      "rank": 1,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > 构建优化 {#build-optimizations} > CSS 代码分割 {#css-code-splitting}",
+        "oss/vite/features.md#功能 {#features} > CSS {#css} > 禁用 CSS 注入页面 {#disabling-css-injection-into-the-page}",
+        "oss/vite/features.md#功能 {#features} > CSS {#css} > CSS 预处理器 {#css-pre-processors}"
+      ]
+    },
+    {
+      "id": "q037",
+      "type": "in_kb",
+      "retrieve_ms": 37,
+      "top1_score": 1.0,
+      "rank": 1,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}",
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}",
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > 手动初始化 {#manual-initialization}"
+      ]
+    },
+    {
+      "id": "q038",
+      "type": "in_kb",
+      "retrieve_ms": 30,
+      "top1_score": 0.5,
+      "rank": 1,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问"
+      ]
+    },
+    {
+      "id": "q039",
+      "type": "out_of_kb",
+      "retrieve_ms": 37,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/features.md#功能 {#features} > 构建优化 {#build-optimizations} > 代码块导入映射优化 {#chunk-import-map-optimization}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料涉及研发痛点池、Vite 构建优化与命令行、React 状态管理、Git 分支规范，均未包含生产环境 Redis 缓存淘汰策略的配置信息。",
+      "answer_ms": 1004,
+      "cost": 0.000384,
+      "citations": []
+    },
+    {
+      "id": "q040",
+      "type": "out_of_kb",
+      "retrieve_ms": 83,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 5：返回内容¶",
+        "oss/vite/build.md#构建生产版本 {#building-for-production} > 产物分块策略 {#chunking-strategy}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料仅涉及 FastAPI 返回内容、Vite 构建分块、React State 与 glob 匹配，缺少 Django ORM 读写分离的配置信息。",
+      "answer_ms": 1118,
+      "cost": 0.001093,
+      "citations": []
+    },
+    {
+      "id": "q041",
+      "type": "out_of_kb",
+      "retrieve_ms": 99,
+      "top1_score": 0.6667,
+      "rank": null,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > TypeScript {#typescript} > 仅执行转译 {#transpile-only}",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 与生态系统共同成长 {#growing-with-the-ecosystem}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只提到 Vite 建议把类型检查、ESLint 等静态分析检查与转换管道分开，并可在构建命令之外运行 `tsc --noEmit` [1]，但没有涉及公司 CI 流水线中 eslint 与 typecheck 的实际执行顺序或并行配置。",
+      "answer_ms": 1228,
+      "cost": 0.001579,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "q042",
+      "type": "out_of_kb",
+      "retrieve_ms": 112,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > HTML {#html}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有参考资料均为 Vite 的 HTML 处理与命令行接口文档，不涉及 Go 语言或 goroutine 退出机制。",
+      "answer_ms": 865,
+      "cost": 0.000327,
+      "citations": []
+    },
+    {
+      "id": "q043",
+      "type": "out_of_kb",
+      "retrieve_ms": 65,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。参考资料是研发工作痛点池（Pain Pool）的条目与评分记录，未包含任何数据库连接池配置参数的信息。",
+      "answer_ms": 695,
+      "cost": 0.000376,
+      "citations": []
+    },
+    {
+      "id": "q044",
+      "type": "out_of_kb",
+      "retrieve_ms": 81,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及研发痛点池的场景选型与评分，以及 Vite 的 SSR 集成说明，没有前端监控埋点 SDK 及其采样率配置的信息。",
+      "answer_ms": 987,
+      "cost": 0.000391,
+      "citations": []
+    },
+    {
+      "id": "q045",
+      "type": "out_of_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.5,
+      "rank": null,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite} > 选项 {#options}",
+        "oss/vite/troubleshooting.md#排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > Vite 因 ENOSPC 错误崩溃 {#vite-crashes-with-enospc-error}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及 Vite 的命令行选项、构建分块策略和 ENOSPC 文件监听报错排错，没有 Nginx 限流配置（如 limit_req、limit_conn）的相关信息。",
+      "answer_ms": 928,
+      "cost": 0.000408,
+      "citations": []
+    },
+    {
+      "id": "q046",
+      "type": "confusing",
+      "retrieve_ms": 70,
+      "top1_score": 0.8333,
+      "rank": 1,
+      "top3": [
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}"
+      ]
+    },
+    {
+      "id": "q047",
+      "type": "confusing",
+      "retrieve_ms": 39,
+      "top1_score": 0.8333,
+      "rank": 1,
+      "top3": [
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名格式",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交信息",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type } > 其他返回类型注解 { #other-return-type-annotations } > 无效的返回类型注解 { #invalid-return-type-annotations }"
+      ]
+    },
+    {
+      "id": "q048",
+      "type": "confusing",
+      "retrieve_ms": 39,
+      "top1_score": 0.8333,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/header-params.md#Header 参数 { #header-parameters } > 声明 `Header` 参数 { #declare-header-parameters }",
+        "oss/fastapi/header-params.md#Header 参数 { #header-parameters } > 小结 { #recap }",
+        "oss/fastapi/cookie-params.md#Cookie 参数 { #cookie-parameters } > 声明 `Cookie` 参数 { #declare-cookie-parameters }"
+      ]
+    },
+    {
+      "id": "q049",
+      "type": "confusing",
+      "retrieve_ms": 32,
+      "top1_score": 1.0,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}"
+      ]
+    },
+    {
+      "id": "q050",
+      "type": "confusing",
+      "retrieve_ms": 35,
+      "top1_score": 0.75,
+      "rank": 1,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表项提取成一个组件 {/*extracting-a-list-item-component*/}"
+      ]
+    }
+  ]
+}

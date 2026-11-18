@@ -1,0 +1,10 @@
+{"id":"s01","question":"React 中 useEffect 依赖数组为空时什么时候执行？","type":"public","expected":"组件挂载后执行一次，卸载时执行清理函数","tags":["react"]}
+{"id":"s02","question":"FastAPI 中如何声明一个可选的查询参数？","type":"public","expected":"参数默认值设为 None，可配合 Annotated/Query","tags":["fastapi"]}
+{"id":"s03","question":"Vite 中只有什么前缀的环境变量会暴露给客户端代码？","type":"public","expected":"VITE_ 前缀","tags":["vite"]}
+{"id":"s04","question":"WorkPilot 仓库的提交信息规范是什么？","type":"private","expected":"以 PROJECT_STANDARD.md §3 为准（Conventional Commits，如 feat(api): ... / fix(llm): ...）","tags":["standard"]}
+{"id":"s05","question":"WorkPilot 的 .env.example 里价格相关的配置键有哪些？","type":"private","expected":"PRICE_CURRENCY / PRICE_INPUT_HIT_PER_M / PRICE_INPUT_MISS_PER_M / PRICE_OUTPUT_PER_M","tags":["config"]}
+{"id":"s06","question":"React 里受控组件和非受控组件的区别是什么？","type":"public","expected":"受控组件 value 由 state 驱动、每次输入都走 onChange；非受控组件由 DOM 自己持有值，用 ref 读取","tags":["react"]}
+{"id":"s07","question":"FastAPI 的 Depends 依赖注入和中间件分别适合什么场景？","type":"public","expected":"Depends 做按路由/参数级别的依赖（鉴权、取公共资源，可被测试 override）；中间件对全部请求做统一横切处理（日志、CORS、计时）","tags":["fastapi"]}
+{"id":"s08","question":"WorkPilot 项目里 React 组件文件和 hooks 分别怎么命名？","type":"private","expected":"组件文件与组件名 PascalCase.tsx；hooks 为 useXxx.ts；其余 TS 文件 camelCase.ts（PROJECT_STANDARD.md §2）","tags":["standard"]}
+{"id":"s09","question":"在 WorkPilot 里新增一个环境变量需要遵守哪些规则？","type":"private","expected":".env.example 列出全部键并逐键注释标 [必填]/[可选]/[必填·密钥]、密钥留空；新增键与使用它的代码同一提交；代码只经 pydantic-settings 的 Settings 读取，禁止散落 os.getenv（PROJECT_STANDARD.md §4）","tags":["config"]}
+{"id":"s10","question":"今天上海的天气怎么样？","type":"out_of_scope","expected":"拒答或说明超出范围（助手只回答研发相关问题）","tags":["guardrail"]}

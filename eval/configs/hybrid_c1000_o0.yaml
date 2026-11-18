@@ -1,0 +1,8 @@
+name: exp-hybrid_c1000_o0
+collection: kb_exp_hybrid_c1000_o0
+chunk_size: 1000
+chunk_overlap: 0
+top_k: 5
+retrieval: hybrid # dense | hybrid（Qdrant 命名向量 + BM25 + RRF）
+with_answer: false
+stamp: "20261027"

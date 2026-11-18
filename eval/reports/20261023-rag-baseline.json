@@ -1,0 +1,1028 @@
+{
+  "name": "rag-baseline",
+  "date": "2026-10-23 19:49",
+  "config": {
+    "collection": "kb_default",
+    "chunk_size": 600,
+    "overlap": 100,
+    "top_k": 5,
+    "retrieval": "dense",
+    "embed_model": "bge-m3",
+    "answer_prompt": "qa_answer.v1",
+    "git_sha": "f10c970",
+    "dataset": "eval/datasets/kb_qa.jsonl"
+  },
+  "metrics": {
+    "hit@1": 0.737,
+    "hit@3": 0.789,
+    "hit@5": 0.921,
+    "mrr": 0.789,
+    "refusal_acc_out_of_kb": 1.0,
+    "false_refusal_in_kb": 0.132,
+    "retrieve_p50_ms": 79,
+    "retrieve_p95_ms": 148,
+    "answer_p95_ms": 2280,
+    "cost_total": 0.040968,
+    "top1_mean_in_kb": 0.7026,
+    "top1_mean_out_of_kb": 0.5358
+  },
+  "rows": [
+    {
+      "id": "q001",
+      "type": "in_kb",
+      "retrieve_ms": 2507,
+      "top1_score": 0.7921,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 可选参数 { #optional-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 查询参数类型转换 { #query-parameter-type-conversion }"
+      ],
+      "refused": false,
+      "answer": "把查询参数的默认值设为 `None`，它就会成为可选参数 [1][4]。\n\n细节：\n- 示例中查询参数 `q` 默认值为 `None`，因此是可选的 [1]。\n- FastAPI 根据是否有默认值 `= None` 判断参数是否必填，而不是依据 `str | None` 这类类型注解；类型注解主要用于编辑器支持和错误检测 [4]。\n- 可以混合使用：部分参数必选、部分设默认值、部分可选 [5]。",
+      "answer_ms": 1166,
+      "cost": 0.000691,
+      "citations": [
+        1,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "in_kb",
+      "retrieve_ms": 74,
+      "top1_score": 0.7468,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > HTML 环境变量替换 {#html-constant-replacement}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}"
+      ],
+      "refused": false,
+      "answer": "只有以 `VITE_` 为前缀的环境变量会在 Vite 打包后暴露在客户端源代码中 [1]。\n\n细节：\n- Vite 自动将环境变量暴露在 `import.meta.env` 对象下，且值均为字符串 [1]。\n- 例如 `.env` 中 `VITE_SOME_KEY=123` 与 `DB_PASSWORD=foobar`，打包后 `import.meta.env.VITE_SOME_KEY` 为 `\"123\"`，而 `import.meta.env.DB_PASSWORD` 为 `undefined` [1]。\n- 为防止意外泄露，应避免给敏感变量加 `VITE_` 前缀；如需自定义前缀，可参考 `envPrefix` 选项 [1]。",
+      "answer_ms": 1520,
+      "cost": 0.000815,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "in_kb",
+      "retrieve_ms": 69,
+      "top1_score": 0.6098,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇） > 合规检查清单（Day15 执行时逐项打勾）",
+        "notes/runbook.md#Runbook > 技术债"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及语料计划、合规检查清单、目录规范、技术债和选型依据，未包含提交信息（commit message）规范。",
+      "answer_ms": 923,
+      "cost": 0.000422,
+      "citations": []
+    },
+    {
+      "id": "q004",
+      "type": "in_kb",
+      "retrieve_ms": 82,
+      "top1_score": 0.6132,
+      "rank": null,
+      "top3": [
+        "oss/react/your-first-component.md#组件：UI 构成要素 {/*components-ui-building-blocks*/}",
+        "oss/react/your-first-component.md#组件：UI 构成要素 {/*components-ui-building-blocks*/}",
+        "oss/react/your-first-component.md#使用组件 {/*using-a-component*/} > 嵌套和组织组件 {/*nesting-and-organizing-components*/} > 万物皆组件 {/*components-all-the-way-down*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只介绍了 React 组件的概念、嵌套使用和 Hook 的调用规则，未涉及 WorkPilot 项目的文件命名规范或 hooks 命名约定。",
+      "answer_ms": 1039,
+      "cost": 0.000432,
+      "citations": []
+    },
+    {
+      "id": "q005",
+      "type": "in_kb",
+      "retrieve_ms": 64,
+      "top1_score": 0.6104,
+      "rank": 5,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}"
+      ],
+      "refused": false,
+      "answer": "**结论：新增环境变量需遵守项目规范 §4 的提交与读取规则，并注意 Vite 的加载优先级。**\n\n- **提交规则**：`.env` 永不提交；`.env.example` 需列出全部键，每键一行注释并标注 `[必填]` / `[可选]` / `[必填·密钥]`，密钥值留空 [5]。\n- **同步规则**：新增键必须与使用它的代码在同一个提交中 [5]。\n- **读取规则**：代码只通过 `Settings`（pydantic-settings）读取，不散落 `os.getenv` [5]。\n- **密钥处理**：疑似泄漏或每 90 天轮换——平台生成新 key → 改 `.env` → 重启 → 验证 → 撤销旧 key；误提交密钥一律视为已泄漏，立即轮换（改写 Git 历史不够）[5]。\n- **加载机制**：Vite 会加载 `.env`、`.env.local` 及模式特定的 `.env.[mode]`、`.env.[mode].local`；模式特定文件优先级高于通用文件，而执行时已存在的环境变量优先级最高，不会被 `.env` 类文件覆盖 [4]。`.env` 类文件在 Vite 启动时加载，改动需重启服务器生效 [2]。\n\n知识库中未涉及 WorkPilot 自身对新增键的命名约定等细节。",
+      "answer_ms": 2428,
+      "cost": 0.001457,
+      "citations": [
+        2,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "in_kb",
+      "retrieve_ms": 75,
+      "top1_score": 0.6532,
+      "rank": 1,
+      "top3": [
+        "notes/PROJECT_STANDARD.md#项目规范 > §5 版本号与 tag",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 3. 明确不做（v0.x–v1.0）"
+      ],
+      "refused": false,
+      "answer": "打 tag 的约束：只在 `main` 分支且 `make test` 通过后才打；已推送的 tag 不移动、不删除 [1]。\n\n具体规则：\n- 版本方案用 SemVer；0.x 阶段 `v0.MINOR.0` 对应蓝图版本里程碑（如 v0.1 → `v0.1.0`），修复则递增 PATCH [1]。\n- 打 tag 命令：`git tag -a v0.1.0 -m \"v0.1: ...\"`，再 `git push origin v0.1.0` [1]。",
+      "answer_ms": 1354,
+      "cost": 0.000772,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "in_kb",
+      "retrieve_ms": 72,
+      "top1_score": 0.7408,
+      "rank": 1,
+      "top3": [
+        "team/release-runbook.md#发布流程 Runbook（团队样例） > 发布执行 > 灰度与回滚",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": false,
+      "answer": "发布新版本时，默认先灰度 10% 流量并观察 15 分钟；若指标异常，立即回滚到上一个稳定版本，回滚后保留现场日志，先止损再排查 [1]。\n\n发布后检查的必查项包括：错误率、P95 延迟、内存与 CPU 是否异常；核心日志有无新增告警或异常堆栈；用户反馈渠道是否出现集中问题 [5]。",
+      "answer_ms": 953,
+      "cost": 0.000531,
+      "citations": [
+        1,
+        5
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "in_kb",
+      "retrieve_ms": 69,
+      "top1_score": 0.6948,
+      "rank": 1,
+      "top3": [
+        "team/component-usage.md#组件库使用约定（团队样例） > 使用原则 > 风格统一",
+        "team/api-integration.md#接口联调约定（团队样例） > 分页与筛选 > 分页参数",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的资料 {/*fix-a-broken-profile*/}"
+      ],
+      "refused": false,
+      "answer": "颜色、间距、圆角应统一使用主题令牌，不要写硬编码值 [1]。\n\n具体约定：\n- 颜色、间距、圆角统一走主题令牌，禁止硬编码 [1]。\n- 表单、弹窗、加载态使用统一组件，以保证交互一致 [1]。\n\n参考资料中未涉及令牌的具体命名或取值规范，如需这部分信息，知识库中没有找到。",
+      "answer_ms": 1156,
+      "cost": 0.000592,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "in_kb",
+      "retrieve_ms": 75,
+      "top1_score": 0.7068,
+      "rank": 2,
+      "top3": [
+        "oss/fastapi/handling-errors.md#处理错误 { #handling-errors }",
+        "team/api-integration.md#接口联调约定（团队样例） > 响应约定 > 错误码",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr} > 设置开发服务器 {#setting-up-the-dev-server}"
+      ],
+      "refused": false,
+      "answer": "**结论：前端应按错误码映射提示文案，不直接展示后端原文；所有请求必须有失败分支，禁止吞掉异常，且用户可见提示要可操作。** [2][5]\n\n细节：\n- 错误码按模块分段，前端依据错误码映射对应的提示文案，而不是把后端返回的原文直接展示给用户 [2]。\n- 每个请求都必须处理失败分支，不允许吞掉异常 [5]。\n- 用户可见的错误提示要具备可操作性，不能只弹一句「出错了」 [5]。\n\n补充：后端在客户端出错时通常返回 400 范围内的 HTTP 状态码（如 404 Not Found），可用 `HTTPException` 返回 HTTP 错误响应 [1][4]。",
+      "answer_ms": 1358,
+      "cost": 0.000762,
+      "citations": [
+        1,
+        2,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "in_kb",
+      "retrieve_ms": 74,
+      "top1_score": 0.8151,
+      "rank": 1,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：key 让 React 能追踪每个列表项，在数据移动、插入或删除时正确匹配组件并更新 DOM 树 [1][2]。**\n\n细节：\n\n- 直接放在 `map()` 里的 JSX 元素一般都需要指定 key，否则控制台会报 “Each child in a list should have a unique key prop” 警告 [2]。\n- key 可以是字符串或数字，只要能唯一标识数组项即可，例如 `<li key={person.id}>` [2]。\n- 当数组项发生排序、插入、删除等操作时，合适的 key 能帮助 React 推断发生了什么，从而正确更新 DOM [2]。\n- 不要用数组索引作 key：数组项顺序变化时会产生微妙且令人困惑的 bug [3]。\n- 也不要在运行时动态生成 key（如 `key={Math.random()}`），否则每次渲染 key 都不同，所有组件和 DOM 元素会被重新创建，导致变慢甚至用户输入丢失；应使用数据中稳定取得的值 [3]。\n- key 不会作为 props 传给组件，若组件需要 ID，需另用 prop 传入，如 `<Profile key={id} userId={id} />` [1][3]。",
+      "answer_ms": 2176,
+      "cost": 0.001312,
+      "citations": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "in_kb",
+      "retrieve_ms": 148,
+      "top1_score": 0.6751,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/response-status-code.md#响应状态码 { #response-status-code }",
+        "oss/fastapi/response-status-code.md#响应状态码 { #response-status-code } > 状态码名称快捷方式 { #shortcut-to-remember-the-names }",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 5：返回内容¶"
+      ],
+      "refused": false,
+      "answer": "在 FastAPI 中，可以通过在路径操作装饰器中设置 `status_code` 参数来自定义接口返回的状态码 [2]。例如，`201` 表示“已创建”的状态码 [2]。\n\n为了避免记忆所有状态码的含义，可以使用 `fastapi.status` 中的快捷变量 [2]。这只是一种快捷方式，具有相同的数字代码，但可以使用编辑器的自动补全功能 [2]。技术细节上，也可以使用 `from starlette import status`，FastAPI 提供的 `fastapi.status` 与 `starlette.status` 完全相同，直接来自于 Starlette [2]。\n\n另外，某些响应状态码表示响应没有响应体，FastAPI 可以进行识别，并生成表明无响应体的 OpenAPI 文档 [1]。",
+      "answer_ms": 1283,
+      "cost": 0.000784,
+      "citations": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "in_kb",
+      "retrieve_ms": 93,
+      "top1_score": 0.7287,
+      "rank": 1,
+      "top3": [
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)",
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > 将资源引入为 URL {#importing-asset-as-url}",
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)"
+      ],
+      "refused": false,
+      "answer": "在 Vite 中导入图片、字体等静态资源时，构建阶段会将其纳入构建资源图，生成带哈希的文件名，并可由插件进一步优化 [2]。\n\n具体行为：\n- 导入静态资源会返回解析后的公共路径，例如开发时为 `/src/img.png`，生产构建后为 `/assets/img.2d8efhg.png` [2]。\n- 行为类似 Webpack 的 `file-loader`，导入既可用绝对公共路径，也可用相对路径；CSS 中的 `url()` 引用同样处理 [2]。\n- 若使用 Vue 插件，Vue SFC 模板中的资源引用会自动转换为导入 [2]。\n- 常见图像、媒体和字体文件类型会被自动检测为资源，可用 `assetsInclude` 选项扩展列表 [2]。\n- 也可通过查询参数改变引入方式，如 `?url` 显式加载为 URL、`?raw` 以字符串形式加载 [4][5]。",
+      "answer_ms": 1708,
+      "cost": 0.001096,
+      "citations": [
+        2,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "out_of_kb",
+      "retrieve_ms": 70,
+      "top1_score": 0.5462,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及研发痛点池与场景选型、Vite 构建命令行选项、组件库封装约定，没有 Kubernetes 或 HPA 扩容阈值的配置信息。",
+      "answer_ms": 1093,
+      "cost": 0.000346,
+      "citations": []
+    },
+    {
+      "id": "q014",
+      "type": "out_of_kb",
+      "retrieve_ms": 73,
+      "top1_score": 0.5362,
+      "rank": null,
+      "top3": [
+        "oss/vite/troubleshooting.md#排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > 开发容器 / VS Code 端口转发 {#dev-containers-vs-code-port-forwarding}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及开发服务器排错、研发痛点池的选型评分与场景描述，没有关于 API 网关迁移时间安排的记录。",
+      "answer_ms": 737,
+      "cost": 0.000378,
+      "citations": []
+    },
+    {
+      "id": "q015",
+      "type": "out_of_kb",
+      "retrieve_ms": 82,
+      "top1_score": 0.3929,
+      "rank": null,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/} > 在 `children` prop 中传递 JSX 代码 {/*passing-jsx-in-a-children-prop*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/} > 在 `children` prop 中传递 JSX 代码 {/*passing-jsx-in-a-children-prop*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料均为 React 组件相关内容（列表渲染的 key、children prop 传递 JSX 等），不涉及公司统一鉴权中心或 JWKS 地址的信息。",
+      "answer_ms": 1157,
+      "cost": 0.000411,
+      "citations": []
+    },
+    {
+      "id": "q016",
+      "type": "out_of_kb",
+      "retrieve_ms": 79,
+      "top1_score": 0.5512,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料是研发痛点池、选型结论和 FastAPI Header 参数文档，不涉及 Kubernetes HPA 的配置方法。",
+      "answer_ms": 1255,
+      "cost": 0.00038,
+      "citations": []
+    },
+    {
+      "id": "q017",
+      "type": "out_of_kb",
+      "retrieve_ms": 84,
+      "top1_score": 0.5479,
+      "rank": null,
+      "top3": [
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及 React 的 Reducer/Context 状态管理、组件纯粹性与副作用等主题，未包含 FlatList 或下拉刷新（RefreshControl）相关说明。",
+      "answer_ms": 1037,
+      "cost": 0.000368,
+      "citations": []
+    },
+    {
+      "id": "q018",
+      "type": "confusing",
+      "retrieve_ms": 76,
+      "top1_score": 0.6884,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}"
+      ],
+      "refused": false,
+      "answer": "Vite 通过**模式（mode）**和 **NODE_ENV** 两个概念来区分开发与生产环境，二者相互独立 [3]。\n\n**默认行为**：`dev` 命令运行在 `development` 模式，`build` 命令运行在 `production` 模式 [1]。执行 `vite build` 时会自动加载 `.env.production` 中的变量，例如 `VITE_APP_TITLE=My App`，应用中通过 `import.meta.env.VITE_APP_TITLE` 读取 [1]。\n\n**自定义模式**：可用 `--mode` 覆盖默认模式，如 `vite build --mode staging`，并新建对应的 `.env.staging` 文件 [1]。\n\n**NODE_ENV 与模式的区别**（关键）[3]：\n- `vite build` → NODE_ENV 为 `production`，模式为 `production`\n- `vite build --mode development` → NODE_ENV 仍为 `production`，模式为 `development`\n- `NODE_ENV=development vite build` → NODE_ENV 为 `development`，模式为 `production`\n\n**内置常量**：`import.meta.env.MODE` 表示当前模式；`import.meta.env.PROD` 与 `import.meta.env.DEV` 表示是否运行在生产/开发环境，二者永远相反 [4]。当 `NODE_ENV=other` 时，`PROD` 为 `false`、`DEV` 为 `true` [2]。\n\n**库模式注意**：构建生产版本时 `import.meta.env.*` 会被静态替换，但 `process.env.*` 不会，可用 `define: { 'process.env.NODE_ENV': '\"production\"' }` 静态替换 [5]。",
+      "answer_ms": 2280,
+      "cost": 0.001794,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "confusing",
+      "retrieve_ms": 86,
+      "top1_score": 0.6036,
+      "rank": 3,
+      "top3": [
+        "oss/fastapi/first-steps.md#第一步 { #first-steps } > OpenAPI { #openapi } > OpenAPI 和 JSON Schema { #openapi-and-json-schema }",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交粒度",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交信息"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。参考资料只给出了提交信息的格式示例（如 `feat(rag): ...`、`fix(api): ...`）[3]，以及提交粒度要求 [2]，但未说明「类型」和「scope（范围）」各自的定义或可选值。",
+      "answer_ms": 1247,
+      "cost": 0.000396,
+      "citations": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "confusing",
+      "retrieve_ms": 72,
+      "top1_score": 0.8481,
+      "rank": 4,
+      "top3": [
+        "oss/fastapi/body.md#请求体 { #request-body } > 请求体 + 路径 + 查询参数 { #request-body-path-query-parameters }",
+        "oss/fastapi/body.md#请求体 { #request-body } > 请求体 + 路径参数 { #request-body-path-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }"
+      ],
+      "refused": false,
+      "answer": "FastAPI 通过参数名和类型声明自动识别参数来源 [1][2]。\n\n**识别规则：**\n- 参数名在**路径**中已声明 → 路径参数 [1]。\n- 参数类型是 `int`、`float`、`str`、`bool` 等**单一类型** → 查询参数 [1]。\n- 参数类型声明为 **Pydantic 模型** → 请求体 [1]。\n\n**补充说明：**\n- 路径参数与请求体可同时声明，FastAPI 能分别从路径和请求体获取数据 [2]。\n- 多个路径参数和查询参数可同时声明，声明顺序不重要，FastAPI 按参数名检测 [3]。\n- 若想让单一值作为请求体的键而非查询参数，需用 `Body` 显式指示 [4]。\n- 声明多个 Pydantic 模型参数时，FastAPI 以参数名作为请求体中的键 [5]。\n- 是否必填由是否有默认值 `= None` 决定，而非类型注解 [1]。",
+      "answer_ms": 1644,
+      "cost": 0.001115,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "in_kb",
+      "retrieve_ms": 102,
+      "top1_score": 0.7877,
+      "rank": 1,
+      "top3": [
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：把输入框的状态提升到父组件，让两个输入框共享同一份状态。** [5]\n\n具体做法：\n\n1. **移除子组件里的状态**：原来每个 `Input` 组件各自用 `useState('')` 保存自己的 `text`，这样两个输入框互不相干 [1]。\n2. **把状态移到父组件**：在父组件 `SyncedInputs` 中用 `useState('')` 定义 `text` 和 `setText`，并定义 `handleChange` 处理函数 [2][3]。\n3. **通过 props 下发**：把 `value={text}` 和 `onChange={handleChange}` 作为 props 传给两个 `Input` 组件 [3]。\n4. **子组件改为受控组件**：`Input` 接收 `{ label, value, onChange }`，`<input>` 使用传入的 `value` 和 `onChange`，不再自己持有状态 [3]。\n\n这样两个输入框读取的是同一个数据源，编辑任意一个都会更新父组件的 `text`，另一个随之刷新，从而保持同步 [1][2]。这种做法就是 React 中的“状态提升” [5]。",
+      "answer_ms": 1907,
+      "cost": 0.001301,
+      "citations": [
+        1,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "in_kb",
+      "retrieve_ms": 172,
+      "top1_score": 0.627,
+      "rank": 1,
+      "top3": [
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名格式",
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名要求",
+        "notes/PROJECT_STANDARD.md#项目规范 > §3 分支与提交"
+      ],
+      "refused": false,
+      "answer": "**结论：分支名统一为 `<类型>/<简述>`，类型只能取 feat、fix、chore、docs 四种。** [1]\n\n细节要求：\n\n- **类型取值与用途**：`feat` 新功能、`fix` 缺陷修复、`chore` 构建/依赖/杂项、`docs` 文档变更 [1]\n- **命名要求**：全部小写，多个单词用连字符连接；简述控制在 2 到 4 个词，能一眼看出意图 [2]\n- **分支使用约定**：`main` 永远可运行；≤ 1 天的改动可直接提交 `main`；跨天或实验性改动用 `feat/xxx`，完成后合并并删分支 [3]\n- **示例**：如 `feat/rag-eval` [5]\n\n另外，提交信息采用「类型(范围): 主题」格式，主题用祈使句，例如 `feat(rag): add document model with content-hash dedup` [4]。",
+      "answer_ms": 1768,
+      "cost": 0.001061,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "in_kb",
+      "retrieve_ms": 98,
+      "top1_score": 0.6702,
+      "rank": 1,
+      "top3": [
+        "oss/react/importing-and-exporting-components.md#组件的导入与导出",
+        "oss/react/importing-and-exporting-components.md#导出和导入一个组件 {/*exporting-and-importing-a-component*/}",
+        "oss/react/importing-and-exporting-components.md#导出和导入一个组件 {/*exporting-and-importing-a-component*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：把组件从根组件文件中拆出去，每个组件单独成文件，通过导出/导入来复用，能让文件更好找、组件更可复用 [1][2]。**\n\n具体做法分三步 [3]：\n\n1. **创建**一个新的 JS 文件来存放该组件。\n2. 在该文件中**导出**函数组件，可用默认导出或具名导出。\n3. 在需要使用它的文件里**导入**，导入方式要与导出方式对应（默认导入或具名导入）。\n\n补充要点：\n\n- 拆分后组件更模块化，可在其他文件中复用 [2]。例如把 `Gallery` 和 `Profile` 移出根组件文件会更合理 [2]。\n- 拆分示例中，`Gallery.js` 定义了仅在本文件内使用、未导出的 `Profile`，并默认导出 `Gallery`；`App.js` 默认导入 `Gallery`，并默认导出根组件 `App` [5]。\n- 组件较小时可以多个放在同一文件，文件臃肿后再拆到单独文件 [4]。\n- 注意：不要在组件内部定义组件 [4]。",
+      "answer_ms": 2049,
+      "cost": 0.001196,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "in_kb",
+      "retrieve_ms": 82,
+      "top1_score": 0.7206,
+      "rank": 1,
+      "top3": [
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}"
+      ],
+      "refused": false,
+      "answer": "**不会。** 同一个组件渲染两次，每个副本的 state 完全隔离，改变其中一个不影响另一个 [2][3]。\n\n细节：\n- State 是屏幕上组件实例内部的状态，作用域只限于某块特定区域，不依赖函数调用或代码位置 [1]。\n- 例如渲染两个 `<Gallery />`，点击各自按钮时它们的 state 相互独立 [2]。\n- 与 props 不同，state 完全私有于声明它的组件，父组件无法更改它；因此可以给任意组件增删 state 而不影响其他组件 [1]。\n- 若需要两个实例的 state 同步，正确做法是把 state 从子组件中删除，提升到最近的共享父组件 [1]。\n\n补充：state 变量通过 `useState` 声明，React 在内部按调用顺序匹配多个 state 变量 [3][5]。",
+      "answer_ms": 1651,
+      "cost": 0.000953,
+      "citations": [
+        1,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "id": "q025",
+      "type": "in_kb",
+      "retrieve_ms": 88,
+      "top1_score": 0.6709,
+      "rank": null,
+      "top3": [
+        "oss/react/passing-props-to-a-component.md#向组件传递 props {/*passing-props-to-a-component*/} > 步骤 2: 在子组件中读取 props {/*step-2-read-props-inside-the-child-component*/}",
+        "oss/react/keeping-components-pure.md#副作用：（不符合）预期的后果 {/*side-effects-unintended-consequences*/} > 使用严格模式检测不纯的计算 {/*detecting-impure-calculations-with-strict-mode*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及 props 的传递、解构读取、默认值、只读性及随时间变化，未说明如何根据布尔 prop 做条件渲染。",
+      "answer_ms": 737,
+      "cost": 0.000346,
+      "citations": []
+    },
+    {
+      "id": "q026",
+      "type": "in_kb",
+      "retrieve_ms": 94,
+      "top1_score": 0.73,
+      "rank": 1,
+      "top3": [
+        "oss/react/passing-props-to-a-component.md#将 Props 传递给组件",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/}",
+        "oss/react/sharing-state-between-components.md#举例说明一下状态提升 {/*lifting-state-up-by-example*/} > 第 2 步: 从公共父组件传递硬编码数据 {/*step-2-pass-hardcoded-data-from-the-common-parent*/}"
+      ],
+      "refused": false,
+      "answer": "父组件通过 props 把数据传给子组件，可以传递任意 JavaScript 值，包括对象、数组和函数 [1]。\n\n- **传递方式**：每个父组件都可以向子组件提供 props，用于组件间通信；虽然类似 HTML 属性，但 props 不限于字符串 [1]。\n- **可传类型**：任何 JavaScript 值，如对象、数组、函数，也可以传递 JSX [1]。\n- **深层传递**：若需在组件树中深入传递，或许多组件共用同一 prop，逐层透传会很麻烦，此时可用 Context 让父组件直接提供给下层任意深度的组件 [4]。\n- **状态提升场景**：整合两个组件时，把 state 移到共同父组件，再通过 props 把信息和事件处理程序传下去 [2][3]。",
+      "answer_ms": 1654,
+      "cost": 0.000918,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "q027",
+      "type": "in_kb",
+      "retrieve_ms": 86,
+      "top1_score": 0.6896,
+      "rank": 1,
+      "top3": [
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}",
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}",
+        "oss/react/writing-markup-with-jsx.md#JSX: 将标签引入 JavaScript {/*jsx-putting-markup-into-javascript*/}"
+      ],
+      "refused": false,
+      "answer": "写 JSX 时，大部分属性要用驼峰式命名法；`class` 要写成 `className`，而 `aria-label` 保持带连字符的原样写法。\n\n- 原因：JSX 属性最终会变成 JavaScript 对象的键，而 JavaScript 变量名不能包含 `-`，也不能使用 `class` 这类保留字，所以 React 中大部分 HTML 和 SVG 属性采用驼峰式命名 [1]。\n- 示例：用 `strokeWidth` 代替 `stroke-width`；用 `className` 代替 `class` [1]。\n- 例外：由于历史原因，`aria-*` 和 `data-*` 属性仍按带 `-` 的 HTML 格式书写 [2]。\n- 写错时 React 会在浏览器控制台打印可能的更正信息 [2]。",
+      "answer_ms": 1967,
+      "cost": 0.000889,
+      "citations": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "q028",
+      "type": "in_kb",
+      "retrieve_ms": 75,
+      "top1_score": 0.6915,
+      "rank": 1,
+      "top3": [
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 完成画廊组件 {/*complete-the-gallery*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：Hook 必须在条件语句外、且每次渲染都以相同顺序调用；把 `useState` 放到 `if` 之后会破坏这一规则，导致组件崩溃。** [3]\n\n细节：\n\n- 参考资料明确指出：「必须在条件语句外并且始终以相同的顺序调用 Hook！」[3]\n- 修复思路是：把第二个 `useState` 调用移到 `if` 条件之前，并保证所有 Hook 调用都发生在第一个 `return` **前** [3]；资料也提示可以删除不必要的 `else` 分支来减少嵌套，但 Hook 调用位置不能变 [3]。\n- 关于 `useState` 本身：每次组件渲染时它都会返回 `[state 变量, setter 函数]`，state 变量保存上次渲染的值，setter 用于更新并触发重新渲染 [4]。因此 Hook 的调用顺序必须稳定，才能让 React 正确对应每次渲染的 state。\n\n参考资料未进一步解释底层机制（如 Hook 链表），仅给出了上述规则与修复方式。",
+      "answer_ms": 1951,
+      "cost": 0.00106,
+      "citations": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "q029",
+      "type": "in_kb",
+      "retrieve_ms": 68,
+      "top1_score": 0.7112,
+      "rank": 1,
+      "top3": [
+        "oss/react/managing-state.md#迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}",
+        "oss/react/managing-state.md#状态管理",
+        "oss/react/managing-state.md#选择 State 结构 {/*choosing-the-state-structure*/}"
+      ],
+      "refused": false,
+      "answer": "可以把分散在各事件处理函数里的状态更新逻辑合并到一个组件外部的 reducer 函数中，事件处理程序只需声明用户触发的 action [1]。\n\n具体做法：\n- 在组件外部定义 reducer 函数，由它指定状态如何响应每个 action 进行更新 [1]。\n- 组件内用 `useReducer` 获取当前状态和 `dispatch`，事件处理函数改为调用 `dispatch({ type: ... })` 派发 action，从而变得简洁 [1]。\n\n例如资料中的任务应用：`useReducer(tasksReducer, initialTasks)` 得到 `tasks` 与 `dispatch`，`handleAddTask` 只负责 `dispatch({ type: 'added', id: nextId++, text })`，具体更新逻辑交给文件底部的 reducer [1]。\n\n另外，状态组织上应避免冗余或重复的信息，否则容易忘记更新而产生问题 [3]；同一份状态也不应在多个组件各自维护副本，派生状态优先用计算属性而非 effect 同步 [5]。",
+      "answer_ms": 2037,
+      "cost": 0.001081,
+      "citations": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "id": "q030",
+      "type": "in_kb",
+      "retrieve_ms": 67,
+      "top1_score": 0.7641,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/path-params.md#路径参数 { #path-parameters } > 预设值 { #predefined-values } > 声明*路径参数* { #declare-a-path-parameter }",
+        "oss/fastapi/path-params.md#路径参数 { #path-parameters } > 预设值 { #predefined-values } > 使用 Python *枚举* { #working-with-python-enumerations }",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type }"
+      ],
+      "refused": false,
+      "answer": "在 FastAPI 中，用自己定义的枚举类给路径参数做类型注解，需要先创建枚举类（如 `ModelName`），再用它给路径参数加类型注解 [1]。\n\n具体要点：\n\n- 使用你创建的枚举类 `ModelName` 创建带有类型注解的路径参数 [1]。\n- 这样路径参数的值就是一个枚举成员 [2]。\n- 在函数体内，可以将该参数与你创建的枚举 `ModelName` 中的枚举成员进行比较 [4]。\n\n参考资料中只给出了示例代码的文件与行号引用（`tutorial005_py310.py`），未包含具体代码文本，因此无法给出完整写法示例。",
+      "answer_ms": 1414,
+      "cost": 0.000784,
+      "citations": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "id": "q031",
+      "type": "in_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.7307,
+      "rank": 4,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 操作¶"
+      ],
+      "refused": false,
+      "answer": "不是必须的。FastAPI 没有强制要求操作（HTTP 方法）具有任何特定含义，资料中给出的语义说明仅作为指导，而非要求 [2]。\n\n细节：\n- 可用的路径操作装饰器包括 `@app.get()`、`@app.post()`、`@app.put()`、`@app.delete()`，以及较少见的 `@app.options()`、`@app.head()`、`@app.patch()`、`@app.trace()` [1][4]。\n- 你可以随意使用任何一个操作（HTTP 方法）[1][4]。\n- 通常的约定是：`POST` 创建数据、`GET` 读取数据、`PUT` 更新数据、`DELETE` 删除数据 [3]；但这只是开发 API 时的常见做法。\n- 例如使用 GraphQL 时，通常所有动作都通过 `POST` 一种方法执行 [2]。",
+      "answer_ms": 1226,
+      "cost": 0.000985,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "q032",
+      "type": "in_kb",
+      "retrieve_ms": 62,
+      "top1_score": 0.6269,
+      "rank": 4,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > OpenAPI¶ > OpenAPI 的用途¶",
+        "html/fastapi-first-steps.html#第一步¶ > 交互式 API 文档¶",
+        "html/fastapi-first-steps.html#第一步¶"
+      ],
+      "refused": false,
+      "answer": "FastAPI 内置的两个交互式文档系统，都是由 OpenAPI 模式驱动的 [1][4]。\n\n具体来说：OpenAPI 模式是这两个文档系统的底层支撑，其中一个是 Swagger UI 提供的交互式 API 文档，访问 `http://127.0.0.1:8000/docs` 即可看到自动生成的页面 [2]。此外，基于 OpenAPI 还有数十种替代方案，可以按需添加到 FastAPI 应用中 [1][4]。",
+      "answer_ms": 1267,
+      "cost": 0.000572,
+      "citations": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "id": "q033",
+      "type": "in_kb",
+      "retrieve_ms": 92,
+      "top1_score": 0.7519,
+      "rank": 5,
+      "top3": [
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 任意 `dict` 构成的请求体 { #bodies-of-arbitrary-dicts }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 纯列表请求体 { #bodies-of-pure-lists }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 带有一组子模型的属性 { #attributes-with-lists-of-submodels }"
+      ],
+      "refused": false,
+      "answer": "使用 `Body` 参数的 `embed=True` 即可。\n\n- 声明方式：`item: Annotated[Item, Body(embed=True)]`，这样 FastAPI 会期望请求体形如 `{\"item\": {...模型内容...}}`，而不是直接把模型字段放在最外层 [5]。\n- 对比：默认情况下（不加 `embed`），FastAPI 直接期望模型字段构成的 JSON，如 `{\"name\": \"Foo\", \"price\": 42.0, ...}` [5]。\n- 适用场景：只有一个 Pydantic 模型请求体参数，但希望它像声明了多个请求体参数那样被键名包裹 [5]。",
+      "answer_ms": 1591,
+      "cost": 0.000773,
+      "citations": [
+        5
+      ]
+    },
+    {
+      "id": "q034",
+      "type": "in_kb",
+      "retrieve_ms": 84,
+      "top1_score": 0.7797,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 总结 { #recap }",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type } > 返回类型与数据过滤 { #return-type-and-data-filtering } > FastAPI 的数据过滤 { #fastapi-data-filtering }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models }"
+      ],
+      "refused": false,
+      "answer": "使用 FastAPI 配合 Pydantic 模型，除了写法简洁，还能带来以下实际好处：编辑器支持（处处皆可自动补全）、数据转换（解析/序列化）、数据校验、模式文档、自动生成的文档 [1]。\n\n在响应侧，FastAPI 会依据返回类型对返回数据进行校验：数据无效（如缺少字段）时返回服务器错误，而不是返回错误数据，从而保证客户端收到期望的结构 [4]；同时会在 OpenAPI 的路径操作中添加 JSON Schema，供自动文档和客户端代码生成工具使用 [4]；还会用 Pydantic 将返回数据序列化为 JSON，Pydantic 使用 Rust 编写，速度更快 [4]。更重要的是，它会把输出数据限制并过滤为返回类型中定义的内容，这对安全性尤为重要 [2][4]。\n\n此外，FastAPI 能识别与路径参数匹配的函数参数从路径中获取，而声明为 Pydantic 模型的函数参数从请求体中获取 [5]；借助 Pydantic，还可以定义、校验、记录文档并使用任意深度嵌套的模型 [3]。",
+      "answer_ms": 2119,
+      "cost": 0.001064,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q035",
+      "type": "in_kb",
+      "retrieve_ms": 73,
+      "top1_score": 0.7193,
+      "rank": 1,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite}",
+        "html/vite-guide.html#开始 > 浏览器支持",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 起源 {#the-origins}"
+      ],
+      "refused": false,
+      "answer": "在启动命令中加上 `--open` 命令行选项即可让 Vite 自动打开浏览器 [4]。\n\n细节：`vite` 命令用于在当前目录启动开发服务器，`vite dev` 和 `vite serve` 是它的别名 [1]；除 `--open` 外还可指定 `--port` 等选项，完整列表可通过 `npx vite --help` 查看 [4]。",
+      "answer_ms": 1265,
+      "cost": 0.000631,
+      "citations": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": "q036",
+      "type": "in_kb",
+      "retrieve_ms": 88,
+      "top1_score": 0.6957,
+      "rank": 1,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > 构建优化 {#build-optimizations} > CSS 代码分割 {#css-code-splitting}",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 统一的工具链 {#a-unified-toolchain}",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 起源 {#the-origins}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。资料仅涉及 CSS 代码分割（由 `build.cssCodeSplit` 控制）[1]，未提及 CSS 压缩由什么控制，也未说明代码分块（chunk 拆分）的具体配置项。",
+      "answer_ms": 1119,
+      "cost": 0.000475,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "q037",
+      "type": "in_kb",
+      "retrieve_ms": 70,
+      "top1_score": 0.7138,
+      "rank": 1,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}",
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}",
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly}"
+      ],
+      "refused": false,
+      "answer": "**结论：** 在 `tsconfig.json` 中启用 `allowArbitraryExtensions`，并在 `.wasm` 文件旁创建对应的声明文件 [1]。\n\n**具体做法：**\n- 启用 `allowArbitraryExtensions` 后，TypeScript 解析 `.wasm` 导入时会查找名为 `{filename}.d.wasm.ts` 的声明文件 [1]。\n- 例如对于 `add.wasm`，创建 `add.d.wasm.ts`，内容为 `export function add(a: number, b: number): number` [1]。\n\n**原因：** `.wasm` 文件的类型未知，TypeScript 会报类似 `Module '\"*.wasm\"' has no exported member 'add'` 的错误 [1]。\n\n**补充：** Vite 会读取 `.wasm` 二进制中的导入导出，并将其重新暴露为具名 ES 模块导出，因此导入时需使用具名导入且名字一致 [2][4]。",
+      "answer_ms": 1709,
+      "cost": 0.00109,
+      "citations": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "id": "q038",
+      "type": "in_kb",
+      "retrieve_ms": 76,
+      "top1_score": 0.5377,
+      "rank": 1,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问"
+      ],
+      "refused": false,
+      "answer": "**结论：主场景定为 SP-A「团队规范与组件用法问答（带引用 Grounded Q&A）」，由 P-02 与 P-07 合并进同一知识库回答链路，不新建场景包。[1][2]**\n\n具体处置如下：\n\n- **P-02（查内部组件库/团队规范用法）**：Score 3.90，排名第 1，门槛 D3/E4 通过，作为主场景。[2][4]\n- **P-07（AI 生成代码不符团队规范）**：Score 3.85，排名第 2，原在「新场景包 vs SP-C」间有歧义，最终裁决为 SP-A——其缺口是「不知道规范」（知识），而非「不会检查」（工具），因此与 P-02 合并，M10 不新增场景包，能力骨架 M0–M9/M11 不变。[1][2][3]\n- **P-03（PR 提交前人工自检）**：Score 3.35，AI 适配度仅 2 分，属「不硬套 AI」样本，降级为 Backlog 的自动化检查项（hook/CI），本阶段不投入。[1][2][5]\n- **未打分的 7 条（P-01、P-04、P-05、P-06、P-08、P-09、P-10）**：不删除、不打分，留在 pain-pool 不排期；其中 P-01、P-04 合规风险高，不能作为主场景。[1][2][5]\n\n价值量化：P-02 75 分钟/周 + P-07 40 分钟/周 = 115 分钟/周损失，按 60% 节省率约省 69 分钟/周，definition 取保守下限 ≥ 60 分钟/周。[1]",
+      "answer_ms": 2339,
+      "cost": 0.001911,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q039",
+      "type": "out_of_kb",
+      "retrieve_ms": 96,
+      "top1_score": 0.5342,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/features.md#功能 {#features} > 构建优化 {#build-optimizations} > 代码块导入映射优化 {#chunk-import-map-optimization}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料涉及研发痛点池、Vite 构建与命令行、React 状态管理和 Git 分支规范，均未包含生产环境 Redis 缓存淘汰策略的配置信息。",
+      "answer_ms": 805,
+      "cost": 0.000376,
+      "citations": []
+    },
+    {
+      "id": "q040",
+      "type": "out_of_kb",
+      "retrieve_ms": 69,
+      "top1_score": 0.5512,
+      "rank": null,
+      "top3": [
+        "oss/vite/build.md#构建生产版本 {#building-for-production} > 产物分块策略 {#chunking-strategy}",
+        "oss/vite/features.md#功能 {#features} > Glob 导入 {#glob-import} > 反面匹配模式 {#negative-patterns} > 区分大小写匹配 {#case-sensitive-matching}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料涉及 Vite 构建分块、glob 导入、命令行选项和 React State，缺少 Django ORM 及数据库读写分离配置的信息。",
+      "answer_ms": 1088,
+      "cost": 0.000427,
+      "citations": []
+    },
+    {
+      "id": "q041",
+      "type": "out_of_kb",
+      "retrieve_ms": 91,
+      "top1_score": 0.5942,
+      "rank": null,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > TypeScript {#typescript} > 仅执行转译 {#transpile-only}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/features.md#功能 {#features} > TypeScript {#typescript} > TypeScript 编译器选项 {#typescript-compiler-options} > `target` {#target}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。参考资料只涉及 Vite 的转译与类型检查分工建议（如构建时另跑 `tsc --noEmit`）[1]，以及痛点池中提及可用 pre-commit hook / CI 检查脚本实现自动化 [2]，但没有任何关于贵公司 CI 流水线中 ESLint 与类型检查实际执行顺序（并行或串行）的配置信息。",
+      "answer_ms": 1172,
+      "cost": 0.000541,
+      "citations": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "q042",
+      "type": "out_of_kb",
+      "retrieve_ms": 90,
+      "top1_score": 0.5018,
+      "rank": null,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > HTML {#html}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有参考资料均为 Vite 的 HTML 处理与命令行接口文档，不涉及 Go 语言或 goroutine 的退出机制。",
+      "answer_ms": 963,
+      "cost": 0.000331,
+      "citations": []
+    },
+    {
+      "id": "q043",
+      "type": "out_of_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.5555,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。参考资料是研发工作痛点池的记录，未包含数据库连接池配置参数。",
+      "answer_ms": 875,
+      "cost": 0.000336,
+      "citations": []
+    },
+    {
+      "id": "q044",
+      "type": "out_of_kb",
+      "retrieve_ms": 73,
+      "top1_score": 0.5614,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。参考资料只涉及研发痛点池的场景选型、评分矩阵，以及 Vite 的 SSR 集成说明，没有前端监控埋点 SDK 及其采样率配置的信息。",
+      "answer_ms": 1136,
+      "cost": 0.000391,
+      "citations": []
+    },
+    {
+      "id": "q045",
+      "type": "out_of_kb",
+      "retrieve_ms": 88,
+      "top1_score": 0.5572,
+      "rank": null,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite} > 选项 {#options}",
+        "oss/vite/troubleshooting.md#排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > Vite 因 ENOSPC 错误崩溃 {#vite-crashes-with-enospc-error}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。现有资料只涉及 Vite 的命令行选项、构建分块、ENOSPC 文件监听报错等内容，没有 Nginx 限流配置的信息。",
+      "answer_ms": 925,
+      "cost": 0.000356,
+      "citations": []
+    },
+    {
+      "id": "q046",
+      "type": "confusing",
+      "retrieve_ms": 88,
+      "top1_score": 0.6999,
+      "rank": 1,
+      "top3": [
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：** 参考资料只说明了 `useState` 的基本用法，以及 `useReducer` 与 Context 组合用于管理复杂应用状态；资料没有直接对比两者的适用场景，也没有给出“何时该用哪个”的选择标准。\n\n**细节：**\n- `useState`：调用时告诉 React 让组件记住某个值，参数是 state 的初始值；每次渲染返回 state 变量和 setter 函数，setter 更新 state 并触发重新渲染 [4]。\n- `useReducer`：Reducer 帮助合并组件的状态更新逻辑，适合管理具有复杂状态的父组件；配合 Context 可让组件树中任意深度的组件读取状态，并通过 dispatch action 更新状态 [1][3]。\n- 示例中 `TasksProvider` 用 `useReducer` 管理任务列表，并通过两个 Context 分别提供状态和 dispatch [3][5]。\n\n知识库缺少对两者适用场景的直接对比和选型建议。",
+      "answer_ms": 2041,
+      "cost": 0.001064,
+      "citations": [
+        1,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "q047",
+      "type": "confusing",
+      "retrieve_ms": 69,
+      "top1_score": 0.6762,
+      "rank": 1,
+      "top3": [
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名格式",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交信息",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交粒度"
+      ],
+      "refused": false,
+      "answer": "**不是一回事，但取值高度重合。**\n\n- **分支命名中的「类型」**：指分支用途分类，格式为 `<类型>/<简述>`，取值有 feat（新功能）、fix（缺陷修复）、chore（构建、依赖、杂项）、docs（文档变更）[1]。\n- **提交信息中的「类型」**：指提交信息前缀，格式为「类型(范围): 主题」，示例中出现 feat、fix、docs、test、chore 等 [2][4]。\n\n两者都遵循 Conventional Commits 风格，feat/fix/chore/docs 等取值通用 [1][4]；但提交类型还包含 test 等分支规范未列出的取值 [4]，且提交信息需带「范围」并用祈使句写主题 [2]。",
+      "answer_ms": 1525,
+      "cost": 0.000903,
+      "citations": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "id": "q048",
+      "type": "confusing",
+      "retrieve_ms": 80,
+      "top1_score": 0.72,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/header-params.md#Header 参数 { #header-parameters } > 小结 { #recap }",
+        "oss/fastapi/header-params.md#Header 参数 { #header-parameters } > 声明 `Header` 参数 { #declare-header-parameters }",
+        "oss/fastapi/cookie-params.md#Cookie 参数 { #cookie-parameters } > 声明 `Cookie` 参数 { #declare-cookie-parameters }"
+      ],
+      "refused": false,
+      "answer": "**结论：两者声明方式几乎一致，都用与 `Query`、`Path` 相同的结构；区别在于必须分别用 `Header` 和 `Cookie` 声明，否则参数会被当作查询参数。**\n\n相同点：\n- 声明方式与 `Query`、`Path` 相同，第一个值是默认值，还可传验证参数或注释参数 [1][2][3][4]。\n- `Header` 与 `Cookie` 都是 `Path`、`Query` 的兄弟类，继承自共用的 `Param` 类；从 `fastapi` 导入的 `Query`、`Path`、`Header` 等对象实际上是返回特殊类的函数 [2][3]。\n\n不同点：\n- 用途不同：`Header` 用于声明请求头参数，`Cookie` 用于声明 cookie 参数 [2][3]。\n- `Header` 无需担心变量中的下划线，FastAPI 可以自动转换 [1]。\n- Cookie 有浏览器限制：浏览器会以特殊方式并在幕后处理 cookies，不会轻易允许 JavaScript 访问；在 `/docs` 界面填写数据并点击 “Execute” 时，cookies 也不会被发送，会看到类似未填写值的错误消息 [3]。\n\n选择建议：需要读取请求头时用 `Header`，需要读取 cookie 时用 `Cookie`；两者都必须显式声明对应类型，否则会被解释为查询参数 [2][3]。",
+      "answer_ms": 2031,
+      "cost": 0.001396,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "q049",
+      "type": "confusing",
+      "retrieve_ms": 79,
+      "top1_score": 0.71,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes}"
+      ],
+      "refused": false,
+      "answer": "**结论：`NODE_ENV` 和模式（mode）是两个不同的概念，`import.meta.env.MODE` 反映的是模式，不一定等于 `NODE_ENV`。** [2][4]\n\n**两者的区别：**\n- `NODE_ENV` 对应 `process.env.NODE_ENV`，可以在命令行中设置，也可以在 `.env` 文件中设置；如果在 `.env.[mode]` 文件中指定了 `NODE_ENV`，就可以用模式来控制它的值 [2]。\n- 模式由 `--mode` 参数决定，默认情况下 `vite build` 的模式是 `\"production\"` [4]。\n\n**容易混淆的地方：** 默认情况下两者一致，但一旦显式指定，它们就会分叉 [4]：\n- `vite build --mode development` → `NODE_ENV=\"production\"`，Mode=`\"development\"`\n- `NODE_ENV=development vite build` → `NODE_ENV=\"development\"`，Mode=`\"production\"`\n- `NODE_ENV=development vite build --mode development` → 两者都是 `\"development\"`\n\n**相关影响：** `import.meta.env.PROD` 和 `import.meta.env.DEV` 取决于 `NODE_ENV`，与模式无关。例如 `NODE_ENV=other` 时，`PROD` 为 `false`、`DEV` 为 `true` [1]。这些常量在构建阶段会被静态替换，便于 tree-shaking [3]。\n\n**实践建议：** 在命令行中设置 `NODE_ENV=...` 的好处是，Vite 能提前检测到该值，因此你可以在 Vite 配置中读取 `process.env.NODE_ENV`；这是因为 Vite 只有在解析配置之后才能加载环境变量文件 [2]。",
+      "answer_ms": 2207,
+      "cost": 0.001821,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "q050",
+      "type": "confusing",
+      "retrieve_ms": 78,
+      "top1_score": 0.7487,
+      "rank": 1,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表项提取成一个组件 {/*extracting-a-list-item-component*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 带有分隔符的列表 {/*list-with-a-separator*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：key 应加在数组上下文中最外层的那个元素或组件上，而不是组件内部返回的元素上。**\n\n- 直接写在 `map()` 里的 JSX 元素一般都需要指定 `key` 值 [1]。\n- 如果把列表项提取成了组件，`key` 要写在 `<Recipe>` 组件本身，而不是 `Recipe` 内部返回的 `<div>` 上；因为 `key` 只有在就近的数组上下文中才有意义，此时生成的是 `<Recipe>` 的数组 [2]。\n- 提取组件时，`key` 应写在复制粘贴的 JSX 的外层组件上 [2]。\n- 如果组件需要 ID 本身，应把它作为单独的 prop 传入，例如 `<Profile key={id} userId={id} />` [5]。\n\n补充：`key` 的值应能唯一标识各项，如 `<li key={person.id}>`，且最好在数据中提前准备好，而非运行时随手生成 [1]。",
+      "answer_ms": 1867,
+      "cost": 0.001082,
+      "citations": [
+        1,
+        2,
+        5
+      ]
+    }
+  ]
+}

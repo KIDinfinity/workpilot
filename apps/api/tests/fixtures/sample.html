@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>HTML Loader 测试页面</title>
+  <script>console.log("this script should be stripped by the loader")</script>
+</head>
+<body>
+  <nav>
+    <a href="/">首页</a>
+    <a href="/guide">指南</a>
+    <a href="/about">关于</a>
+  </nav>
+  <main>
+    <h1>HTML Loader 测试页面</h1>
+    <p>这是正文关键词所在段落。</p>
+    <p>HTML loader 应当去掉导航与脚本，只保留正文内容。</p>
+    <p>本文用于验证正文抽取是否包含关键信息，并确认导航标签与脚本标签已被剔除。</p>
+    <p>补充一段内容，确保页面有足够的正文长度，让抽取器可以稳定识别主体区域。</p>
+  </main>
+</body>
+</html>

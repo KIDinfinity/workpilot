@@ -1,0 +1,1452 @@
+{
+  "name": "rag-v0.3",
+  "date": "2026-10-27 08:39",
+  "config": {
+    "collection": "kb_default",
+    "chunk_size": 600,
+    "overlap": 100,
+    "top_k": 5,
+    "retrieval": "dense",
+    "score_threshold": 0.52,
+    "embed_model": "bge-m3",
+    "answer_prompt": "qa_answer.v2",
+    "git_sha": "34e94c6",
+    "dataset": "eval/datasets/kb_qa.jsonl"
+  },
+  "metrics": {
+    "hit@1": 0.737,
+    "hit@3": 0.789,
+    "hit@5": 0.921,
+    "mrr": 0.789,
+    "refusal_acc_out_of_kb": 1.0,
+    "false_refusal_in_kb": 0.053,
+    "retrieve_p50_ms": 80,
+    "retrieve_p95_ms": 112,
+    "answer_p95_ms": 2708,
+    "cost_total": 0.101336,
+    "top1_mean_in_kb": 0.7026,
+    "top1_mean_out_of_kb": 0.5358,
+    "correctness_mean": 0.85,
+    "faithfulness_yes_rate": 1.0,
+    "citation_correct_rate": 1.0,
+    "judge_agreement": {
+      "n": 10,
+      "correctness": 0.9,
+      "faithfulness": 0.9,
+      "citation": 0.9
+    },
+    "cost_per_question": 0.002027,
+    "threshold_refusal_acc_out_of_kb": 0.167,
+    "threshold_false_refusal_in_kb": 0.0,
+    "threshold_scan_best": {
+      "threshold": 0.6,
+      "refusal_acc_out_of_kb": 1.0,
+      "false_refusal_in_kb": 0.026
+    }
+  },
+  "rows": [
+    {
+      "id": "q001",
+      "type": "in_kb",
+      "retrieve_ms": 171,
+      "top1_score": 0.7921,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 可选参数 { #optional-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 查询参数类型转换 { #query-parameter-type-conversion }"
+      ],
+      "refused": false,
+      "answer": "把默认值设为 `None` 即可声明可选的查询参数 [1]。例如查询参数 `q` 默认值为 `None`，它就是可选的 [1]。\n\n补充要点：\n- 是否必填由是否有默认值 `= None` 决定，`str | None` 类型注解并不是判断依据；类型注解只是让编辑器提供更好的支持并检测错误 [4]。\n- 可以同时定义必选参数、带默认值的参数和可选参数，例如 `needy`（必选 `str`）、`skip`（默认 `0` 的 `int`）、`limit`（可选 `int`）[5]。\n- FastAPI 通过参数名识别参数：在路径中声明的为路径参数，单一类型（`int`、`float`、`str`、`bool` 等）的为查询参数，Pydantic 模型类型的为请求体 [2][4]。",
+      "answer_ms": 1887,
+      "cost": 0.000994,
+      "citations": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "context": "[1] 《查询参数 { #query-parameters }》 查询参数 { #query-parameters } > 可选参数 { #optional-parameters }\n同理，把默认值设为 `None` 即可声明可选的查询参数：\n\n{* ../../docs_src/query_params/tutorial002_py310.py hl[7] *}\n\n本例中，查询参数 `q` 是可选的，默认值为 `None`。\n\n/// tip | 提示\n\n注意，**FastAPI** 可以识别出 `item_id` 是路径参数，`q` 不是路径参数，而是查询参数。\n\n///\n\n[2] 《查询参数 { #query-parameters }》 查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }\n**FastAPI** 可以识别同时声明的多个路径参数和查询参数。\n\n而且声明查询参数的顺序并不重要。\n\nFastAPI 通过参数名进行检测：\n\n{* ../../docs_src/query_params/tutorial004_py310.py hl[6,8] *}\n\n[3] 《查询参数 { #query-parameters }》 查询参数 { #query-parameters } > 查询参数类型转换 { #query-parameter-type-conversion }\n参数还可以声明为 `bool` 类型，FastAPI 会自动转换参数类型：\n\n{* ../../docs_src/query_params/tutorial003_py310.py hl[7] *}\n\n本例中，访问：\n\n```\nhttp://127.0.0.1:8000/items/foo?short=1\n```\n\n或\n\n```\nhttp://127.0.0.1:8000/items/foo?short=True\n```\n\n或\n\n```\nhttp://127.0.0.1:8000/items/foo?short=true\n```\n\n或\n\n```\nhttp://127.0.0.1:8000/items/foo?short=on\n```\n\n或\n\n```\nhttp://127.0.0.1:8000/items/foo?short=yes\n```\n\n或其它任意大小写形式（大写、首字母大写等），函数接收的 `short` 参数都是布尔值 `True`。否则为 `False`。\n\n[4] 《请求体 { #request-body }》 请求体 { #request-body } > 请求体 + 路径 + 查询参数 { #request-body-path-query-parameters }\n也可以同时声明**请求体**、**路径**和**查询**参数。\n\n**FastAPI** 会分别识别它们，并从正确的位置获取数据。\n\n{* ../../docs_src/body/tutorial004_py310.py hl[16] *}\n\n函数参数按如下规则进行识别：\n\n* 如果该参数也在**路径**中声明了，它就是路径参数。\n* 如果该参数是（`int`、`float`、`str`、`bool` 等）**单一类型**，它会被当作**查询**参数。\n* 如果该参数的类型声明为 **Pydantic 模型**，它会被当作请求**体**。\n\n/// note | 注意\n\nFastAPI 会根据默认值 `= None` 知道 `q` 的值不是必填的。\n\n`str | None` 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 `= None` 决定。\n\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n///\n\n[5] 《查询参数 { #query-parameters }》 查询参数 { #query-parameters } > 必选查询参数 { #required-query-parameters }\nedy` 是必选参数，因此要在 URL 中设置值：\n\n```\nhttp://127.0.0.1:8000/items/foo-item?needy=sooooneedy\n```\n\n...这样就正常了：\n\n```JSON\n{\n    \"item_id\": \"foo-item\",\n    \"needy\": \"sooooneedy\"\n}\n```\n\n当然，把一些参数定义为必选，为另一些参数设置默认值，再把其它参数定义为可选，这些操作都是可以的：\n\n{* ../../docs_src/query_params/tutorial006_py310.py hl[8] *}\n\n本例中有 3 个查询参数：\n\n* `needy`，必选的 `str` 类型参数\n* `skip`，默认值为 `0` 的 `int` 类型参数\n* `limit`，可选的 `int` 类型参数\n\n/// tip | 提示\n\n还可以像在[路径参数](path-params.md#predefined-values)中那样使用 `Enum`。\n\n///",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖默认值None要点，补充内容均有上下文依据，引用正确"
+      },
+      "judge_cost": 0.000624
+    },
+    {
+      "id": "q002",
+      "type": "in_kb",
+      "retrieve_ms": 98,
+      "top1_score": 0.7468,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > HTML 环境变量替换 {#html-constant-replacement}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}"
+      ],
+      "refused": false,
+      "answer": "只有以 `VITE_` 为前缀的环境变量会在 Vite 打包后暴露在客户端源代码中 [1]。\n\n细节：\n\n- Vite 自动将环境变量暴露在 `import.meta.env` 对象下，且值均为字符串 [1]。\n- 示例中 `VITE_SOME_KEY=123` 的值 `\"123\"` 会暴露给客户端，而 `DB_PASSWORD` 不会，在代码中访问为 `undefined` [1]。\n- 为防止意外泄露，应避免使用该前缀存放敏感变量 [1]。\n- 如需自定义前缀，可参考 `envPrefix` 选项 [1]。\n\n资料未覆盖 `envPrefix` 的具体配置方式。",
+      "answer_ms": 1824,
+      "cost": 0.000852,
+      "citations": [
+        1
+      ],
+      "context": "[1] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables}\nVite 自动将环境变量暴露在 `import.meta.env` 对象下，作为字符串。\n\n以 `VITE_` 为前缀的变量在 Vite 打包后会暴露在客户端源代码中。为防止意外地将环境变量泄露给客户端，请避免使用此前缀。例如：\n\n```[.env]\nVITE_SOME_KEY=123\nDB_PASSWORD=foobar\n```\n\n解析后的 `VITE_SOME_KEY` 值（即 `\"123\"`）将会暴露在客户端，但 `DB_PASSWORD` 的值则不会。你可以通过在代码中添加以下内容来验证这一点：\n\n```js\nconsole.log(import.meta.env.VITE_SOME_KEY) // \"123\"\nconsole.log(import.meta.env.DB_PASSWORD) // undefined\n```\n\n如果你想要自定义环境变量的前缀，请参阅 [envPrefix](/config/shared-options.html#envprefix) 选项。\n\n:::tip 环境变量解析\n如上所示，`VITE_SOME_KEY` 是一个数字，但在解析时会返回一个字符串。布尔类型的环境变量也会发生同样的情况。在代码中使用时，请确保转换为所需的类型。\n:::\n\n:::warning 密钥保护\n\n[2] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > HTML 环境变量替换 {#html-constant-replacement}\nVite 还支持在 HTML 文件中替换环境变量。`import.meta.env` 中的任何属性都可以通过特殊的 `%CONST_NAME%` 语法在 HTML 文件中使用：\n\n```html\n<h1>Vite is running in %MODE%</h1>\n<p>Using data from %VITE_API_URL%</p>\n```\n\n如果环境变量在 `import.meta.env` 中不存在，比如不存在的 `%NON_EXISTENT%`，则会被忽略而不被替换，这与 JS 中的 `import.meta.env.NON_EXISTENT` 不同，JS 中会被替换为 `undefined`。\n\n正因为 Vite 被许多框架使用，它在复杂的替换（如条件替换）上故意不持任何意见。Vite 可以使用 [现有的用户插件](https://github.com/vitejs/awesome-vite#transformers) 或者一个实现了 [`transformIndexHtml` 钩子](./api-plugin#transformindexhtml) 的自定义插件来扩展。\n\n[3] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}\nVite 使用 [dotenv](https://github.com/motdotla/dotenv) 从你的 [环境目录](/config/shared-options.md#envdir) 中的下列文件加载额外的环境变量：\n\n```\n.env                # 所有情况下都会加载\n.env.local          # 所有情况下都会加载，但会被 git 忽略\n.env.[mode]         # 只在指定模式下加载\n.env.[mode].local   # 只在指定模式下加载，但会被 git 忽略\n```\n\n:::tip 环境加载优先级\n\n一份用于指定模式的文件（例如 `.env.production`）会比通用文件的优先级更高（例如 `.env`）。\n\nVite 总是会加载 `.env` 和 `.env.local` 文件，除此之外还会加载模式特定的 `.env.[mode]` 文件。在模式特定文件中声明的变量优先级高于通用文件中的变量，但仅在 `.env` 或 `.env.local` 中定义的变量仍然可以在环境中使用。\n\n另外，Vite 执行时已经存在的环境变量有最高的优先级，不会被 `.env` 类文件覆盖。例如当运行 `VITE_SOME_KEY=123 vite build` 的时候。\n\n[4] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}\n 已经支持这种行为很长时间了，JavaScript 生态系统中的其他工具也使用支持这种行为的旧版本。\n\n为避免出现互操作问题，建议避免依赖这种行为。今后，Vite 可能会对这种行为发出警告。\n\n:::\n\n:::warning 忽略本地 `.env` 文件\n\n`.env.*.local` 文件仅供本地使用，可能包含敏感变量。你应该将 `*.local` 添加到 `.gitignore` 文件中，以避免它们被提交到 Git 仓库。\n\n:::\n\n[5] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > TypeScript 的智能提示 {#intellisense-for-typescript}\n默认情况下，Vite 在 [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts) 中为 `import.meta.env` 提供了类型定义。随着在 `.env[mode]` 文件中自定义了越来越多的环境变量，你可能想要在代码中获取这些以 `VITE_` 为前缀的用户自定义环境变量的 TypeScript 智能提示。\n\n要想做到这一点，你可以在 `src` 目录下创建一个 `vite-env.d.ts` 文件，接着按下面这样增加 `ImportMetaEnv` 的定义：\n\n```typescript [vite-env.d.ts]\ninterface ViteTypeOptions {\n  // 添加这行代码，你就可以将 ImportMetaEnv 的类型设为严格模式，\n  // 这样就不允许有未知的键值了。\n  // strictImportMetaEnv: unknown\n}\n\ninterface ImportMetaEnv {\n  readonly VITE_APP_TITLE: string\n  // 更多环境变量...\n}\n\ninterface ImportMeta {\n  readonly env: ImportMetaEnv\n}\n```",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "准确答出VITE_前缀经import.meta.env暴露，引用[1]支撑，无错误"
+      },
+      "judge_cost": 0.000526
+    },
+    {
+      "id": "q003",
+      "type": "in_kb",
+      "retrieve_ms": 74,
+      "top1_score": 0.6098,
+      "rank": null,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇） > 合规检查清单（Day15 执行时逐项打勾）",
+        "notes/runbook.md#Runbook > 技术债"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。\n\n参考资料涉及语料计划与合规检查 [1][2]、MinIO 凭据技术债 [3]、场景选型 [4] 以及目录规范 [5]，但均未包含提交信息（commit message）规范的相关内容。",
+      "answer_ms": 1197,
+      "cost": 0.001319,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "context": "[1] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇）\n仓库地址 + commit + 许可证；`data/sample/` 只放 ≤5 篇并保留署名 | `data/corpus/oss/<项目>/` |\n| ③ 手工脱敏的团队规范样例    | 自己*\n\n仓库地址 + commit + 许可证；`data/sample/` 只放 ≤5 篇并保留署名 | `data/corpus/oss/<项目>/` |\n| ③ 手工脱敏的团队规范样例    | 自己**重写**的「前端代码评审规范」「发布流程 runbook」「Git 分支规范」「接口联调约定」「组件库使用约定」                        | 5–10     | 自写；去公司名 / 人名 / 内部域名 / 内网 IP / 业务数据                        | `data/corpus/team/`    |\n| ④（可选）PDF / HTML 样本    | 把 1–2 篇自写规范导出 PDF；保存 2–3 个公开文档网页 HTML（测 loader 用）                                                         | 3–5      | 同 ①②                                                                        | `data/corpus/{pdf,html}/` |\n\n[2] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 4. W4 语料计划（目标 30–80 篇） > 合规检查清单（Day15 执行时逐项打勾）\n- [ ] ③ 类全部为自己重写，无任何复制粘贴的公司原文\n- [ ] `grep -rniE \"公司名|同事姓名|内部域名|内网IP|token|password|secret\"` 在 `data/corpus/` 结果为空\n- [ ] ② 类在 `data/corpus/SOURCES.md` 记录仓库地址、commit hash、许可证\n- [ ] `data/corpus/` 已写入 `.gitignore`；仅 `data/sample/`（≤5 篇公开样例）提交进 Git\n- [ ] 语料里不出现真实业务数据（订单号、用户信息、金额）\n\n---\n\n[3] 《Runbook》 Runbook > 技术债\n- dev 阶段 WorkPilot 复用 `infra/compose/.env` 的 MinIO root 凭据（`MINIO_ACCESS_KEY` / `MINIO_SECRET_KEY`）；W7 生产环境必须改为独立的、按 bucket 收敛权限的 access key，不再使用 root 凭据。\n\n[4] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）\n| 排名 | 痛点 | SP 映射 | Score | 门槛 | 处置 |\n| ---- | ---- | ------- | ----- | ---- | ---- |\n| 1 | P-02 查内部组件库/团队规范用法 | SP-A | **3.90** | ✅ D3/E4 | **主场景**（与 P-07 合并） |\n| 2 | P-07 AI 生成代码不符团队规范 | SP-A（原「新」，改判） | **3.85** | ✅ D4/E4 | **主场景**（同一知识库链路） |\n| 3 | P-03 PR 提交前人工自检 | SP-C | 3.35 | ✅ D4/E4 | Backlog（AI 适配度 2 分 → 用 hook 解决） |\n\n- 裁决点：P-07 原先在「新场景包 vs SP-C」间有歧义（见 pain-pool Day03 归类对比）。今天裁决为 **SP-A**——它的缺口是「不知道规范」（知识），不是「不会检查」（工具）；这样 **M10 不新增场景包，能力骨架 M0–M9/M11 不变**（蓝图 §12.5）。\n- 未打分/未选中：P-01、P-04（合规不过）、P-05、P-06、P-08、P-09、P-10 → 留在 pain-pool，不排期。\n\n---\n\n[5] 《项目规范》 项目规范 > §1 目录规范\nrun_*.py` | 业务代码 |\n| `eval/reports/` | 评测报告（提交） | `YYYYMMDD-<name>.md` | 原始运行明细（→ `eval/runs/` 忽略） |\n\nrun_*.py` | 业务代码 |\n| `eval/reports/` | 评测报告（提交） | `YYYYMMDD-<name>.md` | 原始运行明细（→ `eval/runs/` 忽略） |\n| `eval/badcases/` | 坏例库 | `badcases.md` | — |\n| `data/` | 本地数据（忽略） | 语料、SQLite、导出文件 | 任何需要提交的东西 |\n| `data/sample/` | 公开样例（提交） | ≤ 1MB 的可公开小样本 | 公司数据 |\n| `deploy/` | 部署编排 | `docker-compose*.yml`、`Caddyfile` | 应用源码 |\n| `deploy/scripts/` | 运维脚本 | `backup.sh`、`restore.sh`、`healthcheck.sh` | 开发辅助脚本 |\n| `scripts/` | 开发辅助 | `bootstrap.sh`、`ingest.sh`、`chat.py` | 运维脚本、正式业务逻辑 |\n| `docs/architecture.md` · `runbook.md` · `api.md` | 架构 / 运维手册 / 接口 | mermaid 图、操作步骤、端点示例 | — |\n| `docs/adr/` | 架构决策 | `NNNN-k",
+      "judge": {
+        "correctness": 0,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "上下文确无提交规范，但期望答案非拒答，回答拒答记0"
+      },
+      "judge_cost": 0.001507
+    },
+    {
+      "id": "q004",
+      "type": "in_kb",
+      "retrieve_ms": 85,
+      "top1_score": 0.6132,
+      "rank": null,
+      "top3": [
+        "oss/react/your-first-component.md#组件：UI 构成要素 {/*components-ui-building-blocks*/}",
+        "oss/react/your-first-component.md#组件：UI 构成要素 {/*components-ui-building-blocks*/}",
+        "oss/react/your-first-component.md#使用组件 {/*using-a-component*/} > 嵌套和组织组件 {/*nesting-and-organizing-components*/} > 万物皆组件 {/*components-all-the-way-down*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到 WorkPilot 项目组件文件与 hooks 命名规范的相关内容。\n\n参考资料仅涉及 React 通用概念，未涉及 WorkPilot 项目的命名约定：\n\n- 组件方面：资料说明 React 组件是可复用的 UI 元素，可组合、排序和嵌套；组件名以大写字母开头（如 `<Profile />`），小写标签（如 `<section>`）则被视为 HTML 标签 [2][5]。但未提及组件文件的命名规则。\n- Hooks 方面：资料仅说明以 `use` 开头的函数称为 Hook，且只能在组件或自定义 Hook 的最顶层调用，不能在条件、循环或嵌套函数内调用 [4]。但未提及 hooks 文件的命名规则。\n\n如需了解 WorkPilot 项目的具体命名规范，建议查阅该项目的开发文档或代码规范说明。",
+      "answer_ms": 1594,
+      "cost": 0.001029,
+      "citations": [
+        2,
+        4,
+        5
+      ],
+      "context": "[1] 《你的第一个组件》 组件：UI 构成要素 {/*components-ui-building-blocks*/}\n `<article>`、`<h1>` 等相同的 HTML 标签。\n\n就像使用 HTML 标签一样，你可以组合、排序和嵌套组件来绘制整个页面。例如，你正在阅读的文档页面就是由 React 组件构成的：\n\n```js\n<PageLayout>\n  <NavigationHeader>\n    <SearchBar />\n    <Link to=\"/docs\">文档</Link>\n  </NavigationHeader>\n  <Sidebar />\n  <PageContent>\n    <TableOfContents />\n    <DocumentationText />\n  </PageContent>\n</PageLayout>\n```\n\n随着项目的发展，你会发现很多布局可以通过复用已经完成的组件来实现，从而加快开发进程。上文中提到的目录可以通过 `<TableOfContents />` 组件添加到任意的画面中！你也可以使用 React 开源社区分享的大量组件（例如 [Chakra UI](https://chakra-ui.com/) 和 [Material UI](https://material-ui.com/)）来快速启动项目。\n\n[2] 《你的第一个组件》 组件：UI 构成要素 {/*components-ui-building-blocks*/}\n在 Web 当中，HTML 允许我们使用其内置的标签集（如 `<h1>` 和 `<li>`）创建丰富的结构化文档：\n\n```html\n<article>\n  <h1>我的第一个组件</h1>\n  <ol>\n    <li>组件：UI 构成要素</li>\n    <li>定义组件</li>\n    <li>使用组件</li>\n  </ol>\n</article>\n```\n\n`<article>` 表示这篇文章，`<h1>` 表示文章的标题，`<ol>` 以有序列表的形式表示文章的（缩写的）目录。每一个侧边栏、头像、模态框、下拉框的背后是都是像这样的（结合了用于样式的 CSS 和用于交互的 JavaScript 的）标签——你在 Web 上看到的每一个 UI 模块。\n\nReact 允许你将标签、CSS 和 JavaScript 组合成自定义“组件”，即 **应用程序中可复用的 UI 元素**。上文中表示目录的代码可以改写成一个能够在每个页面中渲染的 `<TableOfContents />` 组件。实际上，使用的依然是 `<article>`、`<h1>` 等相同的 HTML 标签。\n\n就像使用 HTML 标签一样，你可以组合、排序和嵌套组件来绘制整个页面。例如，你正在阅读的文档页面就是由 React 组件构成的：\n\n[3] 《你的第一个组件》 使用组件 {/*using-a-component*/} > 嵌套和组织组件 {/*nesting-and-organizing-components*/} > 万物皆组件 {/*components-all-the-way-down*/}\n你的 React 应用程序从“根”组件开始。通常，它会在启动新项目时自动创建。例如，如果你使用 [CodeSandbox](https://codesandbox.io/)，根组件定义在 `src/App.js` 中。如果使用 [Next.js](https://nextjs.org/) 框架，根组件定义在 `pages/index.js` 中。在这些示例中，一直有导出根组件。\n\n大多数 React 应用程序只有组件。这意味着你不仅可以将组件用于可复用的部分，例如按钮，还可以用于较大块的部分，例如侧边栏、列表以及最终的完整页面！组件是组织 UI 代码和标签的一种快捷方式，即使其中一些组件只使用了一次。\n\n[基于 React 的框架](/learn/creating-a-react-app) 更进一步。与使用一个空白的 HTML 文件并让 React 使用 JavaScript “接管” 管理页面不同，框架 **还会** 根据 React 组件自动生成 HTML。这使你的应用程序能够在 JavaScript 代码加载之前显示一些内容。\n\n[4] 《State：组件的记忆》 添加一个 state 变量 {/*adding-a-state-variable*/} > 遇见你的第一个 Hook {/*meet-your-first-hook*/}\n在 React 中，`useState` 以及任何其他以“`use`”开头的函数都被称为 **Hook**。\n\nHook 是特殊的函数，只在 React [渲染](/learn/render-and-commit#step-1-trigger-a-render)时有效（我们将在下一节详细介绍）。它们能让你 “hook” 到不同的 React 特性中去。\n\nState 只是这些特性中的一个，你之后还会遇到其他 Hook。\n\n<Pitfall>\n\n**Hooks ——以 `use` 开头的函数——只能在组件或[自定义 Hook](/learn/reusing-logic-with-custom-hooks) 的最顶层调用。** 你不能在条件语句、循环语句或其他嵌套函数内调用 Hook。Hook 是函数，但将它们视为关于组件需求的无条件声明会很有帮助。在组件顶部 “use” React 特性，类似于在文件顶部“导入”模块。\n\n</Pitfall>\n\n[5] 《你的第一个组件》 使用组件 {/*using-a-component*/} > 浏览器所看到的 {/*what-the-browser-sees*/}\n注意下面两者的区别：\n\n* `<section>` 是小写的，所以 React 知道我们指的是 HTML 标签。\n* `<Profile />` 以大写 `P` 开头，所以 React 知道我们想要使用名为 `Profile` 的组件。\n\n然而 `Profile` 包含更多的 HTML：`<img />`。这是浏览器最后所看到的：\n\n```html\n<section>\n  <h1>了不起的科学家</h1>\n  <img src=\"https://react.dev/images/docs/scientists/MK3eW3As.jpg\" alt=\"Katherine Johnson\" />\n  <img src=\"https://react.dev/images/docs/scientists/MK3eW3As.jpg\" alt=\"Katherine Johnson\" />\n  <img src=\"https://react.dev/images/docs/scientists/MK3eW3As.jpg\" alt=\"Katherine Johnson\" />\n</section>\n```",
+      "judge": {
+        "correctness": 0,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望具体命名规范，回答拒答，未给出答案"
+      },
+      "judge_cost": 0.000596
+    },
+    {
+      "id": "q005",
+      "type": "in_kb",
+      "retrieve_ms": 112,
+      "top1_score": 0.6104,
+      "rank": 5,
+      "top3": [
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}"
+      ],
+      "refused": false,
+      "answer": "知识库中与「新增环境变量」直接相关的规则来自《项目规范》§4 [5]；WorkPilot 定义文档 [1] 只涉及场景选型，未涉及环境变量规则。\n\n**新增环境变量需遵守的规则：**\n\n- **新增键与使用它的代码必须在同一个提交中** [5]。\n- **代码只能通过 `Settings`（pydantic-settings）读取**，不允许散落使用 `os.getenv` [5]。\n- **`.env.example` 必须列出全部键**，每个键一行注释，并标注 `[必填]` / `[可选]` / `[必填·密钥]`；密钥值留空 [5]。\n- **`.env` 永不提交** [5]。\n- **如果新增的是密钥类变量**：疑似泄漏或每 90 天需轮换——平台生成新 key → 改 `.env` → 重启 → 验证 → 撤销旧 key；误提交密钥一律视为已泄漏，立即轮换（仅改写 Git 历史不够）[5]。\n\n**资料未覆盖的部分：** 参考资料未说明 WorkPilot 项目在变量命名前缀、默认值、类型校验或环境区分（开发/生产）方面的额外要求，也未说明新增变量是否需要评审或登记。",
+      "answer_ms": 2099,
+      "cost": 0.002284,
+      "citations": [
+        1,
+        5
+      ],
+      "context": "[1] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）\n| 排名 | 痛点 | SP 映射 | Score | 门槛 | 处置 |\n| ---- | ---- | ------- | ----- | ---- | ---- |\n| 1 | P-02 查内部组件库/团队规范用法 | SP-A | **3.90** | ✅ D3/E4 | **主场景**（与 P-07 合并） |\n| 2 | P-07 AI 生成代码不符团队规范 | SP-A（原「新」，改判） | **3.85** | ✅ D4/E4 | **主场景**（同一知识库链路） |\n| 3 | P-03 PR 提交前人工自检 | SP-C | 3.35 | ✅ D4/E4 | Backlog（AI 适配度 2 分 → 用 hook 解决） |\n\n- 裁决点：P-07 原先在「新场景包 vs SP-C」间有歧义（见 pain-pool Day03 归类对比）。今天裁决为 **SP-A**——它的缺口是「不知道规范」（知识），不是「不会检查」（工具）；这样 **M10 不新增场景包，能力骨架 M0–M9/M11 不变**（蓝图 §12.5）。\n- 未打分/未选中：P-01、P-04（合规不过）、P-05、P-06、P-08、P-09、P-10 → 留在 pain-pool，不排期。\n\n---\n\n[2] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}\n量仍然可以在环境中使用。\n\n另外，Vite 执行时已经存在的环境变量有最高的优先级，不会被 `.env` 类文件覆盖。例如当运行 `VITE_SOME_KEY=123 vite build` 的时候。\n\n`.env` 类文件会在 Vite 启动一开始时被加载，而改动会在重启服务器后生效。\n\n:::\n\n:::warning Bun 用户\n\n使用 [Bun](https://bun.sh) 时，请注意 Bun 会在脚本运行前自动加载 `.env` 文件。此内置行为会将环境变量直接加载到 `process.env` 中，并且可能会干扰 Vite 的功能，因为它会遵循现有的 `process.env` 值。有关解决方法，请参阅 [oven-sh/bun#5515](https://github.com/oven-sh/bun/issues/5515)。\n\n:::\n\n此外，Vite 使用 [dotenv-expand](https://github.com/motdotla/dotenv-expand) 来扩展在 env 文件中编写的变量。想要了解更多相关语法，请查看 [它们的文档](https://github.com/motdotla/dotenv-expand#what-rules-does-the-expansion-engine-follow)。\n\n[3] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}\n，请查看 [它们的文档](https://github.com/motdotla/dotenv-expand#what-rules-does-the-expansion-engine-follow)。\n\n请注意，如果想要在环境变量中使用 `$` 符号，则必须使用 `\\` 对其进行转义。\n\n```[.env]\nKEY=123\nNEW_KEY1=test$foo   # test\nNEW_KEY2=test\\$foo  # test$foo\nNEW_KEY3=test$KEY   # test123\n```\n\n::: details 反向扩展变量\n\nVite 支持以相反的顺序扩展变量。\n例如，下面的 `.env` 将被评估为 `VITE_FOO=foobar`、`VITE_BAR=bar`。\n\n```[.env]\nVITE_FOO=foo${VITE_BAR}\nVITE_BAR=bar\n```\n\n这在 shell 脚本和其他工具（如 `docker compose`）中不起作用。\n不过，Vite 支持这种行为，因为 `dotenv-expand` 已经支持这种行为很长时间了，JavaScript 生态系统中的其他工具也使用支持这种行为的旧版本。\n\n为避免出现互操作问题，建议避免依赖这种行为。今后，Vite 可能会对这种行为发出警告。\n\n:::\n\n[4] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}\nVite 使用 [dotenv](https://github.com/motdotla/dotenv) 从你的 [环境目录](/config/shared-options.md#envdir) 中的下列文件加载额外的环境变量：\n\n```\n.env                # 所有情况下都会加载\n.env.local          # 所有情况下都会加载，但会被 git 忽略\n.env.[mode]         # 只在指定模式下加载\n.env.[mode].local   # 只在指定模式下加载，但会被 git 忽略\n```\n\n:::tip 环境加载优先级\n\n一份用于指定模式的文件（例如 `.env.production`）会比通用文件的优先级更高（例如 `.env`）。\n\nVite 总是会加载 `.env` 和 `.env.local` 文件，除此之外还会加载模式特定的 `.env.[mode]` 文件。在模式特定文件中声明的变量优先级高于通用文件中的变量，但仅在 `.env` 或 `.env.local` 中定义的变量仍然可以在环境中使用。\n\n另外，Vite 执行时已经存在的环境变量有最高的优先级，不会被 `.env` 类文件覆盖。例如当运行 `VITE_SOME_KEY=123 vite build` 的时候。\n\n[5] 《项目规范》 项目规范 > §4 环境变量\n- `.env` 永不提交。\n- `.env.example` 列出全部键，每键一行注释并标 `[必填]` / `[可选]` / `[必填·密钥]`，密钥值留空。\n- 新增键与使用它的代码同一个提交。\n- 代码只通过 `Settings`（pydantic-settings）读取，不散落 `os.getenv`。\n- 密钥轮换：疑似泄漏或每 90 天 → 平台生成新 key → 改 `.env` → 重启 → 验证 → 撤销旧 key。\n- 误提交密钥一律视为已泄漏，立即轮换（改写 Git 历史不够）。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖全部四个要点，引用[5]准确支撑，未编造"
+      },
+      "judge_cost": 0.001565
+    },
+    {
+      "id": "q006",
+      "type": "in_kb",
+      "retrieve_ms": 73,
+      "top1_score": 0.6532,
+      "rank": 1,
+      "top3": [
+        "notes/PROJECT_STANDARD.md#项目规范 > §5 版本号与 tag",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 3. 明确不做（v0.x–v1.0）"
+      ],
+      "refused": false,
+      "answer": "打 tag 的约束（依据《项目规范》§5）：\n\n- **版本方案**：采用 SemVer [1]。\n- **0.x 阶段编号**：`v0.MINOR.0` 对应蓝图版本里程碑（如 v0.1 → `v0.1.0`），修复则递增 PATCH [1]。\n- **打 tag 命令**：`git tag -a v0.1.0 -m \"v0.1: ...\"`，然后 `git push origin v0.1.0` [1]。\n- **时机**：只在 `main` 分支且 `make test` 通过后才打 tag [1]。\n- **不可变约束**：已推送的 tag 不移动、不删除 [1]。\n\n资料未覆盖的部分：其他分支策略、tag 命名以外的发布流程细节，知识库中没有相关说明。",
+      "answer_ms": 1435,
+      "cost": 0.001069,
+      "citations": [
+        1
+      ],
+      "context": "[1] 《项目规范》 项目规范 > §5 版本号与 tag\n| 项 | 规则 |\n| --- | --- |\n| 版本方案 | SemVer |\n| 0.x 阶段 | `v0.MINOR.0` 对应蓝图版本里程碑（v0.1 → `v0.1.0`），修复递增 PATCH |\n| 打 tag | `git tag -a v0.1.0 -m \"v0.1: ...\"` + `git push origin v0.1.0` |\n| 时机 | 只在 `main` 且 `make test` 通过后打 |\n| 约束 | 已推送的 tag 不移动、不删除 |\n\n[2] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）\n| 排名 | 痛点 | SP 映射 | Score | 门槛 | 处置 |\n| ---- | ---- | ------- | ----- | ---- | ---- |\n| 1 | P-02 查内部组件库/团队规范用法 | SP-A | **3.90** | ✅ D3/E4 | **主场景**（与 P-07 合并） |\n| 2 | P-07 AI 生成代码不符团队规范 | SP-A（原「新」，改判） | **3.85** | ✅ D4/E4 | **主场景**（同一知识库链路） |\n| 3 | P-03 PR 提交前人工自检 | SP-C | 3.35 | ✅ D4/E4 | Backlog（AI 适配度 2 分 → 用 hook 解决） |\n\n- 裁决点：P-07 原先在「新场景包 vs SP-C」间有歧义（见 pain-pool Day03 归类对比）。今天裁决为 **SP-A**——它的缺口是「不知道规范」（知识），不是「不会检查」（工具）；这样 **M10 不新增场景包，能力骨架 M0–M9/M11 不变**（蓝图 §12.5）。\n- 未打分/未选中：P-01、P-04（合规不过）、P-05、P-06、P-08、P-09、P-10 → 留在 pain-pool，不排期。\n\n---\n\n[3] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 3. 明确不做（v0.x–v1.0）\n1. 不接入公司真实系统、不把公司机密代码 / 文档 / 工单送进外部 LLM API（蓝图 §8 红线）。\n2. 不做通用聊天助手（没有知识库依据的问题一律拒答，不硬答）。\n3. 不做模型训练 / 微调（全部用 prompt + 检索）。\n4. 不做 P-03（PR 提交前自检）——那是 pre-commit hook / CI 脚本能解决的**自动化**问题，AI 适配度仅 2 分，本阶段不投入。\n5. 不做 P-01 / P-04（需求分散、生产排障）——数据只能来自公司内部系统，硬门槛 D 不过（D 打 1–2 分），进 Backlog 不排期。\n6. 不做 Agent / 工具调用 / 多步规划（M6/M7 留到 W9+，本场景不需要）。\n7. 不做多租户登录、权限、审计（v1.0 之前不做，W19 再说）。\n8. 不做移动端、不上 Kubernetes。\n\n---\n\n[4] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 1. 八要素\n| 要素     | 内容                                                                                                                                                                                                             |\n| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| 问题     | ① 内部组件库文档不完整，写页面时要全局搜代码 → 翻 3–5 个文件看别人怎么写 → 不行就问同事（P-02：5 次/周 × 15 分钟 = 75 分钟/周）；② 通用 Copilot/ChatGPT 不懂团队规范（API 前缀、错误处理、权限校验），每次生成后要手改 3–5 处，漏改就\n\n[5] 《Runbook》 Runbook > 技术债\n- dev 阶段 WorkPilot 复用 `infra/compose/.env` 的 MinIO root 凭据（`MINIO_ACCESS_KEY` / `MINIO_SECRET_KEY`）；W7 生产环境必须改为独立的、按 bucket 收敛权限的 access key，不再使用 root 凭据。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖SemVer、0.x里程碑、main且测试通过、tag不可变四点，引用均指向规范§5"
+      },
+      "judge_cost": 0.000903
+    },
+    {
+      "id": "q007",
+      "type": "in_kb",
+      "retrieve_ms": 72,
+      "top1_score": 0.7408,
+      "rank": 1,
+      "top3": [
+        "team/release-runbook.md#发布流程 Runbook（团队样例） > 发布执行 > 灰度与回滚",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": false,
+      "answer": "根据《发布流程 Runbook（团队样例）》，发布新版本时的灰度与回滚要求如下：\n\n- **灰度流量与观察时长**：默认先灰度 **10% 流量**，观察 **15 分钟** [1]。\n- **异常处理**：指标异常时**立即回滚到上一个稳定版本** [1]。\n- **回滚后动作**：保留现场日志，**先止损再排查** [1]。\n\n另外，发布后检查的必查项包括：错误率、P95 延迟、内存与 CPU 是否异常；核心日志有无新增告警或异常堆栈；用户反馈渠道是否出现集中问题 [5]。\n\n资料未覆盖的内容：灰度放量的具体判断标准（如达到什么指标才算通过）、多批次灰度的递进策略，以及回滚操作的具体执行步骤。",
+      "answer_ms": 1415,
+      "cost": 0.00132,
+      "citations": [
+        1,
+        5
+      ],
+      "context": "[1] 《发布流程 Runbook（团队样例）》 发布流程 Runbook（团队样例） > 发布执行 > 灰度与回滚\n- 默认先灰度 10% 流量观察 15 分钟\n- 指标异常立即回滚到上一个稳定版本\n- 回滚后保留现场日志，先止损再排查\n\n[2] 《保持组件纯粹》 哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}\netTime(new Date());\n    }, 1000);\n    return () => clearInterval(id);\n  }, []);\n  return time;\n}\n```\n\n```css\nul {\n  margin: 0;\n  list-style-type: none;\n}\n\nli {\n  border: 1px solid #aaa;\n  border-radius: 6px;\n  float: left;\n  margin: 5px;\n  margin-bottom: 20px;\n  padding: 5px;\n  width: 70px;\n  height: 100px;\n}\n```\n\n```js sandbox.config.json hidden\n{\n  \"hardReloadOnChange\": true\n}\n```\n\n</Sandpack>\n\n<Solution>\n\n请注意，每当时钟更新时，“Create Story” 都会被添加 **两次**。这暗示我们在渲染过程中发生了 mutation — 严格模式调用两次组件，可以使这些问题更加明显。\n\n[3] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool）\n亲历/亲眼所见；公司细节抽象描述（不写公司名、产品名、人名、业务数据、内部链接）。\n> 更新：Day03 v0（≥8 条）→ **Day10 v1（≥10 条 + 初评分）** → Day13 选型。\n\n| ID   | 场景(何时发生)                      | 痛点一句话                                                                                                                                 | 频率(次/周) | 单次耗时(min) | 当前做法                                                                | 问题类型 | 数据从哪来                  | 合规风险 | 候选场景包 | 来源 | 初评分 |\n| ---- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------------- | -------------------------------------------------------\n\n[4] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool）\n> 规则：只记亲历/亲眼所见；公司细节抽象描述（不写公司名、产品名、人名、业务数据、内部链接）。\n> 更新：Day03 v0（≥8 条）→ **Day10 v1（≥10 条 + 初评分）** → Day13 选型。\n\n[5] 《发布流程 Runbook（团队样例）》 发布流程 Runbook（团队样例） > 发布后检查 > 必查项\n- 错误率、P95 延迟、内存与 CPU 是否异常\n- 核心日志有无新增的告警或异常堆栈\n- 用户反馈渠道是否出现集中问题",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "完整覆盖10%流量、15分钟、异常回滚、保留日志先止损再排查，引用准确"
+      },
+      "judge_cost": 0.001183
+    },
+    {
+      "id": "q008",
+      "type": "in_kb",
+      "retrieve_ms": 65,
+      "top1_score": 0.6948,
+      "rank": 1,
+      "top3": [
+        "team/component-usage.md#组件库使用约定（团队样例） > 使用原则 > 风格统一",
+        "team/api-integration.md#接口联调约定（团队样例） > 分页与筛选 > 分页参数",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的资料 {/*fix-a-broken-profile*/}"
+      ],
+      "refused": false,
+      "answer": "结论：团队约定要求颜色、间距、圆角统一使用主题令牌，不写硬编码值 [1]。\n\n具体要求：\n- 颜色、间距、圆角：统一走主题令牌，禁止硬编码 [1]。\n- 表单、弹窗、加载态：使用统一组件，保证交互一致 [1]。\n\n资料未覆盖的部分：参考资料中没有给出具体的令牌名称、取值或代码示例，也未说明如何定义或扩展主题令牌。",
+      "answer_ms": 1224,
+      "cost": 0.00096,
+      "citations": [
+        1
+      ],
+      "context": "[1] 《组件库使用约定（团队样例）》 组件库使用约定（团队样例） > 使用原则 > 风格统一\n- 颜色、间距、圆角统一走主题令牌，不写硬编码值\n- 表单、弹窗、加载态使用统一组件，保证交互一致\n\n[2] 《接口联调约定（团队样例）》 接口联调约定（团队样例） > 分页与筛选 > 分页参数\n- 列表接口默认支持页码与每页数量\n- 返回体携带总数，前端据此渲染分页控件\n\n[3] 《保持组件纯粹》 哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的资料 {/*fix-a-broken-profile*/}\n 'https://react.dev/images/docs/scientists/' +\n    person.imageId +\n    size +\n    '.jpg'\n  );\n}\n```\n\n```css\n.avatar { margin: 5px; border-radius: 50%; }\n.panel {\n  border: 1px solid #aaa;\n  border-radius: 6px;\n  margin-top: 20px;\n  padding: 10px;\n  width: 200px;\n}\nh1 { margin: 5px; font-size: 18px; }\n```\n\n</Sandpack>\n\n请记住，React 无法保证组件函数以任何特定的顺序执行，因此你无法通过设置变量在它们之间进行通信。所有的交流都必须通过 props 进行。\n\n</Solution>\n\n[4] 《组件库使用约定（团队样例）》 组件库使用约定（团队样例） > 组件二次封装 > 文档要求\n- 每个业务封装组件写清用途、入参、示例\n- 用法变化时同步更新示例，避免文档与代码脱节\n\n[5] 《将 Props 传递给组件》 Props 如何随时间变化 {/*how-props-change-over-time*/} > 提取一个组件 {/*extract-a-component*/}\n 'https://react.dev/images/docs/scientists/' +\n    person.imageId +\n    size +\n    '.jpg'\n  );\n}\n```\n\n```css\n.avatar { margin: 5px; border-radius: 50%; min-height: 70px; }\n.profile {\n  border: 1px solid #aaa;\n  border-radius: 6px;\n  margin-top: 20px;\n  padding: 10px;\n}\nh1, h2 { margin: 5px; }\nh1 { margin-bottom: 10px; }\nul { padding: 0px 10px 0px 20px; }\nli { margin: 5px; }\n```\n\n</Sandpack>\n\n尽管因为在你描述组件特性时用的是 JavaScript 对象而非 JSX 的属性，使得语法看起来略有不同，但这些示例大多都是等效的，你可以选择任意一种方法\n\n</Solution>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖主题令牌与统一组件要点，引用[1]支撑，无错误"
+      },
+      "judge_cost": 0.001035
+    },
+    {
+      "id": "q009",
+      "type": "in_kb",
+      "retrieve_ms": 65,
+      "top1_score": 0.7068,
+      "rank": 2,
+      "top3": [
+        "oss/fastapi/handling-errors.md#处理错误 { #handling-errors }",
+        "team/api-integration.md#接口联调约定（团队样例） > 响应约定 > 错误码",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr} > 设置开发服务器 {#setting-up-the-dev-server}"
+      ],
+      "refused": false,
+      "answer": "**结论：** 知识库中只有团队约定层面的部分证据，缺少具体的前端处理实现细节。\n\n**有依据的要点：**\n\n- 错误码按模块分段，前端应按错误码映射提示文案，不直接展示后端原文 [2]。\n- 所有请求必须有失败分支，禁止吞掉异常 [5]。\n- 用户可见的错误提示要可操作，不能只弹「出错了」 [5]。\n\n**资料未覆盖的部分：**\n\n- 具体的错误码映射表、分段规则、提示文案示例均未给出 [2]。\n- 前端如何区分不同错误码、如何重试或降级等实现方式，资料中没有说明。\n- 后端返回 400 范围内状态码时前端的具体处理流程，资料未涉及 [1][4]。\n\n**补充说明：** 资料 [1][4] 讲的是服务端如何返回错误（400–499 状态码、使用 `HTTPException`），属于后端侧内容，不能直接作为前端处理依据。",
+      "answer_ms": 2028,
+      "cost": 0.001067,
+      "citations": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "context": "[1] 《处理错误 { #handling-errors }》 处理错误 { #handling-errors }\n某些情况下，需要向使用你的 API 的客户端返回错误提示。\n\n这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。\n\n你可能需要告诉客户端：\n\n* 客户端没有执行该操作的权限\n* 客户端没有访问该资源的权限\n* 客户端要访问的项目不存在\n* 等等\n\n遇到这些情况时，通常要返回 **400** 范围内（400 至 499）的 **HTTP 状态码**。\n\n这与 200 HTTP 状态码（200 至 299）类似。那些“200”状态码表示请求在某种程度上“成功”。\n\n而 400 范围内的状态码表示客户端发生了错误。\n\n大家都知道**「404 Not Found」**错误，还有调侃这个错误的笑话吧？\n\n[2] 《接口联调约定（团队样例）》 接口联调约定（团队样例） > 响应约定 > 错误码\n错误码按模块分段，前端按错误码映射提示文案，不直接展示后端原文。\n\n[3] 《服务端渲染（SSR） {#server-side-rendering-ssr}》 服务端渲染（SSR） {#server-side-rendering-ssr} > 设置开发服务器 {#setting-up-the-dev-server}\n捕获到了一个错误，让 Vite 来修复该堆栈，这样它就可以映射回\n    // 你的实际源码中。\n    vite.ssrFixStacktrace(e)\n    next(e)\n  }\n})\n```\n\n`package.json` 中的 `dev` 脚本也应该相应地改变，使用服务器脚本：\n\n```diff [package.json]\n  \"scripts\": {\n-   \"dev\": \"vite\"\n+   \"dev\": \"node server\"\n  }\n```\n\n[4] 《处理错误 { #handling-errors }》 处理错误 { #handling-errors } > 使用 `HTTPException` { #use-httpexception }\n向客户端返回 HTTP 错误响应，可以使用 `HTTPException`。\n\n[5] 《untitled》 前端代码评审规范（团队样例） > 常见必改项 > 错误处理\n- 所有请求必须有失败分支，禁止吞掉异常\n- 用户可见的错误提示要可操作，不能只弹「出错了」",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖错误码分段映射、不展示原文要点，引用准确，补充说明合理"
+      },
+      "judge_cost": 0.000536
+    },
+    {
+      "id": "q010",
+      "type": "in_kb",
+      "retrieve_ms": 73,
+      "top1_score": 0.8151,
+      "rank": 1,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：key 用于让 React 追踪列表项，在数据移动、插入或删除时正确匹配组件并更新 DOM 树 [2]。**\n\n具体原因与要点：\n\n- **唯一标识数组项**：必须给数组中的每一项指定 key，可以是字符串或数字，只要能唯一标识各个数组项 [2]。\n- **帮助 React 匹配组件**：key 告诉 React 每个组件对应数组里的哪一项，从而把组件匹配起来 [2]。\n- **应对顺序变化**：在数组项移动（如排序）、插入或删除时，合适的 key 能帮助 React 推断发生了什么，从而正确更新 DOM 树 [2]。\n- **不要用索引或随机值**：若用索引作 key，插入、删除或重新排序时会产生微妙且令人困惑的 bug；也不要用 `key={Math.random()}` 这类运行时动态生成的值，否则每次重新渲染 key 都不同，会导致组件和 DOM 元素每次重新创建，造成运行变慢，甚至丢失用户输入 [3]。\n- **key 应来自稳定数据**：用作 key 的值应在数据中提前准备好，使用能从给定数据中稳定取得的值 [2][3]。\n- **key 不作为 props 传递**：组件不会把 key 当作 props 的一部分，key 只对 React 本身起提示作用；若组件需要 ID，应作为单独的 prop 传入，如 `<Profile key={id} userId={id} />` [1][3]。\n\n资料未覆盖的部分：未涉及服务端渲染或 key 与 diff 算法的底层实现细节。",
+      "answer_ms": 2708,
+      "cost": 0.001556,
+      "citations": [
+        1,
+        2,
+        3
+      ],
+      "context": "[1] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}\n一个 ID，那么请把它作为一个单独的 prop 传给组件： `<Profile key={id} userId={id} />`。\n\n</Pitfall>\n\n<Recap>\n\n在这篇文章中，你学习了：\n\n* 如何从组件中抽离出数据，并把它们放入像数组、对象这样的数据结构中。\n* 如何使用 JavaScript 的 `map()` 方法来生成一组相似的组件。\n* 如何使用 JavaScript 的 `filter()` 方法来筛选数组。\n* 为何以及如何给集合中的每个组件设置一个 `key` 值：它使 React 能追踪这些组件，即便后者的位置或数据发生了变化。\n\n</Recap>\n\n<Challenges>\n\n[2] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}\n如果把上面任何一个沙盒示例在新标签页打开，你就会发现控制台有这样一个报错：\n\n<ConsoleBlock level=\"error\">\n\nWarning: Each child in a list should have a unique \"key\" prop.\n\n</ConsoleBlock>\n\n这是因为你必须给数组中的每一项都指定一个 `key`——它可以是字符串或数字的形式，只要能唯一标识出各个数组项就行：\n\n```js\n<li key={person.id}>...</li>\n```\n\n<Note>\n\n直接放在 `map()` 方法里的 JSX 元素一般都需要指定 `key` 值！\n\n</Note>\n\n这些 key 会告诉 React，每个组件对应着数组里的哪一项，所以 React 可以把它们匹配起来。这在数组项进行移动（例如排序）、插入或删除等操作时非常重要。一个合适的 `key` 可以帮助 React 推断发生了什么，从而得以正确地更新 DOM 树。\n\n用作 key 的值应该在数据中提前就准备好，而不是在运行时才随手生成：\n\n<Sandpack>\n\n```js src/App.js\nimport { people } from './data.js';\nimport { getImageUrl } from './utils.js';\n\n[3] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}\n际上，如果你没有显式地指定 `key` 值，React 确实默认会这么做。但是数组项的顺序在插入、删除或者重新排序等操作中会发生改变，此时把索引顺序用作 key 值会产生一些微妙且令人困惑的 bug。\n\n与之类似，请不要在运行过程中动态地产生 key，像是 `key={Math.random()}` 这种方式。这会导致每次重新渲染后的 key 值都不一样，从而使得所有的组件和 DOM 元素每次都要重新创建。这不仅会造成运行变慢的问题，更有可能导致用户输入的丢失。所以，使用能从给定数据中稳定取得的值才是明智的选择。\n\n有一点需要注意，组件不会把 `key` 当作 props 的一部分。Key 的存在只对 React 本身起到提示作用。如果你的组件需要一个 ID，那么请把它作为一个单独的 prop 传给组件： `<Profile key={id} userId={id} />`。\n\n</Pitfall>\n\n<Recap>\n\n在这篇文章中，你学习了：\n\n[4] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表一分为二 {/*splitting-a-list-in-two*/}\nturn (\n    'https://react.dev/images/docs/scientists/' +\n    person.imageId +\n    's.jpg'\n  );\n}\n```\n\n```css\nul { list-style-type: none; padding: 0px 10px; }\nli {\n  margin-bottom: 10px;\n  display: grid;\n  grid-template-columns: auto 1fr;\n  gap: 20px;\n  align-items: center;\n}\nimg { width: 100px; height: 100px; border-radius: 50%; }\n```\n\n</Sandpack>\n\n仔细的读者会发现我们在这写了两个 `filter`，对于每个人的职业我们都进行了两次过滤。读取一个属性的值花不了多少时间，因此放在这个简单的示例中没什么大问题。但是如果你的代码逻辑比这里复杂和“昂贵”得多，那你可以把两次的 `filter` 替换成一个只需进行一次检查就能构造两个数组的循环。\n\n实际上，如果 `people` 的数据不会改变，可以直接把这段代码移到组件外面。从 React 的视角来看，它只关心你最后给它的是不是包含 JSX 节点的数组，并不在乎数组是怎么来的：\n\n[5] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表一分为二 {/*splitting-a-list-in-two*/}\nturn (\n    'https://react.dev/images/docs/scientists/' +\n    person.imageId +\n    's.jpg'\n  );\n}\n```\n\n```css\nul { list-style-type: none; padding: 0px 10px; }\nli {\n  margin-bottom: 10px;\n  display: grid;\n  grid-template-columns: auto 1fr;\n  gap: 20px;\n  align-items: center;\n}\nimg { width: 100px; height: 100px; border-radius: 50%; }\n```\n\n</Sandpack>\n\n这个解决方案中，我们直接在父级的 `<ul>` 元素里就执行了 `map` 方法。当然如果你想提高代码的可读性，你也可以先用变量保存一下 `map` 之后的结果。\n\n现在得到的列表中仍然存在一些重复的代码，我们可以更进一步，将这些重复的部分提取成一个 `<ListSection>` 组件：\n\n<Sandpack>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖key识别变化、协调复用DOM、稳定唯一值非下标等要点，引用均对应片段"
+      },
+      "judge_cost": 0.00068
+    },
+    {
+      "id": "q011",
+      "type": "in_kb",
+      "retrieve_ms": 83,
+      "top1_score": 0.6751,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/response-status-code.md#响应状态码 { #response-status-code }",
+        "oss/fastapi/response-status-code.md#响应状态码 { #response-status-code } > 状态码名称快捷方式 { #shortcut-to-remember-the-names }",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 5：返回内容¶"
+      ],
+      "refused": false,
+      "answer": "# FastAPI 自定义接口返回状态码\n\n**结论：** 资料显示可通过在路径操作装饰器中记录状态码，并用 `fastapi.status` 快捷变量指定状态码，但资料未给出完整的自定义状态码代码示例。\n\n**细节：**\n\n- 状态码会在 OpenAPI schema（以及用户界面）中被记录 [1]。\n- 某些状态码表示响应没有响应体，FastAPI 能识别并生成表明无响应体的 OpenAPI 文档 [1]。\n- 无需记住所有状态码含义，可使用 `fastapi.status` 中的快捷变量，例如 `201` 表示“已创建” [2]。\n- 该快捷变量只是相同数字代码的快捷方式，但能使用编辑器自动补全 [2]。\n- 也可使用 `from starlette import status`；FastAPI 提供的 `fastapi.status` 与 `starlette.status` 完全相同，直接来自 Starlette [2]。\n\n**资料未覆盖：** 如何在装饰器中具体传入 `status_code` 参数的完整写法，以及自定义非标准状态码的具体步骤。",
+      "answer_ms": 2061,
+      "cost": 0.001153,
+      "citations": [
+        1,
+        2
+      ],
+      "context": "[1] 《响应状态码 { #response-status-code }》 响应状态码 { #response-status-code }\n态码\n* 在 OpenAPI schema（以及用户界面）中将其记录为该状态码：\n\n<img src=\"/img/tutorial/response-status-code/image01.png\">\n\n/// note | 注意\n\n某些响应状态码表示响应没有响应体（参阅下一节）。\n\nFastAPI 可以进行识别，并生成表明无响应体的 OpenAPI 文档。\n\n///\n\n[2] 《响应状态码 { #response-status-code }》 响应状态码 { #response-status-code } > 状态码名称快捷方式 { #shortcut-to-remember-the-names }\n再看下之前的例子：\n\n{* ../../docs_src/response_status_code/tutorial001_py310.py hl[6] *}\n\n`201` 表示“已创建”的状态码。\n\n但我们没有必要记住所有代码的含义。\n\n可以使用 `fastapi.status` 中的快捷变量。\n\n{* ../../docs_src/response_status_code/tutorial002_py310.py hl[1,6] *}\n\n这只是一种快捷方式，具有相同的数字代码，但它可以使用编辑器的自动补全功能：\n\n<img src=\"/img/tutorial/response-status-code/image02.png\">\n\n/// note | 技术细节\n\n也可以使用 `from starlette import status`。\n\n为了让开发者更方便，**FastAPI** 提供了与 `starlette.status` 完全相同的 `fastapi.status`。但它直接来自于 Starlette。\n\n///\n\n[3] 《第一步 - FastAPI》 第一步¶ > 分步概括¶ > 步骤 5：返回内容¶\n```\nfrom fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello World\"}\n```\n你可以返回一个 `dict`、`list`，像 `str`、`int` 一样的单个值，等等。\n\n你还可以返回 Pydantic 模型（稍后你将了解更多）。\n\n还有许多其他将会自动转换为 JSON 的对象和模型（包括 ORM 对象等）。尝试下使用你最喜欢的一种，它很有可能已经被支持。\n\n[4] 《Header 参数 { #header-parameters }》 Header 参数 { #header-parameters } > 小结 { #recap }\n使用 `Header` 声明请求头的方式与 `Query`、`Path` 、`Cookie` 相同。\n\n不用担心变量中的下划线，**FastAPI** 可以自动转换。\n\n[5] 《响应模型 - 返回类型 { #response-model-return-type }》 响应模型 - 返回类型 { #response-model-return-type } > `response_model` 参数 { #response-model-parameter }\n// note | 注意\n\n注意，`response_model` 是「装饰器」方法（`get`、`post` 等）的一个参数。不是你的*路径操作函数*的参数，不像所有查询参数和请求体那样。\n\n///\n\n`response_model` 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 `list`，例如 `List[Item]`。\n\nFastAPI 会使用这个 `response_model` 来完成数据文档、校验等，并且还会将输出数据**转换并过滤**为其类型声明。\n\n/// tip | 提示\n\n如果你的编辑器、mypy 等进行严格类型检查，你可以将函数返回类型声明为 `Any`。\n\n这样你告诉编辑器你是有意返回任意类型。但 FastAPI 仍会使用 `response_model` 做数据文档、校验、过滤等工作。\n\n///",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "未给出装饰器status_code参数写法，仅部分覆盖要点"
+      },
+      "judge_cost": 0.000532
+    },
+    {
+      "id": "q012",
+      "type": "in_kb",
+      "retrieve_ms": 83,
+      "top1_score": 0.7287,
+      "rank": 1,
+      "top3": [
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)",
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > 将资源引入为 URL {#importing-asset-as-url}",
+        "oss/vite/assets.md#静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)"
+      ],
+      "refused": false,
+      "answer": "结论：Vite 会把被引用的静态资源纳入构建资源图，生成带哈希的文件名，并可由插件进一步优化处理 [2]。\n\n细节：\n\n- 导入静态资源会返回解析后的公共路径：开发时类似 `/src/img.png`，生产构建后类似 `/assets/img.2d8efhg.png` [2]。\n- 行为类似 Webpack 的 `file-loader`；导入既可用绝对公共路径（基于开发期间的项目根路径），也可用相对路径 [2]。\n- CSS 中的 `url()` 引用以同样方式处理；若使用 Vue 插件，Vue SFC 模板中的资源引用会自动转换为导入 [2]。\n- 常见图像、媒体和字体文件类型会被自动检测为资源，可用 `assetsInclude` 选项扩展内部列表 [2]。\n- 引用的资源作为构建资源图的一部分包括在内，将生成散列文件名，并可由插件处理以进行优化 [2]。\n- 使用 `new URL(url, import.meta.url)` 时，生产构建阶段 Vite 才会进行必要转换，保证 URL 在打包和资源哈希后仍指向正确地址；但 URL 字符串必须是静态的才能被分析，否则代码原样保留，在 `build.target` 不支持 `import.meta.url` 时会导致运行时错误 [1][3]。\n\n资料未覆盖：字体文件哈希的具体命名规则、各插件优化方式的具体实现。",
+      "answer_ms": 2079,
+      "cost": 0.001424,
+      "citations": [
+        1,
+        2,
+        3
+      ],
+      "context": "[1] 《静态资源处理 {#static-asset-handling}》 静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)\ngeUrl(name) {\n  // 请注意，这不包括子目录中的文件\n  return new URL(`./dir/${name}.png`, import.meta.url).href\n}\n```\n\n在生产构建时，Vite 才会进行必要的转换保证 URL 在打包和资源哈希后仍指向正确的地址。不过，这个 URL 字符串必须是静态的，这样才能被分析。否则代码将被原样保留，进而在 `build.target` 不支持 `import.meta.url` 时导致运行时错误。\n\n```js\n// Vite 不会转换这个\nconst imgUrl = new URL(imagePath, import.meta.url).href\n```\n\n::: details 工作原理\n\nVite 会将 `getImageUrl` 函数改造为：\n\n```js\nimport __img0png from './dir/img0.png'\nimport __img1png from './dir/img1.png'\n\n[2] 《静态资源处理 {#static-asset-handling}》 静态资源处理 {#static-asset-handling} > 将资源引入为 URL {#importing-asset-as-url}\n服务时引入一个静态资源会返回解析后的公共路径：\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\nimport imgUrl from './img.png'\ndocument.getElementById('hero-img').src = imgUrl\n```\n\n例如，`imgUrl` 在开发时会是 `/src/img.png`，在生产构建后会是 `/assets/img.2d8efhg.png`。\n\n行为类似于 Webpack 的 `file-loader`。区别在于导入既可以使用绝对公共路径（基于开发期间的项目根路径），也可以使用相对路径。\n\n- `url()` 在 CSS 中的引用也以同样的方式处理。\n\n- 如果 Vite 使用了 Vue 插件，Vue SFC 模板中的资源引用都将自动转换为导入。\n\n- 常见的图像、媒体和字体文件类型被自动检测为资源。你可以使用 [`assetsInclude` 选项](/config/shared-options.md#assetsinclude) 扩展内部列表。\n\n- 引用的资源作为构建资源图的一部分包括在内，将生成散列文件名，并可以由插件进行处理以进行优化。\n\n[3] 《静态资源处理 {#static-asset-handling}》 静态资源处理 {#static-asset-handling} > new URL(url, import.meta.url)\n[import.meta.url](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import.meta) 是一个 ESM 的原生功能，会暴露当前模块的 URL。将它与原生的 [URL 构造器](https://developer.mozilla.org/en-US/docs/Web/API/URL) 组合使用，在一个 JavaScript 模块中，通过相对路径我们就能得到一个被完整解析的静态资源 URL：\n\n```js\nconst imgUrl = new URL('./img.png', import.meta.url).href\n\ndocument.getElementById('hero-img').src = imgUrl\n```\n\n这在现代浏览器中能够原生使用 - 实际上，Vite 并不需要在开发阶段处理这些代码！\n\n这个模式同样还可以通过字符串模板支持动态 URL：\n\n```js\nfunction getImageUrl(name) {\n  // 请注意，这不包括子目录中的文件\n  return new URL(`./dir/${name}.png`, import.meta.url).href\n}\n```\n\n[4] 《功能 {#features}》 功能 {#features} > 静态资源处理 {#static-assets}\n<ScrimbaLink href=\"https://scrimba.com/intro-to-vite-c03p6pbbdq/~05pq?via=vite\" title=\"Static Assets in Vite\">在 Scrimba 上观看互动课程</ScrimbaLink>\n\n导入一个静态资源会返回解析后的 URL：\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\nimport imgUrl from './img.png'\ndocument.getElementById('hero-img').src = imgUrl\n```\n\n添加一些特殊的查询参数可以更改资源被引入的方式：\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\n// 显式加载资源为一个 URL（根据文件大小自动内联）\nimport assetAsURL from './asset.js?url'\n```\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\n// 以字符串形式加载资源\nimport assetAsString from './shader.glsl?raw'\n```\n\n[5] 《功能 {#features}》 功能 {#features} > 静态资源处理 {#static-assets}\nsh\nimport 'vite/client'\n// ---cut---\n// 以字符串形式加载资源\nimport assetAsString from './shader.glsl?raw'\n```\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\n// 加载为 Web Worker\nimport Worker from './worker.js?worker'\n```\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\n// 在构建时 Web Worker 内联为 base64 字符串\nimport InlineWorker from './worker.js?worker&inline'\n```\n\n更多细节请见 [静态资源处理](./assets)。",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "未提阈值内联base64，仅覆盖哈希URL部分"
+      },
+      "judge_cost": 0.000584
+    },
+    {
+      "id": "q013",
+      "type": "out_of_kb",
+      "retrieve_ms": 92,
+      "top1_score": 0.5462,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 554,
+      "cost": 0.001079,
+      "citations": [],
+      "context": "[1] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S\n\n[2] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）\n- **主场景 = SP-A 深化「团队规范与组件用法问答（带引用 Grounded Q&A）」**（对应 P-02 Score 3.90，P-07 Score 3.85）。\n  - 依据 1：非 SP-A 候选中唯一过门槛且 `AI 适配度 ≥ 3` 的是 P-07（3.85），其缺口同样是「缺团队知识」→ 与 P-02 合并进同一知识库回答链路，**不新建场景包**。\n  - 依据 2：排名第 3 的 P-03（SP-C 3.35）AI 适配度仅 2 分，属于「不硬套 AI」样本 → 降级为 Backlog 的自动化检查项，本阶段不投入。\n- **基线**：SP-A（研发知识问答）本就是 P1 核心，今天深化的是它的**语料范围**（团队规范 + 组件用法）与**评测题来源**。\n- **量化的价值**：P-02 75 分钟/周 + P-07 40 分钟/周 = 115 分钟/周损失；按 60% 节省率 ≈ 节省 **69 分钟/周**（写进 definition 时取保守下限 **≥ 60 分钟/周**）。\n- **未打分的 7 条**：不删除、不打分，继续留在本文件；Day14 之后如需辅场景，从 P-01/P-04（合规高，D 会被打到 1–2）与 P-05/P-06/P-08 中选，**今天不做**。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无事实性陈述"
+      },
+      "judge_cost": 0.001006
+    },
+    {
+      "id": "q014",
+      "type": "out_of_kb",
+      "retrieve_ms": 114,
+      "top1_score": 0.5362,
+      "rank": null,
+      "top3": [
+        "oss/vite/troubleshooting.md#排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > 开发容器 / VS Code 端口转发 {#dev-containers-vs-code-port-forwarding}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 531,
+      "cost": 0.001233,
+      "citations": [],
+      "context": "[1] 《排错指南 {#troubleshooting}》 排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > 开发容器 / VS Code 端口转发 {#dev-containers-vs-code-port-forwarding}\n如果你正在使用开发容器或 VS Code 的端口转发功能，可能需要在配置中将 [`server.host`](/config/server-options.md#server-host) 选项设置为 `127.0.0.1` 才能使其正常工作。\n\n这是因为 [VS Code 的端口转发功能不支持 IPv6](https://github.com/microsoft/vscode-remote-release/issues/7029)。\n\n更多详情请参阅 [#16522](https://github.com/vitejs/vite/issues/16522)。\n\n[2] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）\n- **主场景 = SP-A 深化「团队规范与组件用法问答（带引用 Grounded Q&A）」**（对应 P-02 Score 3.90，P-07 Score 3.85）。\n  - 依据 1：非 SP-A 候选中唯一过门槛且 `AI 适配度 ≥ 3` 的是 P-07（3.85），其缺口同样是「缺团队知识」→ 与 P-02 合并进同一知识库回答链路，**不新建场景包**。\n  - 依据 2：排名第 3 的 P-03（SP-C 3.35）AI 适配度仅 2 分，属于「不硬套 AI」样本 → 降级为 Backlog 的自动化检查项，本阶段不投入。\n- **基线**：SP-A（研发知识问答）本就是 P1 核心，今天深化的是它的**语料范围**（团队规范 + 组件用法）与**评测题来源**。\n- **量化的价值**：P-02 75 分钟/周 + P-07 40 分钟/周 = 115 分钟/周损失；按 60% 节省率 ≈ 节省 **69 分钟/周**（写进 definition 时取保守下限 **≥ 60 分钟/周**）。\n- **未打分的 7 条**：不删除、不打分，继续留在本文件；Day14 之后如需辅场景，从 P-01/P-04（合规高，D 会被打到 1–2）与 P-05/P-06/P-08 中选，**今天不做**。\n\n[3] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无引用无事实陈述"
+      },
+      "judge_cost": 0.001165
+    },
+    {
+      "id": "q015",
+      "type": "out_of_kb",
+      "retrieve_ms": 72,
+      "top1_score": 0.3929,
+      "rank": null,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/} > 在 `children` prop 中传递 JSX 代码 {/*passing-jsx-in-a-children-prop*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/} > 在 `children` prop 中传递 JSX 代码 {/*passing-jsx-in-a-children-prop*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 35,
+      "cost": 0.0,
+      "citations": [],
+      "context": "",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "无检索结果，回答正确拒答，无引用问题"
+      },
+      "judge_cost": 0.000323
+    },
+    {
+      "id": "q016",
+      "type": "out_of_kb",
+      "retrieve_ms": 68,
+      "top1_score": 0.5512,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 885,
+      "cost": 0.000285,
+      "citations": [],
+      "context": "[1] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无事实性陈述"
+      },
+      "judge_cost": 0.000589
+    },
+    {
+      "id": "q017",
+      "type": "out_of_kb",
+      "retrieve_ms": 66,
+      "top1_score": 0.5479,
+      "rank": null,
+      "top3": [
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}",
+        "oss/react/keeping-components-pure.md#哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。\n\n（参考资料仅涉及 React 的 Reducer/Context 状态管理、组件纯粹性与副作用等主题，未包含 React Native 或 FlatList 下拉刷新的任何内容。）",
+      "answer_ms": 768,
+      "cost": 0.001319,
+      "citations": [],
+      "context": "[1] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\nnextId++,\n          text: text,\n        });\n      }}>添加</button>\n    </>\n  );\n}\n\nlet nextId = 3;\n```\n\n```js src/TaskList.js\nimport { useState, useContext } from 'react';\nimport { useTasks, useTasksDispatch } from './TasksContext.js';\n\nexport default function TaskList() {\n  const tasks = useTasks();\n  return (\n    <ul>\n      {tasks.map(task => (\n        <li key={task.id}>\n          <Task task={task} />\n        </li>\n      ))}\n    </ul>\n  );\n}\n\n[2] 《状态管理》 迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}\n    }}>添加</button>\n    </>\n  )\n}\n```\n\n```js src/TaskList.js hidden\nimport { useState } from 'react';\n\nexport default function TaskList({\n  tasks,\n  onChangeTask,\n  onDeleteTask\n  }) {\n  return (\n    <ul>\n      {tasks.map(task => (\n        <li key={task.id}>\n          <Task\n            task={task}\n            onChange={onChangeTask}\n            onDelete={onDeleteTask}\n          />\n        </li>\n      ))}\n    </ul>\n  );\n}\n\n[3] 《保持组件纯粹》 哪些地方 **可能** 引发副作用 {/*where-you-can-cause-side-effects*/} > 修复损坏的故事集 {/*fix-a-broken-story-tray*/}\netTime(new Date());\n    }, 1000);\n    return () => clearInterval(id);\n  }, []);\n  return time;\n}\n```\n\n```css\nul {\n  margin: 0;\n  list-style-type: none;\n}\n\nli {\n  border: 1px solid #aaa;\n  border-radius: 6px;\n  float: left;\n  margin: 5px;\n  margin-bottom: 20px;\n  padding: 5px;\n  width: 70px;\n  height: 100px;\n}\n```\n\n</Sandpack>\n\n或者，你可以在 push 之前创建一个 **新** 数组（通过复制现有数组）：\n\n<Sandpack>\n\n```js src/StoryTray.js active\nexport default function StoryTray({ stories }) {\n  // 复制数组！\n  const storiesToDisplay = stories.slice();\n\n[4] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\n    保存\n        </button>\n      </>\n    );\n  } else {\n    taskContent = (\n      <>\n        {task.text\n\n    保存\n        </button>\n      </>\n    );\n  } else {\n    taskContent = (\n      <>\n        {task.text}\n        <button onClick={() => setIsEditing(true)}>\n          编辑\n        </button>\n      </>\n    );\n  }\n  return (\n    <label>\n      <input\n        type=\"checkbox\"\n        checked={task.done}\n        onChange={e => {\n          dispatch({\n            type: 'changed',\n            task: {\n              ...task,\n              done: e.target.checked\n            }\n          });\n        }}\n      />\n      {taskContent}\n      <button onClick={() => {\n        dispatch({\n          type: 'deleted',\n      \n\n[5] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\n   {taskContent}\n      <button onClick={() => {\n        dispatch({\n          type: 'deleted',\n      \n\n   {taskContent}\n      <button onClick={() => {\n        dispatch({\n          type: 'deleted',\n          id: task.id\n        });\n      }}>\n        删除\n      </button>\n    </label>\n  );\n}\n```\n\n```css\nbutton { margin: 5px; }\nli { list-style-type: none; }\nul, li { margin: 0; padding: 0; }\n```\n\n</Sandpack>\n\n<LearnMore path=\"/learn/scaling-up-with-reducer-and-context\">\n\n阅读 **[使用 Reducer 和 Context 拓展你的应用](/learn/scaling-up-with-reducer-and-context)** 来学习如何在不断增长的应用程序中扩展状态管理。\n\n</LearnMore>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答且未编造内容"
+      },
+      "judge_cost": 0.001135
+    },
+    {
+      "id": "q018",
+      "type": "confusing",
+      "retrieve_ms": 74,
+      "top1_score": 0.6884,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}"
+      ],
+      "refused": false,
+      "answer": "**结论：** Vite 通过「模式（mode）」区分开发和生产，`dev` 默认 `development` 模式，`build` 默认 `production` 模式，并据此加载对应的 `.env` 文件 [1]。\n\n**要点：**\n\n- **默认模式**：`dev` 命令运行在 `development` 模式，`build` 命令运行在 `production` 模式 [1]。\n- **加载对应文件**：执行 `vite build` 时会自动加载 `.env.production` 中的变量，例如 `VITE_APP_TITLE=My App`，应用中用 `import.meta.env.VITE_APP_TITLE` 读取 [1]。\n- **自定义模式**：可用 `--mode` 覆盖默认模式，如 `vite build --mode staging`，并需新建 `.env.staging` 文件 [1]。\n- **NODE_ENV 与模式是两个不同概念**：`vite build` 时 NODE_ENV 为 `\"production\"`、模式为 `\"production\"`；`vite build --mode development` 时 NODE_ENV 仍为 `\"production\"`、模式为 `\"development\"`；`NODE_ENV=development vite build` 时 NODE_ENV 为 `\"development\"`、模式为 `\"production\"` [3]。\n- **内置常量**：`import.meta.env.MODE` 表示运行模式；`import.meta.env.PROD` 表示是否生产环境；`import.meta.env.DEV` 永远与 `PROD` 相反 [4]。当 `NODE_ENV=other` 时，`PROD` 为 `false`、`DEV` 为 `true` [2]。\n\n**资料未覆盖：** 除 Vite 外其他构建工具的环境变量区分方式。",
+      "answer_ms": 2126,
+      "cost": 0.001806,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "context": "[1] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 模式 {#modes}\n默认情况下，开发服务器（`dev` 命令）运行在 `development`（开发）模式，而 `build` 命令则运行在 `production`（生产）模式。\n\n这意味着当执行 `vite build` 时，它会自动加载 `.env.production` 中可能存在的环境变量：\n\n```[.env.production]\nVITE_APP_TITLE=My App\n```\n\n在你的应用中，你可以使用 `import.meta.env.VITE_APP_TITLE` 渲染标题。\n\n在某些情况下，若想在 `vite build` 时运行不同的模式来渲染不同的标题，你可以通过传递 `--mode` 选项标志来覆盖命令使用的默认模式。例如，如果你想在 staging （预发布）模式下构建应用：\n\n```bash\nvite build --mode staging\n```\n\n还需要新建一个 `.env.staging` 文件：\n\n```[.env.staging]\nVITE_APP_TITLE=My App (staging)\n```\n\n由于 `vite build` 默认运行生产模式构建，你也可以通过使用不同的模式和对应的 `.env` 文件配置来改变它，用以运行开发模式的构建：\n\n```[.env.testing]\nNODE_ENV=development\n```\n\n[2] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}\non\"`  |\n| `NODE_ENV=development vite build --mode development` | `\"development\"` | `\"development\"` |\n\n`NODE_ENV` 和模式的不同值也会反映在相应的 `import.meta.env` 属性上：\n\n| Command                | `import.meta.env.PROD` | `import.meta.env.DEV` |\n| ---------------------- | ---------------------- | --------------------- |\n| `NODE_ENV=production`  | `true`                 | `false`               |\n| `NODE_ENV=development` | `false`                | `true`                |\n| `NODE_ENV=other`       | `false`                | `true`                |\n\n[3] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}\n需要注意的是，`NODE_ENV`（`process.env.NODE_ENV`）和模式是两个不同的概念。以下是不同命令如何影响 `NODE_ENV` 和模式：\n\n| Command                                              | NODE_ENV        | Mode            |\n| ---------------------------------------------------- | --------------- | --------------- |\n| `vite build`                                         | `\"production\"`  | `\"production\"`  |\n| `vite build --mode development`                      | `\"production\"`  | `\"development\"` |\n| `NODE_ENV=development vite build`                    | `\"development\"` | `\"production\"`  |\n| `NODE_ENV=development vite build --mode development` | `\"development\"` | `\"development\"` |\n\n[4] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 内置常量 {#built-in-constants}\n一些内置常量在所有情况下都可用：\n\n- **`import.meta.env.MODE`**: {string} 应用运行的 [模式](#modes)。\n\n- **`import.meta.env.BASE_URL`**: {string} 部署应用时的基本 URL。该值由 [`base` 配置项](/config/shared-options.md#base) 决定。\n\n- **`import.meta.env.PROD`**: {boolean} 应用是否运行在生产环境（使用 `NODE_ENV='production'` 运行开发服务器或构建应用时使用 `NODE_ENV='production'` ）。\n\n- **`import.meta.env.DEV`**: {boolean} 应用是否运行在开发环境（永远与 `import.meta.env.PROD` 相反）。\n\n- **`import.meta.env.SSR`**: {boolean} 应用是否运行在 [server](./ssr.md#conditional-logic) 上。\n\n[5] 《构建生产版本 {#building-for-production}》 构建生产版本 {#building-for-production} > 库模式 {#library-mode} > CSS 支持 {#css-support}\ns\",\n      \"require\": \"./dist/my-lib.umd.cjs\"\n    },\n    \"./style.css\": \"./dist/my-lib.css\"\n  }\n}\n```\n\n::: tip 文件扩展名\n如果 `package.json` 不包含 `\"type\": \"module\"`，Vite 会生成不同的文件后缀名以兼容 Node.js。`.js` 会变为 `.mjs` 而 `.cjs` 会变为 `.js`。\n:::\n\n::: tip 环境变量\n在库模式中，所有 [`import.meta.env.*`](./env-and-mode.md) 的使用都会在构建生产版本时被静态替换。但是，`process.env.*` 的使用不会，这样你的库的使用者就可以动态地改变它。如果这是不可取的，你可以使用 `define: { 'process.env.NODE_ENV': '\"production\"' }` 来静态替换它们，或者使用 [`esm-env`](https://github.com/benmccann/esm-env) 来更好地兼容打包工具和运行时。\n:::",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖mode与.env文件区分，但遗漏VITE_前缀暴露及与后端.env混淆提醒"
+      },
+      "judge_cost": 0.000712
+    },
+    {
+      "id": "q019",
+      "type": "confusing",
+      "retrieve_ms": 89,
+      "top1_score": 0.6036,
+      "rank": 3,
+      "top3": [
+        "oss/fastapi/first-steps.md#第一步 { #first-steps } > OpenAPI { #openapi } > OpenAPI 和 JSON Schema { #openapi-and-json-schema }",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交粒度",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交信息"
+      ],
+      "refused": false,
+      "answer": "知识库中只有关于提交信息**格式**和**类型示例**的内容，没有对 scope（范围）和类型的具体定义说明。\n\n有依据的部分：\n\n- 提交信息采用「类型(范围): 主题」格式，主题用祈使句 [3]。\n- 示例中出现的类型有 `feat`、`fix`，范围有 `rag`、`api` [3]：\n  - `feat(rag): add document model with content-hash dedup`\n  - `fix(api): handle empty response body in chat route`\n- 提交粒度要求：一个提交只做一件事，不混入无关改动；提交信息写「为什么」，代码本身说明「是什么」 [2]。\n\n资料未覆盖：类型与 scope 的完整取值清单、各自的确切含义与选择规则。",
+      "answer_ms": 1526,
+      "cost": 0.001157,
+      "citations": [
+        2,
+        3
+      ],
+      "context": "[1] 《第一步 { #first-steps }》 第一步 { #first-steps } > OpenAPI { #openapi } > OpenAPI 和 JSON Schema { #openapi-and-json-schema }\nOpenAPI 为你的 API 定义 API 模式。该模式中包含了你的 API 发送和接收的数据的定义（或称为「模式」），这些定义通过 JSON 数据模式标准 **JSON Schema** 所生成。\n\n[2] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 提交规范 > 提交粒度\n- 一个提交只做一件事，不混入无关改动\n- 提交信息写「为什么」，代码本身说明「是什么」\n\n[3] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 提交规范 > 提交信息\n采用「类型(范围): 主题」格式，主题用祈使句：\n\n```\nfeat(rag): add document model with content-hash dedup\nfix(api): handle empty response body in chat route\n```\n\n[4] 《第一步 - FastAPI》 第一步¶ > OpenAPI¶ > OpenAPI 和 JSON Schema¶\nOpenAPI 为你的 API 定义 API 模式。该模式中包含了你的 API 发送和接收的数据的定义（或称为「模式」），这些定义通过 JSON 数据模式标准 **JSON Schema** 所生成。\n\n[5] 《功能 {#features}》 功能 {#features} > TypeScript {#typescript} > 客户端类型 {#client-types}\nypescript [vite-env.d.ts]\n/// <reference types=\"vite/client\" />\n```\n\n:::\n\n`vite/client` 会提供以下类型定义补充：\n\n- 资源导入（例如：导入一个 `.svg` 文件）\n- `import.meta.env` 上 Vite 注入的 [常量](./env-and-mode#env-variables) 的类型定义\n- `import.meta.hot` 上的 [HMR API](./api-hmr) 类型定义\n\n::: tip\n要覆盖默认的类型定义，请添加一个包含你所定义类型的文件，请在三斜线注释 reference `vite/client` 前添加定义。\n\n例如，要为 React 组件中的 `*.svg` 文件定义类型：",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "仅指出格式与示例，未说明类型为改动类别、scope为模块范围，遗漏要点"
+      },
+      "judge_cost": 0.000779
+    },
+    {
+      "id": "q020",
+      "type": "confusing",
+      "retrieve_ms": 83,
+      "top1_score": 0.8481,
+      "rank": 4,
+      "top3": [
+        "oss/fastapi/body.md#请求体 { #request-body } > 请求体 + 路径 + 查询参数 { #request-body-path-query-parameters }",
+        "oss/fastapi/body.md#请求体 { #request-body } > 请求体 + 路径参数 { #request-body-path-parameters }",
+        "oss/fastapi/query-params.md#查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }"
+      ],
+      "refused": false,
+      "answer": "FastAPI 通过**参数名是否在路径中声明**以及**参数的类型声明**来区分这三类参数 [1][2]。\n\n**识别规则：**\n- **路径参数**：如果该参数也在路径中声明了，它就是路径参数 [1]。\n- **查询参数**：如果该参数是单一类型（如 `int`、`float`、`str`、`bool` 等），它会被当作查询参数 [1]。\n- **请求体**：如果该参数的类型声明为 Pydantic 模型，它会被当作请求体 [1][2]。\n\n**补充要点：**\n- 可以同时声明请求体、路径和查询参数，FastAPI 会分别识别并从正确的位置获取数据 [1]。\n- 多个路径参数和查询参数可同时声明，声明顺序不重要，FastAPI 通过参数名进行检测 [3]。\n- 是否必填由是否有默认值 `= None` 决定，而不是由 `str | None` 这类类型注解决定；类型注解只是让编辑器提供更好的支持 [1]。\n- 若想让单一值作为请求体的键而非查询参数，可用 `Body` 指示 FastAPI [4]。\n- 若函数中有多个 Pydantic 模型参数，FastAPI 会用参数名作为请求体中的键 [5]。\n\n资料未覆盖其他参数来源（如请求头、Cookie）的识别方式。",
+      "answer_ms": 2222,
+      "cost": 0.001456,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "context": "[1] 《请求体 { #request-body }》 请求体 { #request-body } > 请求体 + 路径 + 查询参数 { #request-body-path-query-parameters }\n也可以同时声明**请求体**、**路径**和**查询**参数。\n\n**FastAPI** 会分别识别它们，并从正确的位置获取数据。\n\n{* ../../docs_src/body/tutorial004_py310.py hl[16] *}\n\n函数参数按如下规则进行识别：\n\n* 如果该参数也在**路径**中声明了，它就是路径参数。\n* 如果该参数是（`int`、`float`、`str`、`bool` 等）**单一类型**，它会被当作**查询**参数。\n* 如果该参数的类型声明为 **Pydantic 模型**，它会被当作请求**体**。\n\n/// note | 注意\n\nFastAPI 会根据默认值 `= None` 知道 `q` 的值不是必填的。\n\n`str | None` 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 `= None` 决定。\n\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n///\n\n[2] 《请求体 { #request-body }》 请求体 { #request-body } > 请求体 + 路径参数 { #request-body-path-parameters }\n可以同时声明路径参数和请求体。\n\n**FastAPI** 能识别与**路径参数**匹配的函数参数应该**从路径中获取**，而声明为 Pydantic 模型的函数参数应该**从请求体中获取**。\n\n{* ../../docs_src/body/tutorial003_py310.py hl[15:16] *}\n\n[3] 《查询参数 { #query-parameters }》 查询参数 { #query-parameters } > 多个路径和查询参数 { #multiple-path-and-query-parameters }\n**FastAPI** 可以识别同时声明的多个路径参数和查询参数。\n\n而且声明查询参数的顺序并不重要。\n\nFastAPI 通过参数名进行检测：\n\n{* ../../docs_src/query_params/tutorial004_py310.py hl[6,8] *}\n\n[4] 《请求体 - 多个参数 { #body-multiple-parameters }》 请求体 - 多个参数 { #body-multiple-parameters } > 请求体中的单一值 { #singular-values-in-body }\n与使用 `Query` 和 `Path` 为查询参数和路径参数定义额外数据的方式相同，**FastAPI** 提供了一个同等的 `Body`。\n\n例如，为了扩展先前的模型，你可能决定除了 `item` 和 `user` 之外，还想在同一请求体中具有另一个键 `importance`。\n\n如果你就按原样声明它，因为它是一个单一值，**FastAPI** 将假定它是一个查询参数。\n\n但是你可以使用 `Body` 指示 **FastAPI** 将其作为请求体的另一个键进行处理。\n\n{* ../../docs_src/body_multiple_params/tutorial003_an_py310.py hl[23] *}\n\n在这种情况下，**FastAPI** 将期望像这样的请求体：\n\n```JSON\n{\n    \"item\": {\n        \"name\": \"Foo\",\n        \"description\": \"The pretender\",\n        \"price\": 42.0,\n        \"tax\": 3.2\n    },\n    \"user\": {\n        \"username\": \"dave\",\n        \"full_name\": \"Dave Grohl\"\n    },\n    \"importance\": 5\n}\n```\n\n[5] 《请求体 - 多个参数 { #body-multiple-parameters }》 请求体 - 多个参数 { #body-multiple-parameters } > 多个请求体参数 { #multiple-body-parameters }\n在上面的示例中，*路径操作*将期望一个具有 `Item` 的属性的 JSON 请求体，就像：\n\n```JSON\n{\n    \"name\": \"Foo\",\n    \"description\": \"The pretender\",\n    \"price\": 42.0,\n    \"tax\": 3.2\n}\n```\n\n但是你也可以声明多个请求体参数，例如 `item` 和 `user`：\n\n{* ../../docs_src/body_multiple_params/tutorial002_py310.py hl[20] *}\n\n在这种情况下，**FastAPI** 将注意到该函数中有多个请求体参数（两个 Pydantic 模型参数）。\n\n因此，它将使用参数名称作为请求体中的键（字段名称），并期望一个类似于以下内容的请求体：\n\n```JSON\n{\n    \"item\": {\n        \"name\": \"Foo\",\n        \"description\": \"The pretender\",\n        \"price\": 42.0,\n        \"tax\": 3.2\n    },\n    \"user\": {\n        \"username\": \"dave\",\n        \"full_name\": \"Dave Grohl\"\n    }\n}\n```",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "回答只讲类型推断，未提Path/Query/Body显式声明，遗漏期望要点"
+      },
+      "judge_cost": 0.00069
+    },
+    {
+      "id": "q021",
+      "type": "in_kb",
+      "retrieve_ms": 74,
+      "top1_score": 0.7877,
+      "rank": 1,
+      "top3": [
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：把输入框的状态提升到父组件，让两个输入框共享同一份状态。**\n\n具体做法（状态提升）：\n\n1. 将 `text` 状态变量和 `handleChange` 处理函数从子组件 `Input` 移到父组件 `SyncedInputs` 中 [2][3]。\n2. 父组件通过 props 把 `value={text}` 和 `onChange={handleChange}` 分别传给两个 `Input` 组件 [3]。\n3. 子组件 `Input` 改为接收 `{ label, value, onChange }`，用 `value` 和 `onChange` 绑定 `<input>`，自身不再持有状态 [3]。\n\n这样两个输入框读写同一份状态，编辑任意一个，另一个都会同步更新 [1][3]。\n\n原理：每个状态应只对应唯一的数据源；要让两个组件的状态始终同步，就把相关状态从这两个组件上移除，移到最近的父级组件，再通过 props 传下去，这被称为“状态提升” [5]。\n\n资料未覆盖的部分：若两个输入框需要各自保留独立状态、仅做单向联动，或其他同步方案，参考资料中没有相关说明。",
+      "answer_ms": 2188,
+      "cost": 0.001204,
+      "citations": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "context": "[1] 《在组件间共享状态》 每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}\n现在有两个独立的输入框。为了让它们保持同步：即编辑一个输入框时，另一个输入框也会更新相同的文本，反之亦然。\n\n<Hint>\n\n你需要将它们的状态移动到父组件中。\n\n</Hint>\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';\n\nexport default function SyncedInputs() {\n  return (\n    <>\n      <Input label=\"第一个输入框\" />\n      <Input label=\"第二个输入框\" />\n    </>\n  );\n}\n\nfunction Input({ label }) {\n  const [text, setText] = useState('');\n\nfunction handleChange(e) {\n    setText(e.target.value);\n  }\n\nreturn (\n    <label>\n      {label}\n      {' '}\n      <input\n        value={text}\n        onChange={handleChange}\n      />\n    </label>\n  );\n}\n```\n\n[2] 《在组件间共享状态》 每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}\n}\n      <input\n        value={text}\n        onChange={handleChange}\n      />\n    </label>\n  );\n}\n```\n\n```css\ninput { margin: 5px; }\nlabel { display: block; }\n```\n\n</Sandpack>\n\n<Solution>\n\n将 `text` 状态变量与 `handleChange` 处理程序一起移动到父组件中。然后将它们作为 `props` 传递给两个 `Input` 组件。这样它们就能保持同步了。\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';\n\nexport default function SyncedInputs() {\n  const [text, setText] = useState('');\n\nfunction handleChange(e) {\n    setText(e.target.value);\n  }\n\n[3] 《在组件间共享状态》 每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/} > 同步输入状态 {/*synced-inputs*/}\n  const [text, setText] = useState('');\n\nfunction handleChange(e) {\n    setText(e.target.value);\n  }\n\nreturn (\n    <>\n      <Input\n        label=\"第一个输入框\"\n        value={text}\n        onChange={handleChange}\n      />\n      <Input\n        label=\"第二个输入框\"\n        value={text}\n        onChange={handleChange}\n      />\n    </>\n  );\n}\n\nfunction Input({ label, value, onChange }) {\n  return (\n    <label>\n      {label}\n      {' '}\n      <input\n        value={value}\n        onChange={onChange}\n      />\n    </label>\n  );\n}\n```\n\n```css\ninput { margin: 5px; }\nlabel { display: block; }\n```\n\n</Sandpack>\n\n[4] 《状态管理》 对 State 进行保留和重置 {/*preserving-and-resetting-state*/}\n当你重新渲染一个组件时， React 需要决定组件树中的哪些部分要保留和更新，以及丢弃或重新创建。在大多数情况下， React 的自动处理机制已经做得足够好了。默认情况下，React 会保留树中与先前渲染的组件树“匹配”的部分。\n\n然而，有时这并不是你想要的。例如，在下面这个程序中，输入内容后再切换收件人并不会清空输入框。这可能会导致用户不小心发错消息：\n\n<Sandpack>\n\n```js src/App.js\nimport { useState } from 'react';\nimport Chat from './Chat.js';\nimport ContactList from './ContactList.js';\n\nexport default function Messenger() {\n  const [to, setTo] = useState(contacts[0]);\n  return (\n    <div>\n      <ContactList\n        contacts={contacts}\n        selectedContact={to}\n        onSelect={contact => setTo(contact)}\n      />\n      <Chat contact={to} />\n    </div>\n  )\n}\n\n[5] 《状态管理》 在组件间共享状态 {/*sharing-state-between-components*/}\n有时候你希望两个组件的状态始终同步更改。要实现这一点，可以将相关状态从这两个组件上移除，并把这些状态移到最近的父级组件，然后通过 props 将状态传递给这两个组件。这被称为“状态提升”，这是编写 React 代码时常做的事。\n\n在以下示例中，要求每次只能激活一个面板。要实现这一点，父组件将管理激活状态并为其子组件指定 prop，而不是将激活状态保留在各自的子组件中。\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖状态提升到父组件、props传值与回调要点，引用均对应片段"
+      },
+      "judge_cost": 0.00057
+    },
+    {
+      "id": "q022",
+      "type": "in_kb",
+      "retrieve_ms": 78,
+      "top1_score": 0.627,
+      "rank": 1,
+      "top3": [
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名格式",
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名要求",
+        "notes/PROJECT_STANDARD.md#项目规范 > §3 分支与提交"
+      ],
+      "refused": false,
+      "answer": "**格式**：统一为 `<类型>/<简述>` [1]。\n\n**类型只能取以下 4 种** [1]：\n\n| 类型 | 用途 |\n|------|------|\n| feat | 新功能 |\n| fix | 缺陷修复 |\n| chore | 构建、依赖、杂项 |\n| docs | 文档变更 |\n\n**命名要求** [2]：\n- 全部小写，多个单词用连字符连接；\n- 简述控制在 2 到 4 个词，能一眼看出意图。\n\n**补充**：项目规范中分支示例为 `feat/<短描述>`（如 `feat/rag-eval`），跨天或实验性改动使用 `feat/xxx`，完成后合并并删除分支 [3][5]。\n\n资料未覆盖其他类型（如 `refactor`、`test`）是否可用于分支命名。",
+      "answer_ms": 1624,
+      "cost": 0.001241,
+      "citations": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "context": "[1] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 分支命名 > 命名格式\n统一为 `<类型>/<简述>`，类型取值：\n\n| 类型   | 用途                     |\n| ------ | ------------------------ |\n| feat   | 新功能                   |\n| fix    | 缺陷修复                 |\n| chore  | 构建、依赖、杂项         |\n| docs   | 文档变更                 |\n\n[2] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 分支命名 > 命名要求\n- 全部小写，多个单词用连字符连接\n- 简述控制在 2 到 4 个词，能一眼看出意图\n\n[3] 《项目规范》 项目规范 > §3 分支与提交\n- `main` 永远可运行。\n- ≤ 1 天的改动可直接提交 `main`。\n- 跨天 / 实验性改动用 `feat/xxx`，完成后合并并删分支。\n- 提交遵循 Conventional Commits。\n\n```text\nfeat(api): add /health endpoint\nfix(llm): retry on timeout and 5xx responses\ndocs(adr): add 0001-llm-provider\ntest(rag): add hit@k unit tests\nchore(deploy): pin qdrant image version\n```\n\n[4] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 提交规范 > 提交信息\n采用「类型(范围): 主题」格式，主题用祈使句：\n\n```\nfeat(rag): add document model with content-hash dedup\nfix(api): handle empty response body in chat route\n```\n\n[5] 《项目规范》 项目规范 > §2 命名规范\nder.md` |\n| 环境变量 | `UPPER_SNAKE`，按前缀分组 | `LLM_` / `EMBEDDING_` / `MINIO_` |\n| 分支 | `feat/<短描述>` | `f\n\nder.md` |\n| 环境变量 | `UPPER_SNAKE`，按前缀分组 | `LLM_` / `EMBEDDING_` / `MINIO_` |\n| 分支 | `feat/<短描述>` | `feat/rag-eval` |",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "格式、四种类型、小写连字符、2-4词均覆盖，引用准确"
+      },
+      "judge_cost": 0.000828
+    },
+    {
+      "id": "q023",
+      "type": "in_kb",
+      "retrieve_ms": 81,
+      "top1_score": 0.6702,
+      "rank": 1,
+      "top3": [
+        "oss/react/importing-and-exporting-components.md#组件的导入与导出",
+        "oss/react/importing-and-exporting-components.md#导出和导入一个组件 {/*exporting-and-importing-a-component*/}",
+        "oss/react/importing-and-exporting-components.md#导出和导入一个组件 {/*exporting-and-importing-a-component*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：把组件从根组件文件中拆出去、放进独立的 JS 文件，能让文件更好找、组件更易复用 [1][2]。**\n\n拆分步骤（资料给出的三步）：\n\n1. **创建**一个新的 JS 文件来存放该组件 [3]。\n2. 在该文件中**导出**函数组件，可用默认导出或具名导出 [3]。\n3. 在需要使用该组件的文件中**导入**，按导出方式选择默认导入或具名导入 [3]。\n\n补充要点：\n\n- 当组件嵌套越来越多时，就应把它们拆分成不同文件，这样查找更容易，也能在更多地方复用 [1]。\n- 组件相对较小或彼此紧密相关时，可以放在同一文件；文件变得臃肿时再随时移出到单独文件 [4]。\n- 示例中 `Gallery.js` 定义了仅在本文件内使用的 `Profile`（未导出），并默认导出 `Gallery`；`App.js` 默认导入 `Gallery`，并默认导出根组件 `App` [5]。\n- 注意：可以渲染其他组件，但**不要嵌套定义组件**（不要在组件内部定义组件）[4]。\n\n资料未覆盖的部分：默认导出与具名导出的具体选用原则、一个文件导入导出多个组件的写法，参考资料仅列出标题，未给出正文内容 [1]。",
+      "answer_ms": 2422,
+      "cost": 0.001327,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "context": "[1] 《组件的导入与导出》 组件的导入与导出\n<Intro>\n\n组件的神奇之处在于它们的可重用性：你可以创建一个由其他组件构成的组件。但当你嵌套了越来越多的组件时，则需要将它们拆分成不同的文件。这样可以使得查找文件更加容易，并且能在更多地方复用这些组件。\n\n</Intro>\n\n<YouWillLearn>\n\n* 何为根组件\n* 如何导入和导出一个组件\n* 何时使用默认和具名导入导出\n* 如何在一个文件中导入导出多个组件\n* 如何将组件拆分成多个文件\n\n</YouWillLearn>\n\n[2] 《组件的导入与导出》 导出和导入一个组件 {/*exporting-and-importing-a-component*/}\n如果将来需要在首页添加关于科学书籍的列表，亦或者需要将所有的资料信息移动到其他文件。这时将 `Gallery` 组件和 `Profile` 组件移出根组件文件会更加合理。这会使组件更加模块化，并且可在其他文件中复用。你可以根据以下三个步骤对组件进行拆分：\n\n[3] 《组件的导入与导出》 导出和导入一个组件 {/*exporting-and-importing-a-component*/}\n所有的资料信息移动到其他文件。这时将 `Gallery` 组件和 `Profile` 组件移出根组件文件会更加合理。这会使组件更加模块化，并且可在其他文件中复用。你可以根据以下三个步骤对组件进行拆分：\n\n1. **创建** 一个新的 JS 文件来存放该组件。\n2. **导出** 该文件中的函数组件（可以使用 [默认导出](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/export#using_the_default_export) 或 [具名导出](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/export#using_named_exports)）\n3. 在需要使用该组件的文件中 **导入**（可以根据相应的导出方式使用 [默认导入](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import#importing_defaults) 或 [具名导入](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/import#import_a_single_export_from_a_module)）。\n\n[4] 《你的第一个组件》 使用组件 {/*using-a-component*/} > 嵌套和组织组件 {/*nesting-and-organizing-components*/}\n组件是常规的 JavaScript 函数，所以你可以将多个组件保存在同一份文件中。当组件相对较小或彼此紧密相关时，这是一种省事的处理方式。如果这个文件变得臃肿，你也可以随时将 `Profile` 移动到单独的文件中。你可以立即在 [关于引入的页面](/learn/importing-and-exporting-components) 中学习如何做到这些。\n\n因为 `Profile` 组件在 `Gallery` 组件中渲染——甚至好几次！——我们可以认为 `Gallery` 是一个 **父组件**，将每个 `Profile` 渲染为一个“孩子”。这是 React 的神奇之处：你可以只定义组件一次，然后按需多处和多次使用。\n\n<Pitfall>\n\n组件可以渲染其他组件，但是 **请不要嵌套他们的定义**：\n\n```js {2-5}\nexport default function Gallery() {\n  // 🔴 永远不要在组件中定义组件\n  function Profile() {\n    // ...\n  }\n  // ...\n}\n```\n\n[5] 《组件的导入与导出》 导出和导入一个组件 {/*exporting-and-importing-a-component*/}\n  src=\"https://react.dev/images/docs/scientists/QIrZWGIs.jpg\"\n      alt=\"Alan L. Hart\"\n    />\n  );\n}\n\nexport default function Gallery() {\n  return (\n    <section>\n      <h1>了不起的科学家们</h1>\n      <Profile />\n      <Profile />\n      <Profile />\n    </section>\n  );\n}\n```\n\n```css\nimg { margin: 0 10px 10px 0; height: 90px; }\n```\n\n</Sandpack>\n\n该示例中需要注意的是，如何将组件拆分成两个文件：\n\n1. `Gallery.js`:\n     - 定义了 `Profile` 组件，该组件仅在该文件内使用，没有被导出。\n     - 使用 **默认导出** 的方式，将 `Gallery` 组件导出\n2. `App.js`:\n     - 使用 **默认导入** 的方式，从 `Gallery.js` 中导入 `Gallery` 组件。\n     - 使用 **默认导出** 的方式，将根组件 `App` 导出。\n\n<Note>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖拆分三步与导入导出要点，引用均对应片段，无错误"
+      },
+      "judge_cost": 0.000703
+    },
+    {
+      "id": "q024",
+      "type": "in_kb",
+      "retrieve_ms": 78,
+      "top1_score": 0.7206,
+      "rank": 1,
+      "top3": [
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/}"
+      ],
+      "refused": false,
+      "answer": "**不会。** 同一个组件渲染出的两个实例，state 完全隔离，互不影响。\n\n- State 是屏幕上组件实例内部的状态；同一个组件渲染两次，每个副本都有完全隔离的 state，改变其中一个不会影响另一个 [2]。\n- State 不依赖特定函数调用或代码位置，其作用域只限于屏幕上的某块特定区域；渲染两个 `<Gallery />` 时，它们的 state 分别存储 [1]。\n- State 完全私有于声明它的组件，父组件无法更改它，甚至不知道子组件是否有 state [1]。\n- 若希望两个实例的 state 保持同步，正确做法是把 state 从子组件中删除，上移到离它们最近的共享父组件 [1][3]。\n\n资料未覆盖的内容：除“上移到共享父组件”外，未提供其他同步 state 的具体实现方式。",
+      "answer_ms": 1628,
+      "cost": 0.000897,
+      "citations": [
+        1,
+        2,
+        3
+      ],
+      "context": "[1] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/}\nt: 120px; }\nbutton {\n  display: block;\n  margin-top: 10px;\n  margin-bottom: 10px;\n}\n```\n\n</Sandpack>\n\n这就是 state 与声明在模块顶部的普通变量不同的原因。 State 不依赖于特定的函数调用或在代码中的位置，它的作用域“只限于”屏幕上的某块特定区域。你渲染了两个 `<Gallery />` 组件，所以它们的 state 是分别存储的。\n\n还要注意 `Page` 组件“不知道”关于 `Gallery` state 的任何信息，甚至不知道它是否有任何 state。与 props 不同，**state 完全私有于声明它的组件**。父组件无法更改它。这使你可以向任何组件添加或删除 state，而不会影响其他组件。\n\n如果你希望两个画廊保持其 states 同步怎么办？在 React 中执行此操作的正确方法是从子组件中*删除* state 并将其添加到离它们最近的共享父组件中。接下来的几节将专注于组织单个组件的 state，但我们将在[组件间共享 state](/learn/sharing-state-between-components) 中回到这个主题。\n\n<Recap>\n\n[2] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/}\nState 是屏幕上组件实例内部的状态。换句话说，**如果你渲染同一个组件两次，每个副本都会有完全隔离的 state**！改变其中一个不会影响另一个。\n\n在这个例子中，之前的 `Gallery` 组件以同样的逻辑被渲染了两次。试着点击每个画廊内的按钮。你会注意到它们的 state 是相互独立的：\n\n<Sandpack>\n\n```js\nimport Gallery from './Gallery.js';\n\nexport default function Page() {\n  return (\n    <div className=\"Page\">\n      <Gallery />\n      <Gallery />\n    </div>\n  );\n}\n\n```\n\n```js src/Gallery.js\nimport { useState } from 'react';\nimport { sculptureList } from './data.js';\n\nexport default function Gallery() {\n  const [index, setIndex] = useState(0);\n  const [showMore, setShowMore] = useState(false);\n\n[3] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/}\n下来的几节将专注于组织单个组件的 state，但我们将在[组件间共享 state](/learn/sharing-state-between-components) 中回到这个主题。\n\n<Recap>\n\n* 当一个组件需要在多次渲染间“记住”某些信息时使用 state 变量。\n* State 变量是通过调用 `useState` Hook 来声明的。\n* Hook 是以 `use` 开头的特殊函数。它们能让你 “hook” 到像 state 这样的 React 特性中。\n* Hook 可能会让你想起 import：它们需要在非条件语句中调用。调用 Hook 时，包括 `useState`，仅在组件或另一个 Hook 的顶层被调用才有效。\n* `useState` Hook 返回一对值：当前 state 和更新它的函数。\n* 你可以拥有多个 state 变量。在内部，React 按顺序匹配它们。\n* State 是组件私有的。如果你在两个地方渲染它，则每个副本都有独属于自己的 state。\n\n</Recap>\n\n<Challenges>\n\n[4] 《State：组件的记忆》 添加一个 state 变量 {/*adding-a-state-variable*/} > 剖析 `useState` {/*anatomy-of-usestate*/}\nndex`) 可以更新 state 变量并触发 React 重新渲染组件。\n\n以下是实际发生的情况：\n\n```js\nconst [index, setIndex] = useState(0);\n```\n\n1. **组件进行第一次渲染。** 因为你将 `0` 作为 `index` 的初始值传递给 `useState`，它将返回 `[0, setIndex]`。 React 记住 `0` 是最新的 state 值。\n2. **你更新了 state**。当用户点击按钮时，它会调用 `setIndex(index + 1)`。 `index` 是 `0`，所以它是 `setIndex(1)`。这告诉 React 现在记住 `index` 是 `1` 并触发下一次渲染。\n3. **组件进行第二次渲染**。React 仍然看到 `useState(0)`，但是因为 React *记住* 了你将 `index` 设置为了 `1`，它将返回 `[1, setIndex]`。\n4. 以此类推！\n\n[5] 《State：组件的记忆》 赋予一个组件多个 state 变量 {/*giving-a-component-multiple-state-variables*/} > React 如何知道返回哪个 state {/*how-does-react-know-which-state-to-return*/}\nt arrays](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)中阅读有关此机制的更多信息。\n\n这个例子**没有使用 React**，但它让你了解 `useState` 在内部是如何工作的：\n\n<Sandpack>\n\n```js src/index.js active\nlet componentHooks = [];\nlet currentHookIndex = 0;\n\n// useState 在 React 中是如何工作的（简化版）\nfunction useState(initialState) {\n  let pair = componentHooks[currentHookIndex];\n  if (pair) {\n    // 这不是第一次渲染\n    // 所以 state pair 已经存在\n    // 将其返回并为下一次 hook 的调用做准备\n    currentHookIndex++;\n    return pair;\n  }\n\n// 这是我们第一次进行渲染\n  // 所以新建一个 state pair 然后存储它\n  pair = [initialState, setState];",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "答不会且说明state隔离私有，要点齐全，引用均能支撑"
+      },
+      "judge_cost": 0.000574
+    },
+    {
+      "id": "q025",
+      "type": "in_kb",
+      "retrieve_ms": 79,
+      "top1_score": 0.6709,
+      "rank": null,
+      "top3": [
+        "oss/react/passing-props-to-a-component.md#向组件传递 props {/*passing-props-to-a-component*/} > 步骤 2: 在子组件中读取 props {/*step-2-read-props-inside-the-child-component*/}",
+        "oss/react/keeping-components-pure.md#副作用：（不符合）预期的后果 {/*side-effects-unintended-consequences*/} > 使用严格模式检测不纯的计算 {/*detecting-impure-calculations-with-strict-mode*/}",
+        "oss/react/passing-props-to-a-component.md#Props 如何随时间变化 {/*how-props-change-over-time*/}"
+      ],
+      "refused": false,
+      "answer": "知识库中没有直接讲解“根据 prop 的布尔值条件渲染不同内容”的专门章节，但有以下相关依据：\n\n**结论**：资料支持在子组件中读取 props 后，像使用变量一样在组件代码里使用它们 [1]，并据此编写逻辑 [1]；但资料未给出针对布尔 prop 的条件渲染写法示例。\n\n**有依据的要点**：\n- 读取 props 用解构语法，如 `function Avatar({ person, size })`，之后可在组件内像变量一样使用 [1][5]。\n- 解构写法等价于从 `props` 参数读取属性，如 `let size = props.size` [5]。\n- 可以为 props 指定默认值，如 `size = 100`，用于缺少值或值为 `undefined` 的情况 [3]。\n- props 是只读的时间快照，每次渲染收到新版本，不能修改 props [3][4]。\n- 组件可能随时间收到不同 props，props 反映任意时间点的数据 [4]。\n\n**资料未覆盖**：布尔 prop 的具体条件渲染语法（如三元表达式、`&&` 短路）在参考资料中没有出现，无法据此给出示例。",
+      "answer_ms": 2313,
+      "cost": 0.001263,
+      "citations": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "context": "[1] 《将 Props 传递给组件》 向组件传递 props {/*passing-props-to-a-component*/} > 步骤 2: 在子组件中读取 props {/*step-2-read-props-inside-the-child-component*/}\n你可以通过在 `function Avatar` 之后直接列出它们的名字 `person, size` 来读取这些 props。这些 props 在 `({` 和 `})` 之间，并由逗号分隔。这样，你可以在 `Avatar` 的代码中使用它们，就像使用变量一样。\n\n```js\nfunction Avatar({ person, size }) {\n  // 在这里 person 和 size 是可访问的\n}\n```\n\n向使用 `person` 和 `size` props 渲染的 `Avatar` 添加一些逻辑，你就完成了。\n\n现在你可以配置 `Avatar` ，通过不同的 props，使它能以多种不同的方式进行渲染。尝试变换值吧！\n\n<Sandpack>\n\n```js src/App.js\nimport { getImageUrl } from './utils.js';\n\nfunction Avatar({ person, size }) {\n  return (\n    <img\n      className=\"avatar\"\n      src={getImageUrl(person)}\n      alt={person.name}\n      width={size}\n      height={size}\n    />\n  );\n}\n\n[2] 《保持组件纯粹》 副作用：（不符合）预期的后果 {/*side-effects-unintended-consequences*/} > 使用严格模式检测不纯的计算 {/*detecting-impure-calculations-with-strict-mode*/}\n尽管你可能还没使用过，但在 React 中，你可以在渲染时读取三种输入：[props](/learn/passing-props-to-a-component)，[state](/learn/state-a-components-memory) 和 [context](/learn/passing-data-deeply-with-context)。你应该始终将这些输入视为只读。\n\n当你想根据用户输入 *更改* 某些内容时，你应该 [设置状态](/learn/state-a-components-memory)，而不是直接写入变量。当你的组件正在渲染时，你永远不应该改变预先存在的变量或对象。\n\nReact 提供了 “严格模式”，在严格模式下开发时，它将会调用每个组件函数两次。**通过重复调用组件函数，严格模式有助于找到违反这些规则的组件**。\n\n[3] 《将 Props 传递给组件》 Props 如何随时间变化 {/*how-props-change-over-time*/}\n响应用户输入（例如更改所选颜色）时，你可以“设置 state”，你可以在 [State：组件的记忆](/learn/state-a-components-memory) 中继续了解。\n\n<Recap>\n\n* 要传递 props，请将它们添加到 JSX，就像使用 HTML 属性一样。\n* 要读取 props，请使用 `function Avatar({ person, size })` 解构语法。\n* 你可以指定一个默认值，如 `size = 100`，用于缺少值或值为 `undefined` 的 props 。\n* 你可以使用 `<Avatar {...props} />` JSX 展开语法转发所有 props，但不要过度使用它！\n* 像 `<Card><Avatar /></Card>` 这样的嵌套 JSX，将被视为 `Card` 组件的 `children` prop。\n* Props 是只读的时间快照：每次渲染都会收到新版本的 props。\n* 你不能改变 props。当你需要交互性时，你可以设置 state。\n\n</Recap>\n\n<Challenges>\n\n[4] 《将 Props 传递给组件》 Props 如何随时间变化 {/*how-props-change-over-time*/}\nect>\n      </p>\n      <Clock color={color} time={time.toLocaleTimeString()} />\n    </div>\n  );\n}\n```\n\n</Sandpack>\n\n这个例子说明，**一个组件可能会随着时间的推移收到不同的 props。** Props 并不总是静态的！在这里，`time` prop 每秒都在变化。当你选择另一种颜色时，`color` prop 也改变了。Props 反映了组件在任何时间点的数据，并不仅仅是在开始时。\n\n然而，props 是 [不可变的](https://en.wikipedia.org/wiki/Immutable_object)（一个计算机科学术语，意思是“不可改变”）。当一个组件需要改变它的 props（例如，响应用户交互或新数据）时，它不得不“请求”它的父组件传递 **不同的 props** —— 一个新对象！它的旧 props 将被丢弃，最终 JavaScript 引擎将回收它们占用的内存。\n\n**不要尝试“更改 props”。** 当你需要响应用户输入（例如更改所选颜色）时，你可以“设置 state”，你可以在 [State：组件的记忆](/learn/state-a-components-memory) 中继续了解。\n\n<Recap>\n\n[5] 《将 Props 传递给组件》 向组件传递 props {/*passing-props-to-a-component*/} > 步骤 2: 在子组件中读取 props {/*step-2-read-props-inside-the-child-component*/}\n， **不要忘记 `(` 和 `)` 之间的一对花括号 `{` 和 `}`**  ：\n\n```js\nfunction Avatar({ person, size }) {\n  // ...\n}\n```\n\n这种语法被称为 [“解构”](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Unpacking_fields_from_objects_passed_as_a_function_parameter)，等价于于从函数参数中读取属性：\n\n```js\nfunction Avatar(props) {\n  let person = props.person;\n  let size = props.size;\n  // ...\n}\n```\n\n</Pitfall>",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "指出可读取props并写逻辑，但未给出if/else条件渲染写法，要点遗漏"
+      },
+      "judge_cost": 0.000504
+    },
+    {
+      "id": "q026",
+      "type": "in_kb",
+      "retrieve_ms": 70,
+      "top1_score": 0.73,
+      "rank": 1,
+      "top3": [
+        "oss/react/passing-props-to-a-component.md#将 Props 传递给组件",
+        "oss/react/sharing-state-between-components.md#每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/}",
+        "oss/react/sharing-state-between-components.md#举例说明一下状态提升 {/*lifting-state-up-by-example*/} > 第 2 步: 从公共父组件传递硬编码数据 {/*step-2-pass-hardcoded-data-from-the-common-parent*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：父组件通过 props 向子组件传递数据，可传递任意 JavaScript 值。**\n\n- **传递方式**：每个父组件都可以提供 props 给它的子组件，从而将信息传递给它 [1]。\n- **可传类型**：可以通过 props 传递任何 JavaScript 值，包括对象、数组和函数 [1]。\n- **读取方式**：子组件从 props 中读取父组件传入的信息 [1]。\n- **深层传递的替代方案**：如果要在组件树中深入传递 prop，或许多组件需要使用相同的 prop，逐层透传会很麻烦；此时可用 Context，让父组件把信息提供给下层任何组件，无需通过 props 逐层透传 [4]。\n- **状态提升场景**：整合两个组件时，把 state 移到共同父组件，再在父组件中通过 props 把信息传递下去，并向下传递事件处理程序，使子组件能改变父组件的 state [2]。\n\n资料未覆盖的内容：props 的默认值、传递 JSX、props 随时间变化的具体说明（仅列为学习要点，未展开）[1]。",
+      "answer_ms": 2109,
+      "cost": 0.001121,
+      "citations": [
+        1,
+        2,
+        4
+      ],
+      "context": "[1] 《将 Props 传递给组件》 将 Props 传递给组件\n<Intro>\n\nReact 组件使用 *props* 来互相通信。每个父组件都可以提供 props 给它的子组件，从而将一些信息传递给它。Props 可能会让你想起 HTML 属性，但你可以通过它们传递任何 JavaScript 值，包括对象、数组和函数。\n\n</Intro>\n\n<YouWillLearn>\n\n* 如何向组件传递 props\n* 如何从组件读取 props\n* 如何为 props 指定默认值\n* 如何给组件传递 JSX\n* Props 如何随时间变化\n\n</YouWillLearn>\n\n[2] 《在组件间共享状态》 每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/}\n下移动时，你依然会想要确定每个状态在哪里“活跃”。这都是过程的一部分！\n\n想了解在更多组件中的实践，请阅读 [React 哲学](/learn/thinking-in-react).\n\n<Recap>\n\n* 当你想要整合两个组件时，将它们的 state 移动到共同的父组件中。\n* 然后在父组件中通过 `props` 把信息传递下去。\n* 最后，向下传递事件处理程序，以便子组件可以改变父组件的 state 。\n* 考虑该将组件视为“受控”（由 prop 驱动）或是“不受控”（由 state 驱动）是十分有益的。\n\n</Recap>\n\n<Challenges>\n\n[3] 《在组件间共享状态》 举例说明一下状态提升 {/*lifting-state-up-by-example*/} > 第 2 步: 从公共父组件传递硬编码数据 {/*step-2-pass-hardcoded-data-from-the-common-parent*/}\n为了实现状态提升，必须定位到你想协调的 **两个** 子组件最近的公共父组件：\n\n* `Accordion` **(最近的公共父组件)**\n  - `Panel`\n  - `Panel`\n\n在这个例子中，公共父组件是 `Accordion`。因为它位于两个面板之上，可以控制它们的 props，所以它将成为当前激活面板的“控制之源”。通过 `Accordion` 组件将硬编码值 `isActive`（例如 `true` ）传递给两个面板：\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';\n\n[4] 《状态管理》 使用 Context 深层传递参数 {/*passing-data-deeply-with-context*/}\n通常，你会通过 props 将信息从父组件传递给子组件。但是，如果要在组件树中深入传递一些 prop，或者树里的许多组件需要使用相同的 prop，那么传递 prop 可能会变得很麻烦。Context 允许父组件将一些信息提供给它下层的任何组件，不管该组件多深层也无需通过 props 逐层透传。\n\n这里的 `Heading` 组件通过“询问”最近的 `Section` 来确定其标题级别。每个 `Section` 的级别是通过给父 `Section` 添加的级别来确定的。每个 `Section` 都向它下层的所有组件提供信息，不需要逐层传递 props，而是通过 Context 来实现。\n\n<Sandpack>\n\n```js\nimport Heading from './Heading.js';\nimport Section from './Section.js';\n\n[5] 《在组件间共享状态》 每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/}\n在 `React` 应用中，很多组件都有自己的状态。一些状态可能“活跃”在叶子组件（树形结构最底层的组件）附近，例如输入框。另一些状态可能在应用程序顶部“活动”。例如，客户端路由库也是通过将当前路由存储在 `React` 状态中，利用 `props` 将状态层层传递下去来实现的！\n\n**对于每个独特的状态，都应该存在且只存在于一个指定的组件中作为 state**。这一原则也被称为拥有 [“可信单一数据源”](https://en.wikipedia.org/wiki/Single_source_of_truth)。它并不意味着所有状态都存在一个地方——对每个状态来说，都需要一个特定的组件来保存这些状态信息。你应该 **将状态提升** 到公共父级，或 **将状态传递** 到需要它的子级中，而不是在组件之间复制共享的状态。\n\n你的应用会随着你的操作而变化。当你将状态上下移动时，你依然会想要确定每个状态在哪里“活跃”。这都是过程的一部分！\n\n想了解在更多组件中的实践，请阅读 [React 哲学](/learn/thinking-in-react).\n\n<Recap>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖props传递及任意JS值类型，引用均对应片段"
+      },
+      "judge_cost": 0.000629
+    },
+    {
+      "id": "q027",
+      "type": "in_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.6896,
+      "rank": 1,
+      "top3": [
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}",
+        "oss/react/writing-markup-with-jsx.md#JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}",
+        "oss/react/writing-markup-with-jsx.md#JSX: 将标签引入 JavaScript {/*jsx-putting-markup-into-javascript*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：JSX 属性大多用驼峰式命名；`class` 要写成 `className`，而 `aria-*` 属性保持带 `-` 的 HTML 格式，所以 `aria-label` 原样书写。**\n\n- 大部分 HTML 和 SVG 属性在 React 中用驼峰式命名，例如用 `strokeWidth` 代替 `stroke-width` [1]。\n- 原因是 JSX 属性最终会变成 JavaScript 对象的键值对，而 JavaScript 变量名不能包含 `-`，也不能使用 `class` 这类保留字 [1]。\n- `class` 是保留字，因此在 React 中要用 `className` 代替 [1]。\n- 例外：由于历史原因，`aria-*` 和 `data-*` 属性以带 `-` 符号的 HTML 格式书写 [2]，因此 `aria-label` 不需要改成驼峰式。\n- 如果属性写错，React 会在浏览器控制台打印一条可能的更正信息 [2]。\n\n资料未覆盖除 `aria-*`、`data-*` 之外其他属性的具体命名对照。",
+      "answer_ms": 1957,
+      "cost": 0.001214,
+      "citations": [
+        1,
+        2
+      ],
+      "context": "[1] 《使用 JSX 书写标签语言》 JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}\nJSX 最终会被转化为 JavaScript，而 JSX 中的属性也会变成 JavaScript 对象中的键值对。在你自己的组件中，经常会遇到需要用变量的方式读取这些属性的时候。但 JavaScript 对变量的命名有限制。例如，变量名称不能包含 `-` 符号或者像 `class` 这样的保留字。\n\n这就是为什么在 React 中，大部分 HTML 和 SVG 属性都用驼峰式命名法表示。例如，需要用 `strokeWidth` 代替 `stroke-width`。由于 `class` 是一个保留字，所以在 React 中需要用 `className` 来代替。这也是 [DOM 属性中的命名](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/className):\n\n```js {4}\n<img\n  src=\"https://react.dev/images/docs/scientists/yXOvdOSs.jpg\"\n  alt=\"Hedy Lamarr\"\n  className=\"photo\"\n/>\n```\n\n[2] 《使用 JSX 书写标签语言》 JSX 规则 {/*the-rules-of-jsx*/} > 3. 使用驼峰式命名法给 <s>所有</s> 大部分属性命名！ {/*3-camelcase-salls-most-of-the-things*/}\nttps://react.dev/images/docs/scientists/yXOvdOSs.jpg\"\n  alt=\"Hedy Lamarr\"\n  className=\"photo\"\n/>\n```\n\n你可以 [在 React DOM 元素中找到所有对应的属性](/reference/react-dom/components/common)。如果你在编写属性时发生了错误，不用担心 —— React 会在 [浏览器控制台](https://firefox-source-docs.mozilla.org/devtools-user/browser_console/index.html) 中打印一条可能的更正信息。\n\n<Pitfall>\n\n由于历史原因，[`aria-*`](https://developer.mozilla.org/docs/Web/Accessibility/ARIA) 和 [`data-*`](https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes) 属性是以带 `-` 符号的 HTML 格式书写的。\n\n</Pitfall>\n\n[3] 《使用 JSX 书写标签语言》 JSX: 将标签引入 JavaScript {/*jsx-putting-markup-into-javascript*/}\ns with yellow background: onSubmit, onLogin, and onClick.\">\n\nJavaScript\n\n</Diagram>\n\n</DiagramGroup>\n\n但随着 Web 的交互性越来越强，逻辑越来越决定页面中的内容。JavaScript 控制着 HTML 的内容！这也是为什么 **在 React 中，渲染逻辑和标签共同存在于同一个地方——组件。**\n\n<DiagramGroup>\n\n<Diagram name=\"writing_jsx_sidebar\" height={330} width={325} alt=\"React component with HTML and JavaScript from previous examples mixed. Function name is Sidebar which calls the function isLoggedIn, highlighted in yellow. Nested inside the function highlighted in purple is the p tag from before, and a Form tag referencing the component shown in the next diagram.\">\n\n[4] 《使用 JSX 书写标签语言》 使用 JSX 书写标签语言\n<Intro>\n\n**JSX** 是 JavaScript 语法扩展，可以让你在 JavaScript 文件中书写类似 HTML 的标签。虽然还有其它方式可以编写组件，但大部分 React 开发者更喜欢 JSX 的简洁性，并且在大部分代码库中使用它。\n\n</Intro>\n\n<YouWillLearn>\n\n* 为什么 React 将标签和渲染逻辑耦合在一起\n* JSX 与 HTML 有什么区别\n* 如何通过 JSX 展示信息\n\n</YouWillLearn>\n\n[5] 《使用 JSX 书写标签语言》 JSX: 将标签引入 JavaScript {/*jsx-putting-markup-into-javascript*/}\n网页是构建在 HTML、CSS 和 JavaScript 之上的。多年以来，web 开发者都是将网页内容存放在 HTML 中，样式放在 CSS 中，而逻辑则放在 JavaScript 中 —— 通常是在不同的文件中！页面的内容通过标签语言描述并存放在 HTML 文件中，而逻辑则单独存放在 JavaScript 文件中。\n\n<DiagramGroup>\n\n<Diagram name=\"writing_jsx_html\" height={237} width={325} alt=\"HTML markup with purple background and a div with two child tags: p and form. \">\n\nHTML\n\n</Diagram>\n\n<Diagram name=\"writing_jsx_js\" height={237} width={325} alt=\"Three JavaScript handlers with yellow background: onSubmit, onLogin, and onClick.\">\n\nJavaScript\n\n</Diagram>\n\n</DiagramGroup>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖驼峰命名、className、aria-*保持连字符要点，引用准确"
+      },
+      "judge_cost": 0.0006
+    },
+    {
+      "id": "q028",
+      "type": "in_kb",
+      "retrieve_ms": 89,
+      "top1_score": 0.6915,
+      "rank": 1,
+      "top3": [
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 完成画廊组件 {/*complete-the-gallery*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}",
+        "oss/react/state-a-components-memory.md#State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：Hook（如 `useState`）必须写在条件语句外，并且每次渲染都以相同顺序调用；写在 `if` 后面会破坏这一规则，导致组件崩溃。**\n\n要点：\n\n- `useState` 用于让组件记住状态，每次渲染都会返回 state 变量和 setter 函数 [4]。\n- 资料明确指出：**必须在条件语句外并且始终以相同的顺序调用 Hook** [3]。\n- 资料中的示例正是把第二个 `useState` 移到 `if` 条件之后，并提示“注意这会如何再次破坏它” [2]。\n- 资料还强调：要保证对 Hook 的所有调用都发生在第一个 `return` **前**，这很重要 [3]。\n\n资料未覆盖的部分：没有具体解释崩溃的底层机制（如 Hook 调用顺序错乱的具体报错信息），也未给出除“移到条件外、保持顺序”之外的其他修复方式。",
+      "answer_ms": 1975,
+      "cost": 0.001029,
+      "citations": [
+        2,
+        3,
+        4
+      ],
+      "context": "[1] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 完成画廊组件 {/*complete-the-gallery*/}\n当你在最后一个雕塑上按 “Next” 时，代码会发生崩溃。请修复逻辑以防止此崩溃。你可以尝试在事件处理函数中添加额外的逻辑，或在操作无法执行时禁用掉按钮。\n\n修复崩溃后，添加一个显示上一个雕塑的 “Previous” 按钮。同样地，确保它不在第一个雕塑里发生崩溃。\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';\nimport { sculptureList } from './data.js';\n\nexport default function Gallery() {\n  const [index, setIndex] = useState(0);\n  const [showMore, setShowMore] = useState(false);\n\nfunction handleNextClick() {\n    setIndex(index + 1);\n  }\n\nfunction handleMoreClick() {\n    setShowMore(!showMore);\n  }\n\n[2] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}\ne);\n  const [message, setMessage] = useState('');\n\nif (isSent) {\n    return <h1>Thank you!</h1>;\n  }\n\nreturn (\n    <form onSubmit={e => {\n      e.preventDefault();\n      alert(`Sending: \"${message}\"`);\n      setIsSent(true);\n    }}>\n      <textarea\n        placeholder=\"Message\"\n        value={message}\n        onChange={e => setMessage(e.target.value)}\n      />\n      <br />\n      <button type=\"submit\">Send</button>\n    </form>\n  );\n}\n```\n\n</Sandpack>\n\n尝试移动第二个 `useState` 调用到 `if` 条件之后，并要注意这会如何再次破坏它。\n\n[3] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}\ne=\"submit\">Send</button>\n      </form>\n    );\n  }\n}\n```\n\n</Sandpack>\n\n请记住，必须在条件语句外并且始终以相同的顺序调用 Hook！\n\n你还可以删除不必要的 `else` 分支以减少嵌套。但要保证对 Hook 的所有调用都发生在第一个 `return` **前**，这很重要。\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';\n\nexport default function FeedbackForm() {\n  const [isSent, setIsSent] = useState(false);\n  const [message, setMessage] = useState('');\n\nif (isSent) {\n    return <h1>Thank you!</h1>;\n  }\n\n[4] 《State：组件的记忆》 添加一个 state 变量 {/*adding-a-state-variable*/} > 剖析 `useState` {/*anatomy-of-usestate*/}\n当你调用 [`useState`](/reference/react/useState) 时，你是在告诉 React 你想让这个组件记住一些东西：\n\n```js\nconst [index, setIndex] = useState(0);\n```\n\n在这个例子里，你希望 React 记住 `index`。\n\n<Note>\n\n惯例是将这对返回值命名为 `const [thing, setThing]`。你也可以将其命名为任何你喜欢的名称，但遵照约定俗成能使跨项目合作更易理解。\n\n</Note>\n\n`useState` 的唯一参数是 state 变量的 **初始值**。在这个例子中，`index` 的初始值被 `useState(0)` 设置为 `0`。\n\n每次你的组件渲染时，`useState` 都会给你一个包含两个值的数组：\n\n1. **state 变量** (`index`) 会保存上次渲染的值。\n2. **state setter 函数** (`setIndex`) 可以更新 state 变量并触发 React 重新渲染组件。\n\n以下是实际发生的情况：\n\n```js\nconst [index, setIndex] = useState(0);\n```\n\n[5] 《State：组件的记忆》 State 是隔离且私有的 {/*state-is-isolated-and-private*/} > 修复一个错误 {/*fix-a-crash*/}\norm() {\n  const [isSent, setIsSent] = useState(false);\n  const [message, setMessage] = useState('');\n\nif (isSent) {\n    return <h1>Thank you!</h1>;\n  } else {\n    return (\n      <form onSubmit={e => {\n        e.preventDefault();\n        alert(`Sending: \"${message}\"`);\n        setIsSent(true);\n      }}>\n        <textarea\n          placeholder=\"Message\"\n          value={message}\n          onChange={e => setMessage(e.target.value)}\n        />\n        <br />\n        <button type=\"submit\">Send</button>\n      </form>\n    );\n  }\n}\n```\n\n</Sandpack>\n\n请记住，必须在条件语句外并且始终以相同的顺序调用 Hook！",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖顺序一致要点，引用均支撑对应陈述"
+      },
+      "judge_cost": 0.000525
+    },
+    {
+      "id": "q029",
+      "type": "in_kb",
+      "retrieve_ms": 72,
+      "top1_score": 0.7112,
+      "rank": 1,
+      "top3": [
+        "oss/react/managing-state.md#迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}",
+        "oss/react/managing-state.md#状态管理",
+        "oss/react/managing-state.md#选择 State 结构 {/*choosing-the-state-structure*/}"
+      ],
+      "refused": false,
+      "answer": "当事件处理函数过于分散、需要更新多个状态时，可以把所有状态更新逻辑合并到组件外部一个称为 “reducer” 的函数中集中管理 [1]。\n\n具体做法与效果：\n\n- **合并逻辑**：在组件外部将所有状态更新逻辑合并到一个 reducer 函数里 [1]。\n- **简化事件处理**：事件处理程序变得简洁，只需指定用户的 “actions”（如通过 `dispatch` 派发带 `type` 的 action 对象）[1]。\n- **集中定义更新规则**：在文件底部，reducer 函数统一指定状态应如何响应每个 action 进行更新 [1]。\n- **配套 API**：使用 `useReducer` 替代分散的 `useState` 来驱动状态更新 [1]。\n\n相关资料还提到，本节内容属于“如何在函数中整合复杂的状态逻辑”这一主题 [2]。\n\n资料未覆盖的部分：参考资料未给出 reducer 函数的完整写法、`dispatch` 的完整参数约定，也未说明何时应优先选择 reducer 而非其他方案。",
+      "answer_ms": 1898,
+      "cost": 0.001061,
+      "citations": [
+        1,
+        2
+      ],
+      "context": "[1] 《状态管理》 迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}\n对于那些需要更新多个状态的组件来说，过于分散的事件处理程序可能会令人不知所措。对于这种情况，你可以在组件外部将所有状态更新逻辑合并到一个称为 “reducer” 的函数中。这样，事件处理程序就会变得简洁，因为它们只需要指定用户的 “actions”。在文件的底部，reducer 函数指定状态应该如何更新以响应每个 action！\n\n<Sandpack>\n\n```js src/App.js\nimport { useReducer } from 'react';\nimport AddTask from './AddTask.js';\nimport TaskList from './TaskList.js';\n\nexport default function TaskApp() {\n  const [tasks, dispatch] = useReducer(\n    tasksReducer,\n    initialTasks\n  );\n\nfunction handleAddTask(text) {\n    dispatch({\n      type: 'added',\n      id: nextId++,\n      text: text,\n    });\n  }\n\n[2] 《状态管理》 状态管理\n<Intro>\n\n随着你的应用不断变大，更有意识的去关注应用状态如何组织，以及数据如何在组件之间流动会对你很有帮助。冗余或重复的状态往往是缺陷的根源。在本节中，你将学习如何组织好状态，如何保持状态更新逻辑的可维护性，以及如何跨组件共享状态。\n\n</Intro>\n\n<YouWillLearn isChapter={true}>\n\n* [如何将 UI 变更视为状态变更](/learn/reacting-to-input-with-state)\n* [如何组织好状态](/learn/choosing-the-state-structure)\n* [如何使用“状态提升”在组件之间共享状态](/learn/sharing-state-between-components)\n* [如何控制状态的保留或重置](/learn/preserving-and-resetting-state)\n* [如何在函数中整合复杂的状态逻辑](/learn/extracting-state-logic-into-a-reducer)\n* [如何避免数据通过 prop 逐级透传](/learn/passing-data-deeply-with-context)\n* [如何随着应用的增长去扩展状态管理](/learn/scaling-up-with-reducer-and-context)\n\n[3] 《状态管理》 选择 State 结构 {/*choosing-the-state-structure*/}\n良好的状态组织，可以区分开易于修改和调试的组件与频繁出问题的组件。最重要的原则是，状态不应包含冗余或重复的信息。如果包含一些多余的状态，我们会很容易忘记去更新它，从而导致问题产生！\n\n例如，这个表单有一个多余的 `fullName` 状态变量：\n\n<Sandpack>\n\n```js\nimport { useState } from 'react';\n\nexport default function Form() {\n  const [firstName, setFirstName] = useState('');\n  const [lastName, setLastName] = useState('');\n  const [fullName, setFullName] = useState('');\n\nfunction handleFirstNameChange(e) {\n    setFirstName(e.target.value);\n    setFullName(e.target.value + ' ' + lastName);\n  }\n\n[4] 《在组件间共享状态》 每个状态都对应唯一的数据源 {/*a-single-source-of-truth-for-each-state*/}\n下移动时，你依然会想要确定每个状态在哪里“活跃”。这都是过程的一部分！\n\n想了解在更多组件中的实践，请阅读 [React 哲学](/learn/thinking-in-react).\n\n<Recap>\n\n* 当你想要整合两个组件时，将它们的 state 移动到共同的父组件中。\n* 然后在父组件中通过 `props` 把信息传递下去。\n* 最后，向下传递事件处理程序，以便子组件可以改变父组件的 state 。\n* 考虑该将组件视为“受控”（由 prop 驱动）或是“不受控”（由 state 驱动）是十分有益的。\n\n</Recap>\n\n<Challenges>\n\n[5] 《untitled》 前端代码评审规范（团队样例） > 常见必改项 > 状态管理\n- 同一份状态不得在多个组件各自维护副本\n- 派生状态优先用计算属性，不要用 effect 同步",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖合并到组件外reducer、事件处理只dispatch action要点，引用均支撑"
+      },
+      "judge_cost": 0.000618
+    },
+    {
+      "id": "q030",
+      "type": "in_kb",
+      "retrieve_ms": 95,
+      "top1_score": 0.7641,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/path-params.md#路径参数 { #path-parameters } > 预设值 { #predefined-values } > 声明*路径参数* { #declare-a-path-parameter }",
+        "oss/fastapi/path-params.md#路径参数 { #path-parameters } > 预设值 { #predefined-values } > 使用 Python *枚举* { #working-with-python-enumerations }",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type }"
+      ],
+      "refused": false,
+      "answer": "结论：用自己创建的枚举类（`ModelName`）作为路径参数的类型注解即可，FastAPI 会把路径参数的值解析为该枚举的成员。\n\n要点：\n\n- 使用你创建的枚举类 `ModelName` 创建带类型注解的路径参数 [1]。\n- 该路径参数的值是一个*枚举成员* [2]。\n- 可以将路径参数的值与你创建的枚举 `ModelName` 中的*枚举成员*进行比较 [4]。\n- 这种简短、直观的 Python 标准类型声明能让 FastAPI 获得编辑器支持（错误检查、代码自动补全等）、数据解析、数据校验、API 注解和自动文档，且只需声明一次 [5]。\n\n资料未覆盖的部分：参考资料只给出了代码示例的文件与行号引用（如 `tutorial005_py310.py` 第 16、17 行），未展示具体代码内容，因此无法给出完整的示例写法。",
+      "answer_ms": 1589,
+      "cost": 0.000951,
+      "citations": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "context": "[1] 《路径参数 { #path-parameters }》 路径参数 { #path-parameters } > 预设值 { #predefined-values } > 声明*路径参数* { #declare-a-path-parameter }\n使用你创建的枚举类（`ModelName`）创建带有类型注解的*路径参数*：\n\n{* ../../docs_src/path_params/tutorial005_py310.py hl[16] *}\n\n[2] 《路径参数 { #path-parameters }》 路径参数 { #path-parameters } > 预设值 { #predefined-values } > 使用 Python *枚举* { #working-with-python-enumerations }\n*路径参数*的值是一个*枚举成员*。\n\n[3] 《响应模型 - 返回类型 { #response-model-return-type }》 响应模型 - 返回类型 { #response-model-return-type }\n你可以通过为*路径操作函数*的**返回类型**添加注解来声明用于响应的类型。\n\n和为输入数据在函数**参数**里做类型注解的方式相同，你可以使用 Pydantic 模型、`list`、`dict`、以及整数、布尔值等标量类型。\n\n{* ../../docs_src/response_model/tutorial001_01_py310.py hl[16,21] *}\n\nFastAPI 会使用这个返回类型来：\n\n* 对返回数据进行**校验**。\n    * 如果数据无效（例如缺少某个字段），这意味着你的应用代码有问题，没有返回应有的数据，FastAPI 将返回服务器错误而不是返回错误的数据。这样你和你的客户端都可以确定会收到期望的数据及其结构。\n* 在 OpenAPI 的*路径操作*中为响应添加**JSON Schema**。\n    * 它会被**自动文档**使用。\n    * 它也会被自动客户端代码生成工具使用。\n* 使用 Pydantic 将返回数据**序列化**为 JSON。Pydantic 使用**Rust**编写，因此会**快很多**。\n\n但更重要的是：\n\n* 它会将输出数据**限制并过滤**为返回类型中定义的内容。\n    * 这对**安全性**尤为重要，下面会进一步介绍。\n\n[4] 《路径参数 { #path-parameters }》 路径参数 { #path-parameters } > 预设值 { #predefined-values } > 使用 Python *枚举* { #working-with-python-enumerations } > 比较*枚举成员* { #compare-enumeration-members }\n可以将其与你创建的枚举 `ModelName` 中的*枚举成员*进行比较：\n\n{* ../../docs_src/path_params/tutorial005_py310.py hl[17] *}\n\n[5] 《路径参数 { #path-parameters }》 路径参数 { #path-parameters } > 小结 { #recap }\n通过简短、直观的 Python 标准类型声明，**FastAPI** 可以获得：\n\n* 编辑器支持：错误检查，代码自动补全等\n* 数据 \"<dfn title=\"将来自 HTTP 请求中的字符串转换为 Python 数据类型\">解析</dfn>\"\n* 数据校验\n* API 注解和自动文档\n\n只需要声明一次即可。\n\n这可能是除了性能以外，**FastAPI** 与其它框架相比的主要优势。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖枚举类作路径参数类型注解要点，引用均对应支撑片段"
+      },
+      "judge_cost": 0.000589
+    },
+    {
+      "id": "q031",
+      "type": "in_kb",
+      "retrieve_ms": 85,
+      "top1_score": 0.7307,
+      "rank": 4,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶",
+        "html/fastapi-first-steps.html#第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 操作¶"
+      ],
+      "refused": false,
+      "answer": "不是必须的。FastAPI 不强制要求操作具有特定含义，资料中的说明仅作为指导而非要求 [2]。\n\n- **可自由选择**：你可以随意使用任何一个操作（HTTP 方法）[1][2]。\n- **常见约定（仅指导）**：通常 `POST` 创建数据、`GET` 读取数据、`PUT` 更新数据、`DELETE` 删除数据 [3]。\n- **反例**：使用 GraphQL 时，通常所有动作都通过 `POST` 一种方法执行 [2]。\n\n资料未覆盖的部分：除上述内容外，未说明其他强制约束或校验机制。",
+      "answer_ms": 2714,
+      "cost": 0.000709,
+      "citations": [
+        1,
+        2,
+        3
+      ],
+      "context": "[1] 《第一步 - FastAPI》 第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶\n```\nfrom fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello World\"}\n```\n`@app.get(\"/\")` 告诉 **FastAPI** 在它下方的函数负责处理如下访问请求：\n\n- 请求路径为 `/`\n- 使用 `get` 操作\n\n`@decorator` 信息\n\n`@something` 语法在 Python 中被称为「装饰器」。\n\n像一顶漂亮的装饰帽一样，将它放在一个函数的上方（我猜测这个术语的命名就是这么来的）。\n\n装饰器接收位于其下方的函数并且用它完成一些工作。\n\n在我们的例子中，这个装饰器告诉 **FastAPI** 位于其下方的函数对应着**路径** `/` 加上 `get` **操作**。\n\n它是一个「**路径操作装饰器**」。\n\n你也可以使用其他的操作：\n\n- `@app.post()`\n- `@app.put()`\n- `@app.delete()`\n\n以及更少见的：\n\n- `@app.options()`\n- `@app.head()`\n- `@app.patch()`\n- `@app.trace()`\n\n提示\n\n你可以随意使用任何一个操作（HTTP方法）。\n\n[2] 《第一步 - FastAPI》 第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 定义一个*路径操作装饰器*¶\n的：\n\n- `@app.options()`\n- `@app.head()`\n- `@app.patch()`\n- `@app.trace()`\n\n提示\n\n你可以随意使用任何一个操作（HTTP方法）。\n\n**FastAPI** 没有强制要求操作有任何特定的含义。\n\n此处提供的信息仅作为指导，而不是要求。\n\n比如，当使用 GraphQL 时通常你所有的动作都通过 `POST` 一种方法执行。\n\n[3] 《第一步 - FastAPI》 第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 操作¶\n这里的「操作」指的是一种 HTTP「方法」。\n\n下列之一：\n\n- `POST`\n- `GET`\n- `PUT`\n- `DELETE`\n\n...以及更少见的几种：\n\n- `OPTIONS`\n- `HEAD`\n- `PATCH`\n- `TRACE`\n\n在 HTTP 协议中，你可以使用以上的其中一种（或多种）「方法」与每个路径进行通信。\n\n在开发 API 时，你通常使用特定的 HTTP 方法去执行特定的行为。\n\n通常使用：\n\n- `POST`：创建数据。\n- `GET`：读取数据。\n- `PUT`：更新数据。\n- `DELETE`：删除数据。\n\n因此，在 OpenAPI 中，每一个 HTTP 方法都被称为「操作」。\n\n我们也打算称呼它们为「操作」。\n\n[4] 《第一步 { #first-steps }》 第一步 { #first-steps } > 分步概括 { #recap-step-by-step } > 步骤 3：创建一个*路径操作* { #step-3-create-a-path-operation } > 定义一个*路径操作装饰器* { #define-a-path-operation-decorator }\n{* ../../docs_src/first_steps/tutorial001_py310.py hl[6] *}\n\n`@app.get(\"/\")` 告诉 **FastAPI** 在它下方的函数负责处理如下访问请求：\n\n* 请求路径为 `/`\n* 使用 <dfn title=\"一种 HTTP GET 方法\"><code>get</code> 操作</dfn>\n\n/// note | `@decorator` 信息\n\n`@something` 语法在 Python 中被称为「装饰器」。\n\n像一顶漂亮的装饰帽一样，将它放在一个函数的上方（我猜测这个术语的命名就是这么来的）。\n\n装饰器接收位于其下方的函数并且用它完成一些工作。\n\n在我们的例子中，这个装饰器告诉 **FastAPI** 位于其下方的函数对应着**路径** `/` 加上 `get` **操作**。\n\n它是一个「**路径操作装饰器**」。\n\n///\n\n你也可以使用其他的操作：\n\n* `@app.post()`\n* `@app.put()`\n* `@app.delete()`\n\n以及更少见的：\n\n* `@app.options()`\n* `@app.head()`\n* `@app.patch()`\n* `@app.trace()`\n\n/// tip | 提示\n\n你可以随意使用任何一个操作（HTTP方法）。\n\n[5] 《第一步 - FastAPI》 第一步¶ > 分步概括¶ > 步骤 4：定义**路径操作函数**¶\n这是我们的「**路径操作函数**」：\n\n- **路径**：是 `/`。\n- **操作**：是 `get`。\n- **函数**：是位于「装饰器」下方的函数（位于 `@app.get(\"/\")` 下方）。\n\n```\nfrom fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello World\"}\n```\n这是一个 Python 函数。\n\n每当 **FastAPI** 接收一个使用 `GET` 方法访问 URL「`/`」的请求时这个函数会被调用。\n\n在这个例子中，它是一个 `async` 函数。\n\n你也可以将其定义为常规函数而不使用 `async def`:\n\n```\nfrom fastapi import FastAPI\napp = FastAPI()\n@app.get(\"/\")\ndef root():\n    return {\"message\": \"Hello World\"}\n```\n注意\n\n如果你不知道两者的区别，请查阅 并发: *赶时间吗？*。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖不强制、可随意使用、仅指导非要求，引用均对应片段"
+      },
+      "judge_cost": 0.000534
+    },
+    {
+      "id": "q032",
+      "type": "in_kb",
+      "retrieve_ms": 88,
+      "top1_score": 0.6269,
+      "rank": 4,
+      "top3": [
+        "html/fastapi-first-steps.html#第一步¶ > OpenAPI¶ > OpenAPI 的用途¶",
+        "html/fastapi-first-steps.html#第一步¶ > 交互式 API 文档¶",
+        "html/fastapi-first-steps.html#第一步¶"
+      ],
+      "refused": false,
+      "answer": "FastAPI 内置的 2 个交互式文档系统，是由 **OpenAPI 模式**驱动的 [1][4]。\n\n补充细节：\n- 访问 `http://127.0.0.1:8000/docs` 可以看到自动生成的交互式 API 文档，该页面由 **Swagger UI** 提供 [2]。\n- 除内置文档外，还有数十种基于 OpenAPI 的替代方案，可以添加到 FastAPI 应用中 [1][4]。\n- 还可以用 OpenAPI 自动生成与 API 通信的客户端代码，例如 web 前端、移动端或物联网嵌入程序 [1][4]。\n\n资料只明确提到 `/docs` 这一个页面及其 Swagger UI 来源，未说明另一个文档页面的具体地址和所用工具。",
+      "answer_ms": 1693,
+      "cost": 0.000909,
+      "citations": [
+        1,
+        2,
+        4
+      ],
+      "context": "[1] 《第一步 - FastAPI》 第一步¶ > OpenAPI¶ > OpenAPI 的用途¶\n驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。\n\n并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 **FastAPI** 构建的应用程序中。\n\n你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程序。\n\n[2] 《第一步 - FastAPI》 第一步¶ > 交互式 API 文档¶\n跳转到 http://127.0.0.1:8000/docs。\n\n你将会看到自动生成的交互式 API 文档（由 Swagger UI 提供）：\n\n[3] 《第一步 - FastAPI》 第一步¶\n提供了很多功能，包括路径操作浏览器、路径操作搜索、测试中的 CodeLens 导航（从测试跳转到定义），以及 FastAPI Cloud 部署和日志，全部都可以在你的编辑器中完成。\n\n运行实时服务器：\n\n```\n$ <font color=\"#4E9A06\">uv run fastapi</font> dev\n  <span style=\"background-color:#009485\"><font color=\"#D3D7CF\"> FastAPI </font></span>  Starting development server 🚀\n             Searching for package file structure from directories\n             with <font color=\"#3465A4\">__init__.py</font> files\n             Importing from <font color=\"#75507B\">/home/user/code/</font><font color=\"#AD7FA8\">awesomeapp</font>\n   <span style=\"background-color:#007166\"><font color=\"#D3D7CF\"> module </font></span>  🐍 main.py\n     <span style=\"background-color:#007166\"><font color=\"#D3D7CF\"> code </font></span\n\n[4] 《第一步 { #first-steps }》 第一步 { #first-steps } > OpenAPI { #openapi } > OpenAPI 的用途 { #what-is-openapi-for }\n驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。\n\n并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 **FastAPI** 构建的应用程序中。\n\n你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程序。\n\n[5] 《第一步 - FastAPI》 第一步¶ > 分步概括¶ > 步骤 3：创建一个*路径操作*¶ > 路径¶\n这里的「路径」指的是 URL 中从第一个 `/` 起的后半部分。\n\n所以，在一个这样的 URL 中：\n\n```\nhttps://example.com/items/foo\n```\n...路径会是：\n\n```\n/items/foo\n```\n注意\n\n「路径」也通常被称为「端点」或「路由」。\n\n开发 API 时，「路径」是用来分离「关注点」和「资源」的主要手段。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "答出OpenAPI驱动及自动生成客户端代码，引用均对应片段"
+      },
+      "judge_cost": 0.00061
+    },
+    {
+      "id": "q033",
+      "type": "in_kb",
+      "retrieve_ms": 95,
+      "top1_score": 0.7519,
+      "rank": 5,
+      "top3": [
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 任意 `dict` 构成的请求体 { #bodies-of-arbitrary-dicts }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 纯列表请求体 { #bodies-of-pure-lists }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 带有一组子模型的属性 { #attributes-with-lists-of-submodels }"
+      ],
+      "refused": false,
+      "answer": "用 `Body` 的 `embed` 参数即可。\n\n- 声明方式：`item: Annotated[Item, Body(embed=True)]` [5]\n- 效果：FastAPI 会期望请求体为 `{\"item\": { ...模型内容... }}`，而不是直接把模型字段放在最外层 [5]\n- 对比：默认情况下（不加 `embed`），FastAPI 直接期望模型内容作为请求体，即 `{\"name\": ..., \"description\": ..., ...}` [5]\n\n参考资料未覆盖 `embed` 参数的其他用法（如自定义外层键名、多个请求体参数组合等）。",
+      "answer_ms": 1135,
+      "cost": 0.000802,
+      "citations": [
+        5
+      ],
+      "context": "[1] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models } > 任意 `dict` 构成的请求体 { #bodies-of-arbitrary-dicts }\n你也可以将请求体声明为使用某类型的键和其他类型值的 `dict`。\n\n无需事先知道有效的字段/属性（在使用 Pydantic 模型的场景）名称是什么。\n\n如果你想接收一些尚且未知的键，这将很有用。\n\n---\n\n其他有用的场景是当你想要接收其他类型的键时，例如 `int`。\n\n这也是我们在接下来将看到的。\n\n在下面的例子中，你将接受任意键为 `int` 类型并且值为 `float` 类型的 `dict`：\n\n{* ../../docs_src/body_nested_models/tutorial009_py310.py hl[7] *}\n\n/// tip | 提示\n\n请记住 JSON 仅支持将 `str` 作为键。\n\n但是 Pydantic 具有自动转换数据的功能。\n\n这意味着，即使你的 API 客户端只能将字符串作为键发送，只要这些字符串内容仅包含整数，Pydantic 就会对其进行转换并校验。\n\n然后你接收的名为 `weights` 的 `dict` 实际上将具有 `int` 类型的键和 `float` 类型的值。\n\n///\n\n[2] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models } > 纯列表请求体 { #bodies-of-pure-lists }\n如果你期望的 JSON 请求体的最外层是一个 JSON `array`（即 Python `list`），则可以在路径操作函数的参数中声明此类型，就像声明 Pydantic 模型一样：\n\n```Python\nimages: list[Image]\n```\n\n例如：\n\n{* ../../docs_src/body_nested_models/tutorial008_py310.py hl[13] *}\n\n[3] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models } > 带有一组子模型的属性 { #attributes-with-lists-of-submodels }\n你还可以将 Pydantic 模型用作 `list`、`set` 等的子类型：\n\n{* ../../docs_src/body_nested_models/tutorial006_py310.py hl[18] *}\n\n这将期望（转换，校验，记录文档等）下面这样的 JSON 请求体：\n\n```JSON hl_lines=\"11\"\n{\n    \"name\": \"Foo\",\n    \"description\": \"The pretender\",\n    \"price\": 42.0,\n    \"tax\": 3.2,\n    \"tags\": [\n        \"rock\",\n        \"metal\",\n        \"bar\"\n    ],\n    \"images\": [\n        {\n            \"url\": \"http://example.com/baz.jpg\",\n            \"name\": \"The Foo live\"\n        },\n        {\n            \"url\": \"http://example.com/dave.jpg\",\n            \"name\": \"The Baz\"\n        }\n    ]\n}\n```\n\n/// note | 注意\n\n[4] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models } > 嵌套模型 { #nested-models }\nPydantic 模型的每个属性都具有类型。\n\n但是这个类型本身可以是另一个 Pydantic 模型。\n\n因此，你可以声明拥有特定属性名称、类型和校验的深度嵌套的 JSON 对象。\n\n上述这些都可以任意的嵌套。\n\n[5] 《请求体 - 多个参数 { #body-multiple-parameters }》 请求体 - 多个参数 { #body-multiple-parameters } > 嵌入单个请求体参数 { #embed-a-single-body-parameter }\n假设你只有一个来自 Pydantic 模型 `Item` 的请求体参数 `item`。\n\n默认情况下，**FastAPI** 将直接期望这样的请求体。\n\n但是，如果你希望它期望一个拥有 `item` 键并在值中包含模型内容的 JSON，就像在声明额外的请求体参数时所做的那样，则可以使用一个特殊的 `Body` 参数 `embed`：\n\n```Python\nitem: Annotated[Item, Body(embed=True)]\n```\n\n比如：\n\n{* ../../docs_src/body_multiple_params/tutorial005_an_py310.py hl[17] *}\n\n在这种情况下，**FastAPI** 将期望像这样的请求体：\n\n```JSON hl_lines=\"2\"\n{\n    \"item\": {\n        \"name\": \"Foo\",\n        \"description\": \"The pretender\",\n        \"price\": 42.0,\n        \"tax\": 3.2\n    }\n}\n```\n\n而不是：\n\n```JSON\n{\n    \"name\": \"Foo\",\n    \"description\": \"The pretender\",\n    \"price\": 42.0,\n    \"tax\": 3.2\n}\n```",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "正确给出 Body(embed=True) 及外层键名效果，引用[5]支撑"
+      },
+      "judge_cost": 0.000525
+    },
+    {
+      "id": "q034",
+      "type": "in_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.7797,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models } > 总结 { #recap }",
+        "oss/fastapi/response-model.md#响应模型 - 返回类型 { #response-model-return-type } > 返回类型与数据过滤 { #return-type-and-data-filtering } > FastAPI 的数据过滤 { #fastapi-data-filtering }",
+        "oss/fastapi/body-nested-models.md#请求体 - 嵌套模型 { #body-nested-models }"
+      ],
+      "refused": false,
+      "answer": "使用 FastAPI 配合 Pydantic 模型，除了写法简洁，还能带来以下实际好处：\n\n- **编辑器支持**：处处皆可自动补全 [1]\n- **数据转换**：也被称为解析/序列化 [1]\n- **数据校验**：对数据进行校验 [1]\n- **模式文档**：生成模式文档 [1]\n- **自动生成的文档**：自动生成 API 文档 [1]\n- **支持任意深度嵌套**：可以定义、校验、记录文档并使用任意深度嵌套的模型（归功于 Pydantic）[3]\n\n此外，在响应侧，为路径操作函数声明返回类型后，FastAPI 还会：\n\n- **校验返回数据**：数据无效（如缺少字段）时返回服务器错误，而非错误数据 [4]\n- **添加 JSON Schema**：在 OpenAPI 中为响应添加 JSON Schema，供自动文档和客户端代码生成工具使用 [4]\n- **序列化**：用 Pydantic 将返回数据序列化为 JSON，Pydantic 用 Rust 编写，速度快很多 [4]\n- **限制并过滤输出数据**：只返回返回类型中声明的字段，对安全性尤为重要 [2][4]\n\n资料未覆盖性能基准、与其他框架的对比等内容。",
+      "answer_ms": 1763,
+      "cost": 0.001297,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "context": "[1] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models } > 总结 { #recap }\n使用 **FastAPI** 你可以拥有 Pydantic 模型提供的极高灵活性，同时保持代码的简单、简短和优雅。\n\n而且还具有下列好处：\n\n* 编辑器支持（处处皆可自动补全！）\n* 数据转换（也被称为解析/序列化）\n* 数据校验\n* 模式文档\n* 自动生成的文档\n\n[2] 《响应模型 - 返回类型 { #response-model-return-type }》 响应模型 - 返回类型 { #response-model-return-type } > 返回类型与数据过滤 { #return-type-and-data-filtering } > FastAPI 的数据过滤 { #fastapi-data-filtering }\n对于 FastAPI，它会查看返回类型并确保你返回的内容**只**包含该类型中声明的字段。\n\nFastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。\n\n这样，你就能兼得两方面的优势：带有**工具支持**的类型注解和**数据过滤**。\n\n[3] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models }\n使用 **FastAPI**，你可以定义、校验、记录文档并使用任意深度嵌套的模型（归功于Pydantic）。\n\n[4] 《响应模型 - 返回类型 { #response-model-return-type }》 响应模型 - 返回类型 { #response-model-return-type }\n你可以通过为*路径操作函数*的**返回类型**添加注解来声明用于响应的类型。\n\n和为输入数据在函数**参数**里做类型注解的方式相同，你可以使用 Pydantic 模型、`list`、`dict`、以及整数、布尔值等标量类型。\n\n{* ../../docs_src/response_model/tutorial001_01_py310.py hl[16,21] *}\n\nFastAPI 会使用这个返回类型来：\n\n* 对返回数据进行**校验**。\n    * 如果数据无效（例如缺少某个字段），这意味着你的应用代码有问题，没有返回应有的数据，FastAPI 将返回服务器错误而不是返回错误的数据。这样你和你的客户端都可以确定会收到期望的数据及其结构。\n* 在 OpenAPI 的*路径操作*中为响应添加**JSON Schema**。\n    * 它会被**自动文档**使用。\n    * 它也会被自动客户端代码生成工具使用。\n* 使用 Pydantic 将返回数据**序列化**为 JSON。Pydantic 使用**Rust**编写，因此会**快很多**。\n\n但更重要的是：\n\n* 它会将输出数据**限制并过滤**为返回类型中定义的内容。\n    * 这对**安全性**尤为重要，下面会进一步介绍。\n\n[5] 《请求体 { #request-body }》 请求体 { #request-body } > 请求体 + 路径参数 { #request-body-path-parameters }\n可以同时声明路径参数和请求体。\n\n**FastAPI** 能识别与**路径参数**匹配的函数参数应该**从路径中获取**，而声明为 Pydantic 模型的函数参数应该**从请求体中获取**。\n\n{* ../../docs_src/body/tutorial003_py310.py hl[15:16] *}",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖全部期望要点，引用均对应支撑片段，无错误"
+      },
+      "judge_cost": 0.000463
+    },
+    {
+      "id": "q035",
+      "type": "in_kb",
+      "retrieve_ms": 83,
+      "top1_score": 0.7193,
+      "rank": 1,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite}",
+        "html/vite-guide.html#开始 > 浏览器支持",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 起源 {#the-origins}"
+      ],
+      "refused": false,
+      "answer": "可以，通过命令行选项 `--open` 实现。\n\n- 在 npm scripts 中运行 `vite` 时，可以指定额外的命令行选项，如 `--port` 或 `--open` [4]。\n- 完整的命令行选项列表可通过运行 `npx vite --help` 查看 [4]。\n\n资料未说明 `--open` 的具体行为细节（如打开哪个地址、是否可指定路径），也未给出其他自动打开浏览器的方式。",
+      "answer_ms": 1155,
+      "cost": 0.000611,
+      "citations": [
+        4
+      ],
+      "context": "[1] 《命令行接口 {#command-line-interface}》 命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite}\n在当前目录下启动 Vite 开发服务器。`vite dev` 和 `vite serve` 是 `vite` 的别名。\n\n[2] 《开始 | Vite 官方中文文档》 开始 > 浏览器支持\n在开发过程中，Vite 假设使用的是现代浏览器。这意味着该浏览器支持大多数最新的 JavaScript 和 CSS 功能。因此，Vite 将 `esnext` 设置为转换目标。这可以防止语法降级，使 Vite 能够尽可能接近原始源代码提供模块。Vite 会注入一些运行时代码以使开发服务器正常工作。这些代码使用了 Baseline 中包含的功能，该功能在每个主要版本发布时（此主要版本为 2026-01-01）新增。\n\n对于生产环境构建，Vite 默认以每个主要版本所固定日期时 Baseline Widely Available 的浏览器版本为目标平台。对于此主要版本，这对应于 大约在 2023 年年中发布的浏览器版本。你可以通过配置降低目标浏览器版本。此外，可以通过官方 @vitejs/plugin-legacy 支持旧版浏览器。更多详情，请参阅 构建生产环境 部分。\n\n[3] 《为什么选 Vite {#why-vite}》 为什么选 Vite {#why-vite} > 起源 {#the-origins}\nVite 诞生之初，浏览器刚刚获得了对 [ES 模块](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)（ESM）的广泛支持。ESM 允许浏览器直接加载 JavaScript 文件，无需工具事先将它们打包成单个文件。而传统的构建工具（通常称为 _打包器_）会在浏览器展示任何内容之前，将整个应用预先处理一遍。应用越大，等待的时间就越长。\n\nVite 采用了一种截然不同的方式，将工作拆分为两部分：\n\n- **依赖**（几乎不会变动的库）：使用快速的原生工具 [预构建](./dep-pre-bundling.md) 一次，即可随时就绪。\n- **源码**（频繁变动的应用代码）：通过原生 ESM 按需提供。浏览器只加载当前页面所需的内容，Vite 则在请求时对每个文件进行转换。\n\n这意味着无论应用规模多大，开发服务器的启动几乎都是即时的。当你修改某个文件时，Vite 通过原生 ESM 的 [模块热替换](./features.md#hot-module-replacement)（HMR）只更新浏览器中的对应模块，无需整页刷新，也无需等待重新构建。\n\n[4] 《开始 | Vite 官方中文文档》 开始 > 命令行接口\n在安装了 Vite 的项目中，可以在 npm scripts 中使用 `vite` 可执行文件，或者直接使用 `npx vite` 运行它。下面是通过脚手架创建的 Vite 项目中默认的 npm scripts：\n\n```\n{\n  \"scripts\": {\n    \"dev\": \"vite\", // 启动开发服务器，别名：`vite dev`，`vite serve`\n    \"build\": \"vite build\", // 为生产环境构建产物\n    \"preview\": \"vite preview\" // 本地预览生产构建产物\n  }\n}\n```\n可以指定额外的命令行选项，如 `--port` 或 `--open`。运行 `npx vite --help` 获得完整的命令行选项列表。\n\n查看 命令行接口 了解更多细节。\n\n[5] 《开始 | Vite 官方中文文档》 开始 > `index.html` 与项目根目录 > 指定替代根目录\n执行 `vite` 命令会以当前工作目录作为根目录启动开发服务器。你也可以通过 `vite serve some/sub/dir` 来指定一个不同的根目录。 需要注意的是，Vite 也会在项目的根目录中寻找 它的配置文件（即 `vite.config.js`），所以如果更改了根目录，你需要将配置文件一起移动过去。",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "提到--open但未说明可指定路径，且称资料未说明行为，遗漏要点"
+      },
+      "judge_cost": 0.000408
+    },
+    {
+      "id": "q036",
+      "type": "in_kb",
+      "retrieve_ms": 81,
+      "top1_score": 0.6957,
+      "rank": 1,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > 构建优化 {#build-optimizations} > CSS 代码分割 {#css-code-splitting}",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 统一的工具链 {#a-unified-toolchain}",
+        "oss/vite/why.md#为什么选 Vite {#why-vite} > 起源 {#the-origins}"
+      ],
+      "refused": false,
+      "answer": "根据参考资料，只能部分回答：\n\n**CSS 代码分割（分块）**\n- Vite 默认会自动把异步 chunk 中用到的 CSS 抽取为单独文件，并在该异步 chunk 加载完成时通过 `<link>` 载入，保证 CSS 加载完毕后再执行 chunk，避免 FOUC [1]。\n- 若希望把所有 CSS 抽取到单个文件，可将 `build.cssCodeSplit` 设为 `false` 来禁用 CSS 代码分割 [1]。\n\n**CSS 压缩**\n- 参考资料未提及生产构建中 CSS 压缩由什么控制，知识库中没有相关证据。\n\n**代码分块（JS）**\n- 参考资料未直接说明 JS 代码分块的具体控制项；仅提到 Vite 会为入口 chunk 及其在打包 HTML 中的直接引入自动生成 `<link rel=\"modulepreload\">` 指令 [5]，以及生产构建由 Rollup/Rolldown 负责深度优化与打包 [2][4]。这些均未涉及分块配置项本身。",
+      "answer_ms": 1886,
+      "cost": 0.001075,
+      "citations": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "context": "[1] 《功能 {#features}》 功能 {#features} > 构建优化 {#build-optimizations} > CSS 代码分割 {#css-code-splitting}\nVite 会自动地将一个异步 chunk 模块中使用到的 CSS 代码抽取出来并为其生成一个单独的文件。这个 CSS 文件将在该异步 chunk 加载完成时自动通过一个 `<link>` 标签载入，该异步 chunk 会保证只在 CSS 加载完毕后再执行，避免发生 [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content#:~:text=A%20flash%20of%20unstyled%20content,before%20all%20information%20is%20retrieved.) 。\n\n如果你更倾向于将所有的 CSS 抽取到一个文件中，你可以通过设置 [`build.cssCodeSplit`](/config/build-options.md#build-csscodesplit) 为 `false` 来禁用 CSS 代码分割。\n\n[2] 《为什么选 Vite {#why-vite}》 为什么选 Vite {#why-vite} > 统一的工具链 {#a-unified-toolchain}\nVite 最初在底层依赖两个独立的工具：[esbuild](https://esbuild.github.io/) 负责开发阶段的快速编译，[Rollup](https://rollupjs.org/) 负责生产构建中的深度优化。这套方案可行，但维护两条流水线带来了不一致性：不同的转换行为、各自独立的插件系统，以及越来越多的粘合代码来保持两者对齐。\n\n[Rolldown](https://rolldown.rs/) 的出现将二者统一为一个打包器：用 Rust 编写以获得原生速度，并与生态系统已依赖的同一套插件 API 兼容。它使用 [Oxc](https://oxc.rs/) 进行解析、转换和压缩。这赋予了 Vite 一条端到端的工具链，其中构建工具、打包器和编译器共同维护，作为一个整体协同演进。\n\n最终的结果是一条从开发到 [生产](./build.md) 的统一流水线。迁移过程经过了精心设计：先发布了 [技术预览版](https://voidzero.dev/posts/announcing-rolldown-vite)，让早期用户验证变更；生态系统 CI 尽早捕获兼容性问题；兼容层则保留了现有配置的支持。\n\n[3] 《为什么选 Vite {#why-vite}》 为什么选 Vite {#why-vite} > 起源 {#the-origins}\nVite 诞生之初，浏览器刚刚获得了对 [ES 模块](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)（ESM）的广泛支持。ESM 允许浏览器直接加载 JavaScript 文件，无需工具事先将它们打包成单个文件。而传统的构建工具（通常称为 _打包器_）会在浏览器展示任何内容之前，将整个应用预先处理一遍。应用越大，等待的时间就越长。\n\nVite 采用了一种截然不同的方式，将工作拆分为两部分：\n\n- **依赖**（几乎不会变动的库）：使用快速的原生工具 [预构建](./dep-pre-bundling.md) 一次，即可随时就绪。\n- **源码**（频繁变动的应用代码）：通过原生 ESM 按需提供。浏览器只加载当前页面所需的内容，Vite 则在请求时对每个文件进行转换。\n\n这意味着无论应用规模多大，开发服务器的启动几乎都是即时的。当你修改某个文件时，Vite 通过原生 ESM 的 [模块热替换](./features.md#hot-module-replacement)（HMR）只更新浏览器中的对应模块，无需整页刷新，也无需等待重新构建。\n\n[4] 《为什么选 Vite {#why-vite}》 为什么选 Vite {#why-vite} > 起源 {#the-origins}\n>\n\n_在基于打包器的开发服务器中，整个应用会在提供服务之前先完成打包。_\n\n<svg-image :svg=\"esmSvg\" />\n\n_在基于 ESM 的开发服务器中，模块在浏览器请求时按需提供。_\n\nVite 并非第一个探索这种方式的工具。[Snowpack](https://www.snowpack.dev/) 开创了非打包式开发，并启发了 Vite 的依赖预构建；Preact 团队的 [WMR](https://github.com/preactjs/wmr) 启发了可同时用于开发与构建的通用插件 API；[@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) 影响了 Vite 1.0 的服务器架构。Vite 在这些思想的基础上继续前行。\n\n尽管非打包的 ESM 在开发阶段运行良好，但由于嵌套导入会带来额外的网络往返，将其直接用于生产环境仍然低效。这也是 [为什么打包对于优化生产构建依然必要](https://rolldown.rs/in-depth/why-bundlers) 的原因。\n\n[5] 《功能 {#features}》 功能 {#features} > 构建优化 {#build-optimizations} > 预加载指令生成 {#preload-directives-generation}\nVite 会为入口 chunk 和它们在打包出的 HTML 中的直接引入自动生成 `<link rel=\"modulepreload\">` 指令。",
+      "judge": {
+        "correctness": 0,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "未答出Lightning CSS压缩与codeSplitting配置，仅答CSS代码分割，核心要点缺失"
+      },
+      "judge_cost": 0.000423
+    },
+    {
+      "id": "q037",
+      "type": "in_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.7138,
+      "rank": 1,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}",
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}",
+        "oss/vite/features.md#功能 {#features} > WebAssembly {#webassembly}"
+      ],
+      "refused": false,
+      "answer": "**结论：** 需在 `tsconfig.json` 中启用 `allowArbitraryExtensions`，并在 `.wasm` 文件旁创建对应的声明文件 [1]。\n\n**具体步骤：**\n\n1. **启用选项**：在 `tsconfig.json` 中开启 `allowArbitraryExtensions` [1]。\n2. **创建声明文件**：启用后，TypeScript 解析 `.wasm` 导入时会查找名为 `{filename}.d.wasm.ts` 的声明文件 [1]。\n3. **示例**：对于 `add.wasm`，创建 `add.d.wasm.ts`，内容如：\n   ```ts\n   export function add(a: number, b: number): number\n   ```\n   [1]\n\n**原因：** `.wasm` 文件的类型未知，TypeScript 会报类似 `Module '\"*.wasm\"' has no exported member 'add'` 的错误 [1]。\n\n**补充说明：** 资料未覆盖其他解决方式（如全局 `declare module '*.wasm'` 声明），仅提供了上述方案 [1]。",
+      "answer_ms": 1571,
+      "cost": 0.001639,
+      "citations": [
+        1
+      ],
+      "context": "[1] 《功能 {#features}》 功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}\negration)。由于 WebAssembly 模块是异步实例化的，直接导入的 `.wasm` 文件会作为异步模块运行，并要求支持顶层 `await`。\n\n::: tip TypeScript 支持\n\n由于 `.wasm` 文件的类型未知，TypeScript 会报告类似 `Module '\"*.wasm\"' has no exported member 'add'` 的错误。要解决此问题，请在 `tsconfig.json` 中启用 [`allowArbitraryExtensions`](https://www.typescriptlang.org/tsconfig/#allowArbitraryExtensions)，并在 `.wasm` 文件旁创建声明文件。启用 `allowArbitraryExtensions` 后，TypeScript 在解析 `.wasm` 导入时会查找名为 `{filename}.d.wasm.ts` 的声明文件。例如，对于 `add.wasm`，请创建 `add.d.wasm.ts`：\n\n```ts [add.d.wasm.ts]\nexport function add(a: number, b: number): number\n```\n\n:::\n\n[2] 《功能 {#features}》 功能 {#features} > WebAssembly {#webassembly} > ESM 集成 {#esm-integration}\n可以直接导入 `.wasm` 文件。Vite 会从二进制文件中读取模块的导入与导出、将其实例化，并将其导出重新暴露为具名 ES 模块导出：\n\n```js\nimport { add } from './add.wasm'\n\nconsole.log(add(1, 2)) // 3\n```\n\n如果 WebAssembly 模块声明了自己的导入，Vite 会从 JavaScript 模块中解析它们。每个导入的模块名称都会被视为导入说明符（相对于 `.wasm` 文件解析），所请求的成员会自动连接到实例中。\n\n此行为遵循 [WebAssembly/ES 模块集成提案](https://github.com/WebAssembly/esm-integration)。由于 WebAssembly 模块是异步实例化的，直接导入的 `.wasm` 文件会作为异步模块运行，并要求支持顶层 `await`。\n\n::: tip TypeScript 支持\n\n[3] 《功能 {#features}》 功能 {#features} > WebAssembly {#webassembly}\nVite 支持以两种方式导入预编译的 `.wasm` 文件：只需要模块导出时，可以直接将其作为 [ES 模块](#esm-integration) 导入；需要显式控制实例化过程时，可以使用 [`?init`](#manual-initialization)。\n\n[4] 《组件的导入与导出》 导出和导入一个组件 {/*exporting-and-importing-a-component*/} > 默认导出 vs 具名导出 {/*default-vs-named-exports*/}\ndocs/illustrations/i_import-export.svg)\n\n组件的导出方式决定了其导入方式。当你用默认导入的方式，导入具名导出的组件时，就会报错。如下表格可以帮你更好地理解它们：\n\n| 语法           | 导出语句                           | 导入语句                          |\n| -----------    | -----------                        | -----------                       |\n| 默认  | `export default function Button() {}` | `import Button from './Button.js';`     |\n| 具名  | `export function Button() {}`         | `import { Button } from './Button.js';` |\n\n当使用默认导入时，你可以在 `import` 语句后面进行任意命名。比如 `import Banana from './Button.js'`，如此你能获得与默认导出一致的内容。相反，对于具名导入，导入和导出的名字必须一致。这也是称其为 **具名** 导入的原因！\n\n[5] 《组件的导入与导出》 导出和导入一个组件 {/*exporting-and-importing-a-component*/} > 默认导出 vs 具名导出 {/*default-vs-named-exports*/}\n名。比如 `import Banana from './Button.js'`，如此你能获得与默认导出一致的内容。相反，对于具名导入，导入和导出的名字必须一致。这也是称其为 **具名** 导入的原因！\n\n**通常，文件中仅包含一个组件时，人们会选择默认导出，而当文件中包含多个组件或某个值需要导出时，则会选择具名导出。** 无论选择哪种方式，请记得给你的组件和相应的文件命名一个有意义的名字。我们不建议创建未命名的组件，比如 `export default () => {}`，因为这样会使得调试变得异常困难。\n\n</DeepDive>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖allowArbitraryExtensions与d.wasm.ts声明文件要点，引用均指向片段1"
+      },
+      "judge_cost": 0.001069
+    },
+    {
+      "id": "q038",
+      "type": "in_kb",
+      "retrieve_ms": 73,
+      "top1_score": 0.5377,
+      "rank": 1,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）",
+        "notes/da01-definition.md#DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问"
+      ],
+      "refused": false,
+      "answer": "**结论：主场景定为 SP-A「团队规范与组件用法问答（带引用 Grounded Q&A）」，由 P-02 与 P-07 合并构成；P-03 降级为 Backlog，其余未打分痛点暂不排期。**\n\n- **主场景**：SP-A，对应 P-02（Score 3.90）与 P-07（Score 3.85）[1][2]。P-07 原在「新场景包 vs SP-C」间有歧义，最终裁决归入 SP-A——其缺口是「不知道规范」（知识），不是「不会检查」（工具），因此不新建场景包，能力骨架 M0–M9/M11 不变 [2]。\n- **P-07 合并理由**：它是非 SP-A 候选中唯一过门槛且 AI 适配度 ≥ 3 的（3.85），缺口同为「缺团队知识」，故与 P-02 并入同一知识库回答链路 [1]。\n- **P-03**：排名第 3（SP-C 3.35），AI 适配度仅 2 分，属「不硬套 AI」样本，降级为 Backlog 的自动化检查项（用 hook 解决），本阶段不投入 [1][2]。\n- **未打分的 7 条**（P-01、P-04、P-05、P-06、P-08、P-09、P-10）：不删除、不打分，留在 pain-pool 不排期；P-01/P-04 合规不过 [1][2]。\n- **价值量化**：P-02 75 分钟/周 + P-07 40 分钟/周 = 115 分钟/周，按 60% 节省率约 69 分钟/周，定义中取保守下限 ≥ 60 分钟/周 [1]。",
+      "answer_ms": 2565,
+      "cost": 0.002834,
+      "citations": [
+        1,
+        2
+      ],
+      "context": "[1] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）\n- **主场景 = SP-A 深化「团队规范与组件用法问答（带引用 Grounded Q&A）」**（对应 P-02 Score 3.90，P-07 Score 3.85）。\n  - 依据 1：非 SP-A 候选中唯一过门槛且 `AI 适配度 ≥ 3` 的是 P-07（3.85），其缺口同样是「缺团队知识」→ 与 P-02 合并进同一知识库回答链路，**不新建场景包**。\n  - 依据 2：排名第 3 的 P-03（SP-C 3.35）AI 适配度仅 2 分，属于「不硬套 AI」样本 → 降级为 Backlog 的自动化检查项，本阶段不投入。\n- **基线**：SP-A（研发知识问答）本就是 P1 核心，今天深化的是它的**语料范围**（团队规范 + 组件用法）与**评测题来源**。\n- **量化的价值**：P-02 75 分钟/周 + P-07 40 分钟/周 = 115 分钟/周损失；按 60% 节省率 ≈ 节省 **69 分钟/周**（写进 definition 时取保守下限 **≥ 60 分钟/周**）。\n- **未打分的 7 条**：不删除、不打分，继续留在本文件；Day14 之后如需辅场景，从 P-01/P-04（合规高，D 会被打到 1–2）与 P-05/P-06/P-08 中选，**今天不做**。\n\n[2] 《DA-01 定义：WorkPilot（2026-10-14 · v1）》 DA-01 定义：WorkPilot（2026-10-14 · v1） > 5. 选型依据（可追溯）\n| 排名 | 痛点 | SP 映射 | Score | 门槛 | 处置 |\n| ---- | ---- | ------- | ----- | ---- | ---- |\n| 1 | P-02 查内部组件库/团队规范用法 | SP-A | **3.90** | ✅ D3/E4 | **主场景**（与 P-07 合并） |\n| 2 | P-07 AI 生成代码不符团队规范 | SP-A（原「新」，改判） | **3.85** | ✅ D4/E4 | **主场景**（同一知识库链路） |\n| 3 | P-03 PR 提交前人工自检 | SP-C | 3.35 | ✅ D4/E4 | Backlog（AI 适配度 2 分 → 用 hook 解决） |\n\n- 裁决点：P-07 原先在「新场景包 vs SP-C」间有歧义（见 pain-pool Day03 归类对比）。今天裁决为 **SP-A**——它的缺口是「不知道规范」（知识），不是「不会检查」（工具）；这样 **M10 不新增场景包，能力骨架 M0–M9/M11 不变**（蓝图 §12.5）。\n- 未打分/未选中：P-01、P-04（合规不过）、P-05、P-06、P-08、P-09、P-10 → 留在 pain-pool，不排期。\n\n---\n\n[3] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S\n\n用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：SP-C 侧重「检查已有代码」，P-07 侧重「让 AI 生成即符合规范」。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "主场景、P-07合并、P-03降级及未打分处理均覆盖，引用准确"
+      },
+      "judge_cost": 0.001632
+    },
+    {
+      "id": "q039",
+      "type": "out_of_kb",
+      "retrieve_ms": 77,
+      "top1_score": 0.5342,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/features.md#功能 {#features} > 构建优化 {#build-optimizations} > 代码块导入映射优化 {#chunk-import-map-optimization}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 708,
+      "cost": 0.00047,
+      "citations": [],
+      "context": "[1] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S\n\n[2] 《功能 {#features}》 功能 {#features} > 构建优化 {#build-optimizations} > 代码块导入映射优化 {#chunk-import-map-optimization}\n为了提高代码块的缓存命中率，Vite 可以为代码块创建导入映射，从而避免 ES 模块中缓存级联失效的问题。\n\n例如，考虑以下场景：\n\n```\nEntry --> A ---> C\n```\n\n如果更新了 `C`，本质上只有代码块 `C` 的缓存需要失效。但是，如果 `A` 在静态导入中通过普通 URL 引用 `C`（即 URL 中包含 `C` 的哈希），`A` 的内容也会发生变化，因此 `A` 的缓存同样需要失效。`Entry` 也是如此。\n\n使用导入映射功能可以避免此问题。启用此优化后，Vite 会创建一个将每个代码块 ID 映射到其 URL 的导入映射，并在导入语句中使用代码块 ID 而不是 URL。这样，当某个代码块更新时，只需使该代码块的缓存失效，引用它的代码块不会失效。\n\n请注意，此优化目前不适用于 CSS 和资源。更新资源时，引用它的代码块缓存会失效。不过，失效不会继续级联，导入该失效代码块的其他代码块不会失效。\n\n要启用此功能，请将 [`build.chunkImportMap`](/config/build-options.md#build-chunkimportmap) 设置为 `true`。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无事实陈述"
+      },
+      "judge_cost": 0.000895
+    },
+    {
+      "id": "q040",
+      "type": "out_of_kb",
+      "retrieve_ms": 90,
+      "top1_score": 0.5512,
+      "rank": null,
+      "top3": [
+        "oss/vite/build.md#构建生产版本 {#building-for-production} > 产物分块策略 {#chunking-strategy}",
+        "oss/vite/features.md#功能 {#features} > Glob 导入 {#glob-import} > 反面匹配模式 {#negative-patterns} > 区分大小写匹配 {#case-sensitive-matching}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 607,
+      "cost": 0.000755,
+      "citations": [],
+      "context": "[1] 《构建生产版本 {#building-for-production}》 构建生产版本 {#building-for-production} > 产物分块策略 {#chunking-strategy}\n你可以通过配置 [`build.rolldownOptions.output.codeSplitting`](https://rolldown.rs/reference/OutputOptions.codeSplitting) 来自定义 chunk 分割策略（查看 [Rolldown 相应文档](https://rolldown.rs/in-depth/manual-code-splitting)）。如果你使用的是一个框架，那么请参考他们的文档来了解如何配置分割 chunk。\n\n[2] 《功能 {#features}》 功能 {#features} > Glob 导入 {#glob-import} > 反面匹配模式 {#negative-patterns} > 区分大小写匹配 {#case-sensitive-matching}\n默认情况下，glob 模式匹配区分大小写。你可以使用 `caseSensitive` 选项更改此行为：\n\n```ts twoslash\nimport 'vite/client'\n// ---cut---\nconst modules = import.meta.glob('./dir/module*.js', {\n  caseSensitive: false,\n})\n```\n\n设置 `caseSensitive: false` 后，glob 将忽略大小写匹配文件（例如 `Module.js`、`module.js` 和 `MODULE.js` 都会被 `module*.js` 匹配）。\n\n[3] 《命令行接口 {#command-line-interface}》 命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}\ncreen`           | 允许或禁用打印日志时清除屏幕 (`boolean`)                                                       \n\ncreen`           | 允许或禁用打印日志时清除屏幕 (`boolean`)                                                                                                   |\n| `--configLoader <loader>` | 使用 `bundle` 来采用 Rolldown 打包配置，或是 `runner`（实验性）来在运行时处理，或是 `native`（实验性）来使用原生运行时加载，默认是 `bundle` |\n| `-d, --debug [feat]`      | 显示调试日志 (`string \\| boolean`)                                                                                                         |\n| `-f, --filter <filter>`   | 过滤调试日志 (`string`)                                                                                                                    ",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无引用无事实陈述"
+      },
+      "judge_cost": 0.000687
+    },
+    {
+      "id": "q041",
+      "type": "out_of_kb",
+      "retrieve_ms": 67,
+      "top1_score": 0.5942,
+      "rank": null,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > TypeScript {#typescript} > 仅执行转译 {#transpile-only}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/features.md#功能 {#features} > TypeScript {#typescript} > TypeScript 编译器选项 {#typescript-compiler-options} > `target` {#target}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。\n\n参考资料中仅涉及 Vite 与类型检查、ESLint 的关系（如建议将静态分析检查与 Vite 转换管道分开、在构建命令之外运行 `tsc --noEmit`）[1]，以及痛点池中提及可用 pre-commit hook / CI 检查脚本实现自动化 [2]，但均未说明公司 CI 流水线中 ESLint 与 typecheck 是并行还是串行执行。",
+      "answer_ms": 1236,
+      "cost": 0.002038,
+      "citations": [
+        1,
+        2
+      ],
+      "context": "[1] 《功能 {#features}》 功能 {#features} > TypeScript {#typescript} > 仅执行转译 {#transpile-only}\n请注意，Vite 仅执行 `.ts` 文件的转译工作，**并不执行** 任何类型检查。并假定类型检查已经被你的 IDE 或构建过程处理了。\n\nVite 之所以不把类型检查作为转换过程的一部分，是因为这两项工作在本质上是不同的。转译可以在每个文件的基础上进行，与 Vite 的按需编译模式完全吻合。相比之下，类型检查需要了解整个模块图。把类型检查塞进 Vite 的转换管道，将不可避免地损害 Vite 的速度优势。\n\nVite 的工作是尽可能快地将源模块转化为可以在浏览器中运行的形式。为此，我们建议将静态分析检查与 Vite 的转换管道分开。这一原则也适用于其他静态分析检查，例如 ESLint。\n\n- 在构建生产版本时，你可以在 Vite 的构建命令之外运行 `tsc --noEmit`。\n\n- 在开发时，如果你需要更多的 IDE 提示，我们建议在一个单独的进程中运行 `tsc --noEmit --watch`，或者如果你喜欢在浏览器中直接看到上报的类型错误，可以使用 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker)。\n\n[2] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S\n\n[3] 《功能 {#features}》 功能 {#features} > TypeScript {#typescript} > TypeScript 编译器选项 {#typescript-compiler-options} > `target` {#target}\n- [TypeScript 文档](https://www.typescriptlang.org/tsconfig#target)\n\nVite 忽略 `tsconfig.json` 中的 `target` 值，遵循与 [esbuild](https://esbuild.github.io/) 相同的行为。\n\n要在开发中指定目标，可使用 [`oxc.target`](/config/shared-options.html#oxc) 选项，默认值为 `esnext`，以实现最小的转译。在构建中，[`build.target`](/config/build-options.html#build-target) 选项优先于 `oxc.target`，如有需要也可以进行设置。\n\n[4] 《为什么选 Vite {#why-vite}》 为什么选 Vite {#why-vite} > 统一的工具链 {#a-unified-toolchain}\nVite 最初在底层依赖两个独立的工具：[esbuild](https://esbuild.github.io/) 负责开发阶段的快速编译，[Rollup](https://rollupjs.org/) 负责生产构建中的深度优化。这套方案可行，但维护两条流水线带来了不一致性：不同的转换行为、各自独立的插件系统，以及越来越多的粘合代码来保持两者对齐。\n\n[Rolldown](https://rolldown.rs/) 的出现将二者统一为一个打包器：用 Rust 编写以获得原生速度，并与生态系统已依赖的同一套插件 API 兼容。它使用 [Oxc](https://oxc.rs/) 进行解析、转换和压缩。这赋予了 Vite 一条端到端的工具链，其中构建工具、打包器和编译器共同维护，作为一个整体协同演进。\n\n最终的结果是一条从开发到 [生产](./build.md) 的统一流水线。迁移过程经过了精心设计：先发布了 [技术预览版](https://voidzero.dev/posts/announcing-rolldown-vite)，让早期用户验证变更；生态系统 CI 尽早捕获兼容性问题；兼容层则保留了现有配置的支持。\n\n[5] 《功能 {#features}》 功能 {#features} > 构建优化 {#build-optimizations} > 异步 Chunk 加载优化 {#async-chunk-loading-optimization}\n在实际项目中，Rollup 通常会生成 “共用” chunk —— 被两个或以上的其他 chunk 共享的 chunk。与动态导入相结合，会很容易出现下面这种场景：\n\n<script setup>\nimport graphSvg from '../images/graph.svg?raw'\n</script>\n<svg-image :svg=\"graphSvg\" />\n\n在无优化的情境下，当异步 chunk `A` 被导入时，浏览器将必须请求和解析 `A`，然后它才能弄清楚它也需要共用 chunk `C`。这会导致额外的网络往返：\n\n```\nEntry ---> A ---> C\n```\n\nVite 将使用一个预加载步骤自动重写代码，来分割动态导入调用，以实现当 `A` 被请求时，`C` 也将 **同时** 被请求：\n\n```\nEntry ---> (A + C)\n```\n\n`C` 也可能有更深的导入，在未优化的场景中，这会导致更多的网络往返。Vite 的优化会跟踪所有的直接导入，无论导入的深度如何，都能够完全消除不必要的往返。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答并说明无依据"
+      },
+      "judge_cost": 0.001685
+    },
+    {
+      "id": "q042",
+      "type": "out_of_kb",
+      "retrieve_ms": 80,
+      "top1_score": 0.5018,
+      "rank": null,
+      "top3": [
+        "oss/vite/features.md#功能 {#features} > HTML {#html}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 其他 {#others} > `vite optimize` {#vite-optimize} > 选项 {#options-2}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 43,
+      "cost": 0.0,
+      "citations": [],
+      "context": "",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "无检索结果，回答正确拒答，无事实陈述"
+      },
+      "judge_cost": 0.000323
+    },
+    {
+      "id": "q043",
+      "type": "out_of_kb",
+      "retrieve_ms": 59,
+      "top1_score": 0.5555,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 610,
+      "cost": 0.001725,
+      "citations": [],
+      "context": "[1] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool）\n  | 低       | SP-C       | 亲历 | 40     |\n| P-04 | 排查生产环境报错时                  | 报错信息只显示某接口 500，需要去日志平\n\n  | 低       | SP-C       | 亲历 | 40     |\n| P-04 | 排查生产环境报错时                  | 报错信息只显示某接口 500，需要去日志平台翻、找对应代码、查最近谁改过这个文件、看是否有相关 Issue——信息散落在 4 个系统里                    | 2           | 30            | 日志平台搜 traceId → Git blame 找改动者 → Issue 列表搜关键字 → 拼凑线索 | AI       | 日志 + 代码仓库 + Issue     | 高       | SP-D       | 亲历 | 60     |\n| P-05 | 周五下午写周报时                    | 周报要从 Git 提交记录、Issue 列表、群聊决策里手工拼凑「这周做了什么」，经常漏记，写完还要花时间回忆                                        | 1           | 25            | 翻 Git log + Issue 筛选 + 聊天记录搜索 → 手工整理成周报模板             | AI       | 代码仓库 + Issue + 聊天记录 | 中       | SP-E      \n\n[2] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool）\n不能做、大概要改哪些模块」，但脑子里没有全局架构图，只能凭经验估算，经常估错                     | 2           | 15            | 凭记忆 + 打开 \n\n不能做、大概要改哪些模块」，但脑子里没有全局架构图，只能凭经验估算，经常估错                     | 2           | 15            | 凭记忆 + 打开 IDE 看代码结构 → 给一个模糊估算                           | AI       | 代码仓库 + 文档库           | 中       | SP-B       | 亲历 | 30     |\n| P-10 | 合并代码后 CI 挂了排查原因时        | CI 报错信息很长，但真正的原因可能只是某依赖版本不兼容或某环境变量没配，需要从几千行日志里找关键错误，每次都要从头读                        | 2           | 20            | 打开 CI 日志 → 搜索 error/fail → 逐段阅读 → 本地复现                    | AI       | CI 日志 + 代码仓库          | 低       | SP-D       | 亲历 | 40     |\n\n[3] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool）\n> 规则：只记亲历/亲眼所见；公司细节抽象描述（不写公司名、产品名、人名、业务数据、内部链接）。\n> 更新：Day03 v0（≥8 条）→ **Day10 v1（≥10 条 + 初评分）** → Day13 选型。\n\n[4] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S\n\n[5] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条）\n*D ≥ 3 且 E ≥ 3**。\n> 只打 3 条候选（覆盖「知识检索 / 规范注入 / 自动化」三种类型）即足以决策；其余 7 条继续沿用上表「初评分」列，不再单独打分（避免为了凑满表格而返工）。\n\n| #    | 痛点                    | SP 映射 | 次/周 | 分/次 | F   | T   | AI  | D   | E   | J   | B   | C   | Score | 门槛 |\n| ---- | ----------------------- | ------- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ---- |\n| P-02 | 查内部组件库/团队规范用法 | SP-A    | 5     | 15    | 5   | 3   | 4   | 3   | 4   | 4   | 4   | 2   | 3.90  | ✅   |\n| P-07 | AI 生成代码不符团队规范  | SP-A    | 8     | 5     | 5   | 2   | 4   | 4   | 4   | 5   | 3   | 3   | 3.85  | ✅   |\n| P-03 | PR 提交前人工自检        | SP-C    | 4     | 10    | 4   | 3   | 2   | 4   | 4   | 2   | 2   | 1   | 3.35  | ✅   |",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无事实性陈述"
+      },
+      "judge_cost": 0.001652
+    },
+    {
+      "id": "q044",
+      "type": "out_of_kb",
+      "retrieve_ms": 76,
+      "top1_score": 0.5614,
+      "rank": null,
+      "top3": [
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool） > 观察与疑问",
+        "oss/vite/ssr.md#服务端渲染（SSR） {#server-side-rendering-ssr}",
+        "notes/pain-pool.md#研发工作痛点池（Pain Pool）"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。\n\n参考资料涉及研发痛点池（P-02、P-03、P-04、P-07 等条目及 Day13 选型结论）和 Vite 服务端渲染（SSR）集成说明，均未提及前端监控埋点所用的 SDK 或采样率配置。",
+      "answer_ms": 1080,
+      "cost": 0.001693,
+      "citations": [],
+      "context": "[1] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 观察与疑问\n- **P-02 初评分最高（75）**：内部组件库是「高频 + 中等耗时」，且数据源（代码仓库）可脱敏，最像 WorkPilot 能先落地的场景。\n- **P-03 是「自动化」而非「AI」**：写个 pre-commit hook / CI 检查脚本就能解决，不需要 AI。Day13 若选中 SP-C，可把该检查项作为 Agent 内置规则。**这是「不硬套 AI」的样本条目。**\n- **P-01、P-04 合规风险「高」**：数据只能来自公司内部系统。开发和评测必须用脱敏 / 公开数据复现；无法复现则不能作为主场景。\n- **P-04 与 P-10 同属 SP-D（排障）但数据源不同**：P-04 依赖日志 + 代码 + Issue，P-10 依赖 CI 日志。排障 Agent 需能访问多种数据源。\n- **P-06 与 P-08 同属 SP-A（知识问答）但场景不同**：P-06 是「历史决策检索」，P-08 是「新人 FAQ」。知识库要同时覆盖两类。\n- **P-07 是「AI 工具不好用」类典型**：通用 Copilot 缺团队上下文——这正是 WorkPilot 相对通用 AI 的差异化（注入团队规范 + 代码库上下文 + 出处）。\n- 待定/分歧：P-07 场景包在「新」与 SP-C 之间有歧义（AI 分类也给出 SP-C 或新）；Day13 选型时需明确边界：S\n\n[2] 《服务端渲染（SSR） {#server-side-rendering-ssr}》 服务端渲染（SSR） {#server-side-rendering-ssr}\n:::tip 注意\nSSR 特别指支持在 Node.js 中运行相同应用程序的前端框架（例如 React、Preact、Vue 和 Svelte），将其预渲染成 HTML，最后在客户端进行水合处理。如果你正在寻找与传统服务器端框架的集成，请查看 [后端集成指南](./backend-integration)。\n\n下面的指南还假定你在选择的框架中有使用 SSR 的经验，并且只关注特定于 Vite 的集成细节。\n:::\n\n:::warning 底层 API\n这是一个底层 API，是为库和框架作者准备的。如果你的目标是构建一个应用程序，请确保优先查看 [Awesome Vite SSR 章节](https://github.com/vitejs/awesome-vite#ssr) 中更上层的 SSR 插件和工具。也就是说，大部分应用都是基于 Vite 的底层 API 之上构建的。\n\n目前，Vite 正在用 [环境 API](https://github.com/vitejs/vite/discussions/16358) 来改进 SSR API。查看链接了解更多详情。\n:::\n\n[3] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool）\n  | 低       | SP-C       | 亲历 | 40     |\n| P-04 | 排查生产环境报错时                  | 报错信息只显示某接口 500，需要去日志平\n\n  | 低       | SP-C       | 亲历 | 40     |\n| P-04 | 排查生产环境报错时                  | 报错信息只显示某接口 500，需要去日志平台翻、找对应代码、查最近谁改过这个文件、看是否有相关 Issue——信息散落在 4 个系统里                    | 2           | 30            | 日志平台搜 traceId → Git blame 找改动者 → Issue 列表搜关键字 → 拼凑线索 | AI       | 日志 + 代码仓库 + Issue     | 高       | SP-D       | 亲历 | 60     |\n| P-05 | 周五下午写周报时                    | 周报要从 Git 提交记录、Issue 列表、群聊决策里手工拼凑「这周做了什么」，经常漏记，写完还要花时间回忆                                        | 1           | 25            | 翻 Git log + Issue 筛选 + 聊天记录搜索 → 手工整理成周报模板             | AI       | 代码仓库 + Issue + 聊天记录 | 中       | SP-E      \n\n[4] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条）\n工自检        | SP-C    | 4     | 10    | 4   | 3   | 2   | 4   | 4   | 2   | 2   | 1   | 3.35  | ✅   |\n\n> 分数依据（不是拍脑袋）：\n> - 次数 / 分钟取自本表「频率」「单次耗时」列（初评分 P-02=75、P-07=40、P-03=40 分钟/周）。\n> - P-02 D=3：组件库用法能从**我自己写的笔记 + 公开文档**重建，不必用公司源码，但需要脱敏 → 刚好过门槛。\n> - P-07 SP 映射由「新」改判为 **SP-A**：根因是「AI 不知道团队规范」（知识缺口），而非「不会审查代码」（工具缺口）；改判后不新增场景包，M10 骨架不动。\n> - P-03 AI=2：它是**规则/计算类**（命名、console.log、i18n key、类型完整性），pre-commit hook / CI 脚本即可，不需要 LLM → 过门槛但不作主场景。\n\n[5] 《研发工作痛点池（Pain Pool）》 研发工作痛点池（Pain Pool） > 评分矩阵（2026-10-14 · Day13 精简版：只打候选 3 条） > 选型结论（2026-10-14）\n- **主场景 = SP-A 深化「团队规范与组件用法问答（带引用 Grounded Q&A）」**（对应 P-02 Score 3.90，P-07 Score 3.85）。\n  - 依据 1：非 SP-A 候选中唯一过门槛且 `AI 适配度 ≥ 3` 的是 P-07（3.85），其缺口同样是「缺团队知识」→ 与 P-02 合并进同一知识库回答链路，**不新建场景包**。\n  - 依据 2：排名第 3 的 P-03（SP-C 3.35）AI 适配度仅 2 分，属于「不硬套 AI」样本 → 降级为 Backlog 的自动化检查项，本阶段不投入。\n- **基线**：SP-A（研发知识问答）本就是 P1 核心，今天深化的是它的**语料范围**（团队规范 + 组件用法）与**评测题来源**。\n- **量化的价值**：P-02 75 分钟/周 + P-07 40 分钟/周 = 115 分钟/周损失；按 60% 节省率 ≈ 节省 **69 分钟/周**（写进 definition 时取保守下限 **≥ 60 分钟/周**）。\n- **未打分的 7 条**：不删除、不打分，继续留在本文件；Day14 之后如需辅场景，从 P-01/P-04（合规高，D 会被打到 1–2）与 P-05/P-06/P-08 中选，**今天不做**。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答并说明未找到相关内容"
+      },
+      "judge_cost": 0.001939
+    },
+    {
+      "id": "q045",
+      "type": "out_of_kb",
+      "retrieve_ms": 70,
+      "top1_score": 0.5572,
+      "rank": null,
+      "top3": [
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}",
+        "oss/vite/cli.md#命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite} > 选项 {#options}",
+        "oss/vite/troubleshooting.md#排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > Vite 因 ENOSPC 错误崩溃 {#vite-crashes-with-enospc-error}"
+      ],
+      "refused": true,
+      "answer": "知识库中没有找到与该问题相关的内容。",
+      "answer_ms": 645,
+      "cost": 0.001297,
+      "citations": [],
+      "context": "[1] 《命令行接口 {#command-line-interface}》 命令行接口 {#command-line-interface} > 构建 {#build} > `vite build` {#vite-build} > 选项 {#options-1}\n                    |\n| `--assetsInlineLimit <number>` | 静态资源内联为 base64 编码的阈值，以字节为单位（默认为：`4096`）(`nu\n\n                    |\n| `--assetsInlineLimit <number>` | 静态资源内联为 base64 编码的阈值，以字节为单位（默认为：`4096`）(`number`)                                                                                                     |\n| `--ssr [entry]`                | 为服务端渲染配置指定入口文件 (`string`)                                                                                                                                         |\n| `--sourcemap [output]`         | 构建后输出 source map 文件（默认为：`false`）(`boolean \\| \"inline\" \\| \"hidden\"`)                                                                                          \n\n[2] 《命令行接口 {#command-line-interface}》 命令行接口 {#command-line-interface} > 开发服务器 {#dev-server} > `vite` {#vite} > 选项 {#options}\n                      |\n| `--configLoader <loader>` | 使用 `bundle` 来采用 Rolldown 打包配置，或是 `runner`（实验性）\n\n                      |\n| `--configLoader <loader>` | 使用 `bundle` 来采用 Rolldown 打包配置，或是 `runner`（实验性）来在运行时处理，或是 `native`（实验性）来使用原生运行时加载，默认是 `bundle` |\n| `--profile [name]`        | 启动内置的 Node.js 调试器，并将性能分析文件写入 `<name>.cpuprofile`（查看 [性能瓶颈](/guide/troubleshooting#performance-bottlenecks)）(`boolean \\| string`) |\n| `-d, --debug [feat]`      | 显示调试日志 (`string \\| boolean`)                                                            |\n| `-f, --filter <filter>`   | 过滤调试日志 (`string`)                                                                       |\n| `-m, --mode <mode>`       | 设置环境模式 (`string`)  \n\n[3] 《排错指南 {#troubleshooting}》 排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > Vite 因 ENOSPC 错误崩溃 {#vite-crashes-with-enospc-error}\n $ echo \"fs.inotify.max_user_watches=524288\" | sudo tee -a /etc/sysctl.conf\n  $ sudo sysctl -p\n  ```\n\n- 通过 [`server.watch.ignored`](/config/server-options#server-watch) 将包含大量文件的目录排除在文件监听范围之外\n- 通过 [`server.watch.usePolling`](/config/server-options#server-watch) 使用轮询代替文件系统事件监听。请注意，轮询会消耗更多 CPU 资源\n\n[4] 《构建生产版本 {#building-for-production}》 构建生产版本 {#building-for-production} > 产物分块策略 {#chunking-strategy}\n你可以通过配置 [`build.rolldownOptions.output.codeSplitting`](https://rolldown.rs/reference/OutputOptions.codeSplitting) 来自定义 chunk 分割策略（查看 [Rolldown 相应文档](https://rolldown.rs/in-depth/manual-code-splitting)）。如果你使用的是一个框架，那么请参考他们的文档来了解如何配置分割 chunk。\n\n[5] 《排错指南 {#troubleshooting}》 排错指南 {#troubleshooting} > 开发服务器 {#dev-server} > Vite 因 ENOSPC 错误崩溃 {#vite-crashes-with-enospc-error}\n如果你在 Linux 上看到如下错误：\n\n> Error: ENOSPC: System limit for number of file watchers reached\n\n这是因为你的项目目录中文件过多（例如有大量图片或资源文件），超出了系统文件监听器的限制。Linux 默认的文件监听器数量上限约为 8,192 到 10,000。\n\n要解决此问题，你可以：\n\n- 提高系统文件监听器的数量上限：\n\n```shell\n  # 查看当前限制值\n  $ cat /proc/sys/fs/inotify/max_user_watches\n  # 临时增加限制值\n  $ sudo sysctl fs.inotify.max_user_watches=524288\n  # 永久生效 —— 添加到 /etc/sysctl.conf（若已存在则编辑该条目）\n  $ echo \"fs.inotify.max_user_watches=524288\" | sudo tee -a /etc/sysctl.conf\n  $ sudo sysctl -p\n  ```",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "期望拒答，回答正确拒答，无引用无事实陈述"
+      },
+      "judge_cost": 0.001228
+    },
+    {
+      "id": "q046",
+      "type": "confusing",
+      "retrieve_ms": 80,
+      "top1_score": 0.6999,
+      "rank": 1,
+      "top3": [
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}",
+        "oss/react/managing-state.md#使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：** 知识库中只有关于 `useState` 基本用法和「Reducer + Context」组合模式的资料，没有直接对比两者适用场景的内容，因此无法给出完整的选型建议。以下是资料能支持的部分：\n\n**useState 相关（资料覆盖）：**\n- 用于让组件「记住」某个值，返回 state 变量和 setter 函数；setter 更新 state 并触发重新渲染 [4]。\n- 唯一参数是 state 的初始值，如 `useState(0)` [4]。\n- 资料示例中用它管理简单的局部输入状态，如输入框文本 `text` [2]。\n\n**useReducer 相关（资料覆盖）：**\n- Reducer 帮助「合并组件的状态更新逻辑」[1]。\n- 适合管理「复杂状态」的父组件，配合 Context 让组件树中任意深度的组件读取状态并 dispatch action 更新 [1]。\n- 示例中 `TasksProvider` 用 `useReducer(tasksReducer, initialTasks)` 管理任务列表，并通过两个 Context 分别提供状态和 dispatch [3]。\n\n**资料未覆盖：** 两者的直接对比、具体选型标准（如状态逻辑复杂度阈值、状态间依赖关系等），以及何时应优先选哪一个。",
+      "answer_ms": 2396,
+      "cost": 0.001279,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "context": "[1] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\nReducer 帮助你合并组件的状态更新逻辑。Context 帮助你将信息深入传递给其他组件。你可以将 reducers 和 context 组合在一起使用，以管理复杂应用的状态。\n\n基于这种想法，使用 reducer 来管理一个具有复杂状态的父组件。组件树中任何深度的其他组件都可以通过 context 读取其状态。还可以 dispatch 一些 action 来更新状态。\n\n<Sandpack>\n\n```js src/App.js\nimport AddTask from './AddTask.js';\nimport TaskList from './TaskList.js';\nimport { TasksProvider } from './TasksContext.js';\n\nexport default function TaskApp() {\n  return (\n    <TasksProvider>\n      <h1>在京都休息一天</h1>\n      <AddTask />\n      <TaskList />\n    </TasksProvider>\n  );\n}\n```\n\n```js src/TasksContext.js\nimport { createContext, useContext, useReducer } from 'react';\n\n[2] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\n\nimport { useState, useContext } from 'react';\nimport { useTasksDispatch } from './TasksContext.js';\n\nexport default function AddTask({ onAddTask }) {\n  const [text, setText] = useState('');\n  const dispatch = useTasksDispatch();\n  return (\n    <>\n      <input\n        placeholder=\"添加任务\"\n        value={text}\n        onChange={e => setText(e.target.value)}\n      />\n      <button onClick={() => {\n        setText('');\n        dispatch({\n          type: 'added',\n          id: nextId++,\n          text: text,\n        });\n      }}>添加</button>\n    </>\n  );\n}\n\nlet nextId = 3;\n```\n\n[3] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\n  );\n}\n```\n\n```js src/TasksContext.js\nimport { createContext, useContext, useReducer } from 'react';\n\nconst TasksContext = createContext(null);\nconst TasksDispatchContext = createContext(null);\n\nexport function TasksProvider({ children }) {\n  const [tasks, dispatch] = useReducer(\n    tasksReducer,\n    initialTasks\n  );\n\nreturn (\n    <TasksContext value={tasks}>\n      <TasksDispatchContext value={dispatch}>\n        {children}\n      </TasksDispatchContext>\n    </TasksContext>\n  );\n}\n\nexport function useTasks() {\n  return useContext(TasksContext);\n}\n\n[4] 《State：组件的记忆》 添加一个 state 变量 {/*adding-a-state-variable*/} > 剖析 `useState` {/*anatomy-of-usestate*/}\n当你调用 [`useState`](/reference/react/useState) 时，你是在告诉 React 你想让这个组件记住一些东西：\n\n```js\nconst [index, setIndex] = useState(0);\n```\n\n在这个例子里，你希望 React 记住 `index`。\n\n<Note>\n\n惯例是将这对返回值命名为 `const [thing, setThing]`。你也可以将其命名为任何你喜欢的名称，但遵照约定俗成能使跨项目合作更易理解。\n\n</Note>\n\n`useState` 的唯一参数是 state 变量的 **初始值**。在这个例子中，`index` 的初始值被 `useState(0)` 设置为 `0`。\n\n每次你的组件渲染时，`useState` 都会给你一个包含两个值的数组：\n\n1. **state 变量** (`index`) 会保存上次渲染的值。\n2. **state setter 函数** (`setIndex`) 可以更新 state 变量并触发 React 重新渲染组件。\n\n以下是实际发生的情况：\n\n```js\nconst [index, setIndex] = useState(0);\n```\n\n[5] 《状态管理》 使用 Reducer 和 Context 拓展你的应用 {/*scaling-up-with-reducer-and-context*/}\nnextId++,\n          text: text,\n        });\n      }}>添加</button>\n    </>\n  );\n}\n\nlet nextId = 3;\n```\n\n```js src/TaskList.js\nimport { useState, useContext } from 'react';\nimport { useTasks, useTasksDispatch } from './TasksContext.js';\n\nexport default function TaskList() {\n  const tasks = useTasks();\n  return (\n    <ul>\n      {tasks.map(task => (\n        <li key={task.id}>\n          <Task task={task} />\n        </li>\n      ))}\n    </ul>\n  );\n}",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖useReducer复杂状态要点，但缺useState简单状态对比，未给选型结论"
+      },
+      "judge_cost": 0.000723
+    },
+    {
+      "id": "q047",
+      "type": "confusing",
+      "retrieve_ms": 85,
+      "top1_score": 0.6762,
+      "rank": 1,
+      "top3": [
+        "team/git-branching.md#Git 分支规范（团队样例） > 分支命名 > 命名格式",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交信息",
+        "team/git-branching.md#Git 分支规范（团队样例） > 提交规范 > 提交粒度"
+      ],
+      "refused": false,
+      "answer": "**结论：不是同一套取值，但都属于同一类「类型前缀」约定，具体含义不同。**\n\n**1. 分支命名中的「类型」**\n- 格式为 `<类型>/<简述>`，类型取值有：`feat`（新功能）、`fix`（缺陷修复）、`chore`（构建、依赖、杂项）、`docs`（文档变更）[1]。\n- 项目规范也要求跨天或实验性改动使用 `feat/xxx`，完成后合并并删除分支 [4]。\n\n**2. 提交信息中的「类型」**\n- 格式为「类型(范围): 主题」，主题用祈使句 [2]；提交遵循 Conventional Commits [4]。\n- 资料中出现的提交类型示例包括：`feat`、`fix`、`docs`、`test`、`chore` [2][4]。\n\n**3. 对比**\n- 相同点：两者都使用 `feat`、`fix`、`chore`、`docs` 等前缀，风格一致 [1][2][4]。\n- 不同点：分支类型表只列出 4 种 [1]；提交类型示例中还出现 `test`（如 `test(rag): add hit@k unit tests`）[4]，该类型未出现在分支类型表中。资料未说明两者取值必须完全一致，也未给出分支类型与提交类型的对应规则。\n\n**资料未覆盖**：分支类型是否允许 `test` 等其他取值、两者是否需要严格对齐，参考资料中没有说明。",
+      "answer_ms": 2480,
+      "cost": 0.001636,
+      "citations": [
+        1,
+        2,
+        4
+      ],
+      "context": "[1] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 分支命名 > 命名格式\n统一为 `<类型>/<简述>`，类型取值：\n\n| 类型   | 用途                     |\n| ------ | ------------------------ |\n| feat   | 新功能                   |\n| fix    | 缺陷修复                 |\n| chore  | 构建、依赖、杂项         |\n| docs   | 文档变更                 |\n\n[2] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 提交规范 > 提交信息\n采用「类型(范围): 主题」格式，主题用祈使句：\n\n```\nfeat(rag): add document model with content-hash dedup\nfix(api): handle empty response body in chat route\n```\n\n[3] 《Git 分支规范（团队样例）》 Git 分支规范（团队样例） > 提交规范 > 提交粒度\n- 一个提交只做一件事，不混入无关改动\n- 提交信息写「为什么」，代码本身说明「是什么」\n\n[4] 《项目规范》 项目规范 > §3 分支与提交\n- `main` 永远可运行。\n- ≤ 1 天的改动可直接提交 `main`。\n- 跨天 / 实验性改动用 `feat/xxx`，完成后合并并删分支。\n- 提交遵循 Conventional Commits。\n\n```text\nfeat(api): add /health endpoint\nfix(llm): retry on timeout and 5xx responses\ndocs(adr): add 0001-llm-provider\ntest(rag): add hit@k unit tests\nchore(deploy): pin qdrant image version\n```\n\n[5] 《请求体 - 嵌套模型 { #body-nested-models }》 请求体 - 嵌套模型 { #body-nested-models } > 带类型参数的 List 字段 { #list-fields-with-type-parameter } > 声明带类型参数的 `list` { #declare-a-list-with-a-type-parameter }\n要声明具有类型参数（内部类型）的类型，例如 `list`、`dict`、`tuple`，使用方括号 `[` 和 `]` 传入内部类型作为「类型参数」：\n\n```Python\nmy_list: list[str]\n```\n\n这完全是用于类型声明的标准 Python 语法。\n\n对具有内部类型的模型属性也使用相同的标准语法。\n\n因此，在我们的示例中，我们可以将 `tags` 明确地指定为一个「字符串列表」：\n\n{* ../../docs_src/body_nested_models/tutorial002_py310.py hl[12] *}",
+      "judge": {
+        "correctness": 1,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "指出两者用途不同但未明确提交类型表示改动类别及需带scope范围"
+      },
+      "judge_cost": 0.000891
+    },
+    {
+      "id": "q048",
+      "type": "confusing",
+      "retrieve_ms": 76,
+      "top1_score": 0.72,
+      "rank": 1,
+      "top3": [
+        "oss/fastapi/header-params.md#Header 参数 { #header-parameters } > 小结 { #recap }",
+        "oss/fastapi/header-params.md#Header 参数 { #header-parameters } > 声明 `Header` 参数 { #declare-header-parameters }",
+        "oss/fastapi/cookie-params.md#Cookie 参数 { #cookie-parameters } > 声明 `Cookie` 参数 { #declare-cookie-parameters }"
+      ],
+      "refused": false,
+      "answer": "**结论：两者声明方式相同，但必须分别用 `Header` 和 `Cookie` 声明，否则会被当作查询参数。**\n\n**相同点**\n- 声明 header 参数的方式与 `Query`、`Path`、`Cookie` 相同 [1]；声明 cookie 参数的方式与 `Query`、`Path` 相同 [3][4]。\n- 两者都可定义默认值，并传递所有验证参数或注释参数 [2][3]。\n- `Header` 与 `Cookie`、`Path`、`Query` 是兄弟类，都继承自共用的 `Param` 类；从 `fastapi` 导入的这些对象实际是返回特殊类的函数 [2][3]。\n\n**不同点**\n- 声明 header 参数必须用 `Header`，否则该参数会被解释为查询参数 [2]；声明 cookie 参数必须用 `Cookie`，否则同样会被解释为查询参数 [3]。\n- header 参数中的下划线不用担心，FastAPI 可以自动转换 [1]。\n- cookie 由浏览器以特殊方式在幕后处理，不会轻易允许 JavaScript 访问；在 `/docs` 界面中即使填写数据并点击 “Execute”，cookies 也不会被发送，会看到类似未填写的错误消息 [3]。\n\n**分别该用什么**\n- 请求头参数：用 `Header` 声明 [2]。\n- Cookie 参数：用 `Cookie` 声明 [3]。\n\n资料未覆盖两者在验证规则细节上的其他差异。",
+      "answer_ms": 2065,
+      "cost": 0.001533,
+      "citations": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "context": "[1] 《Header 参数 { #header-parameters }》 Header 参数 { #header-parameters } > 小结 { #recap }\n使用 `Header` 声明请求头的方式与 `Query`、`Path` 、`Cookie` 相同。\n\n不用担心变量中的下划线，**FastAPI** 可以自动转换。\n\n[2] 《Header 参数 { #header-parameters }》 Header 参数 { #header-parameters } > 声明 `Header` 参数 { #declare-header-parameters }\n然后，使用和 `Path`、`Query`、`Cookie` 一样的结构定义 header 参数。\n\n第一个值是默认值，还可以传递所有验证参数或注释参数：\n\n{* ../../docs_src/header_params/tutorial001_an_py310.py hl[9] *}\n\n/// note | 技术细节\n\n`Header` 是 `Path`、`Query`、`Cookie` 的**兄弟类**，都继承自共用的 `Param` 类。\n\n注意，从 `fastapi` 导入的 `Query`、`Path`、`Header` 等对象，实际上是返回特殊类的函数。\n\n///\n\n/// note\n\n必须使用 `Header` 声明 header 参数，否则该参数会被解释为查询参数。\n\n///\n\n[3] 《Cookie 参数 { #cookie-parameters }》 Cookie 参数 { #cookie-parameters } > 声明 `Cookie` 参数 { #declare-cookie-parameters }\n声明 `Cookie` 参数的方式与声明 `Query` 和 `Path` 参数相同。\n\n你可以定义默认值，以及所有额外的验证或注解参数：\n\n{* ../../docs_src/cookie_params/tutorial001_an_py310.py hl[9] *}\n\n/// note | 技术细节\n\n`Cookie` 、`Path` 、`Query` 是**兄弟类**，都继承自共用的 `Param` 类。\n\n注意，从 `fastapi` 导入的 `Query`、`Path`、`Cookie` 等对象，实际上是返回特殊类的函数。\n\n///\n\n/// note | 注意\n\n必须使用 `Cookie` 声明 cookie 参数，否则该参数会被解释为查询参数。\n\n///\n\n/// note | 注意\n\n请注意，由于**浏览器会以特殊方式并在幕后处理 cookies**，它们**不会**轻易允许**JavaScript**访问它们。\n\n如果你前往位于 `/docs` 的**API 文档界面**，你可以看到你的*路径操作*中有关 cookies 的**文档**。\n\n但即使你**填写了数据**并点击 \"Execute\"，由于文档界面依赖于**JavaScript**工作，cookies 也不会被发送，你会看到一个**错误**消息，好像你没有填写任何值一样。\n\n///\n\n[4] 《Cookie 参数 { #cookie-parameters }》 Cookie 参数 { #cookie-parameters } > 小结 { #recap }\n使用 `Cookie` 声明 cookie 参数的方式与 `Query` 和 `Path` 相同。\n\n[5] 《请求体 { #request-body }》 请求体 { #request-body } > 请求体 + 路径 + 查询参数 { #request-body-path-query-parameters }\n也可以同时声明**请求体**、**路径**和**查询**参数。\n\n**FastAPI** 会分别识别它们，并从正确的位置获取数据。\n\n{* ../../docs_src/body/tutorial004_py310.py hl[16] *}\n\n函数参数按如下规则进行识别：\n\n* 如果该参数也在**路径**中声明了，它就是路径参数。\n* 如果该参数是（`int`、`float`、`str`、`bool` 等）**单一类型**，它会被当作**查询**参数。\n* 如果该参数的类型声明为 **Pydantic 模型**，它会被当作请求**体**。\n\n/// note | 注意\n\nFastAPI 会根据默认值 `= None` 知道 `q` 的值不是必填的。\n\n`str | None` 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 `= None` 决定。\n\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n///",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖兄弟类、声明方式、必须用Header/Cookie否则当查询参数及下划线转换要点"
+      },
+      "judge_cost": 0.000699
+    },
+    {
+      "id": "q049",
+      "type": "confusing",
+      "retrieve_ms": 69,
+      "top1_score": 0.71,
+      "rank": 1,
+      "top3": [
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}",
+        "oss/vite/env-and-mode.md#环境变量和模式 {#env-variables-and-modes}"
+      ],
+      "refused": false,
+      "answer": "**结论：** `NODE_ENV` 和模式（mode）是两个不同的概念，`import.meta.env.MODE` 反映的是模式，而 `NODE_ENV` 是另一个独立的值，二者可以不一致 [2][4]。\n\n**两者的关系与对应规则：**\n\n- `NODE_ENV`（即 `process.env.NODE_ENV`）与模式是两个不同的概念 [2][4]。\n- 不同命令对二者的影响 [4]：\n  - `vite build` → NODE_ENV=`\"production\"`，Mode=`\"production\"`\n  - `vite build --mode development` → NODE_ENV=`\"production\"`，Mode=`\"development\"`\n  - `NODE_ENV=development vite build` → NODE_ENV=`\"development\"`，Mode=`\"production\"`\n  - `NODE_ENV=development vite build --mode development` → NODE_ENV=`\"development\"`，Mode=`\"development\"`\n- `NODE_ENV` 可以在命令行中设置，也可以在 `.env` 文件中设置；如果在 `.env.[mode]` 文件中指定了 `NODE_ENV`，则可以使用模式来控制它的值 [2]。\n- 在命令中使用 `NODE_ENV=...` 的主要好处是让 Vite 提前检测到该值，并能在 Vite 配置中读取 `process.env.NODE_ENV`，因为 Vite 只有在解析配置之后才能加载环境变量文件 [2]。\n\n**容易混淆的地方：**\n\n- 容易误以为 `--mode development` 会把 `NODE_ENV` 也变成 `development`；实际上 `vite build --mode development` 的 NODE_ENV 仍是 `\"production\"` [4]。\n- 反过来，`NODE_ENV=development vite build` 的模式仍是 `\"production\"` [4]。\n- `import.meta.env.PROD` / `DEV` 由 `NODE_ENV` 决定：`NODE_ENV=production` 时 PROD=true、DEV=false；`NODE_ENV=development` 或 `other` 时 PROD=false、DEV=true [1]。\n\n**资料未覆盖：** 参考资料中没有直接出现 `import.meta.env.MODE` 这一属性名及其取值说明，因此无法据此确认其具体定义，只能从“模式”概念及上表推断其与 Mode 列对应。",
+      "answer_ms": 2772,
+      "cost": 0.002273,
+      "citations": [
+        1,
+        2,
+        4
+      ],
+      "context": "[1] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}\non\"`  |\n| `NODE_ENV=development vite build --mode development` | `\"development\"` | `\"development\"` |\n\n`NODE_ENV` 和模式的不同值也会反映在相应的 `import.meta.env` 属性上：\n\n| Command                | `import.meta.env.PROD` | `import.meta.env.DEV` |\n| ---------------------- | ---------------------- | --------------------- |\n| `NODE_ENV=production`  | `true`                 | `false`               |\n| `NODE_ENV=development` | `false`                | `true`                |\n| `NODE_ENV=other`       | `false`                | `true`                |\n\n[2] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}\n令中设置，也可以在 `.env` 文件中设置。如果在 `.env.[mode]` 文件中指定了 `NODE_ENV`，则可以使用模式来控制其值。不过，`NODE_ENV` 和模式仍然是两个不同的概念。\n\n命令中使用 `NODE_ENV=...` 的主要好处是，它允许 Vite 提前检测到该值。这也使你能够在 Vite 配置中读取 `process.env.NODE_ENV`，因为 Vite 只有在解析配置之后才能加载环境变量文件。\n:::\n\n[3] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes}\nVite 在特殊的 `import.meta.env` 对象下暴露了一些常量。这些常量在开发阶段被定义为全局变量，并在构建阶段被静态替换，以使树摇（tree-shaking）更有效。\n\n:::details 示例\n\n```js\nif (import.meta.env.DEV) {\n  // 这里的代码在生产构建中会被 tree-shaking 优化掉\n  console.log('Dev mode')\n}\n```\n\n:::\n\n<ScrimbaLink href=\"https://scrimba.com/intro-to-vite-c03p6pbbdq/~05an?via=vite\" title=\"Env Variables in Vite\">在 Scrimba 上观看互动课程</ScrimbaLink>\n\n[4] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 模式 {#modes} > NODE_ENV 和 模式 {#node-env-and-modes}\n需要注意的是，`NODE_ENV`（`process.env.NODE_ENV`）和模式是两个不同的概念。以下是不同命令如何影响 `NODE_ENV` 和模式：\n\n| Command                                              | NODE_ENV        | Mode            |\n| ---------------------------------------------------- | --------------- | --------------- |\n| `vite build`                                         | `\"production\"`  | `\"production\"`  |\n| `vite build --mode development`                      | `\"production\"`  | `\"development\"` |\n| `NODE_ENV=development vite build`                    | `\"development\"` | `\"production\"`  |\n| `NODE_ENV=development vite build --mode development` | `\"development\"` | `\"development\"` |\n\n[5] 《环境变量和模式 {#env-variables-and-modes}》 环境变量和模式 {#env-variables-and-modes} > 环境变量 {#env-variables} > `.env` 文件 {#env-files}\nVite 使用 [dotenv](https://github.com/motdotla/dotenv) 从你的 [环境目录](/config/shared-options.md#envdir) 中的下列文件加载额外的环境变量：\n\n```\n.env                # 所有情况下都会加载\n.env.local          # 所有情况下都会加载，但会被 git 忽略\n.env.[mode]         # 只在指定模式下加载\n.env.[mode].local   # 只在指定模式下加载，但会被 git 忽略\n```\n\n:::tip 环境加载优先级\n\n一份用于指定模式的文件（例如 `.env.production`）会比通用文件的优先级更高（例如 `.env`）。\n\nVite 总是会加载 `.env` 和 `.env.local` 文件，除此之外还会加载模式特定的 `.env.[mode]` 文件。在模式特定文件中声明的变量优先级高于通用文件中的变量，但仅在 `.env` 或 `.env.local` 中定义的变量仍然可以在环境中使用。\n\n另外，Vite 执行时已经存在的环境变量有最高的优先级，不会被 `.env` 类文件覆盖。例如当运行 `VITE_SOME_KEY=123 vite build` 的时候。",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖MODE与NODE_ENV区别及易混点，引用均对应上下文"
+      },
+      "judge_cost": 0.000844
+    },
+    {
+      "id": "q050",
+      "type": "confusing",
+      "retrieve_ms": 82,
+      "top1_score": 0.7487,
+      "rank": 1,
+      "top3": [
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表项提取成一个组件 {/*extracting-a-list-item-component*/}",
+        "oss/react/rendering-lists.md#用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 带有分隔符的列表 {/*list-with-a-separator*/}"
+      ],
+      "refused": false,
+      "answer": "**结论：** key 应加在数组上下文中最外层的那个元素或组件上——即 `map()` 直接返回的 JSX 元素，或提取组件后外层组件本身。\n\n**具体规则：**\n\n- 直接放在 `map()` 方法里的 JSX 元素一般都需要指定 `key` 值 [1]。\n- 如果把列表项提取成了组件，`key` 要写在 `<Recipe>` 这类组件本身，而不是写在组件内部返回的 `<div>` 上；因为 `key` 只有在就近的数组上下文中才有意义，此时生成的是组件数组而非 `<div>` 数组 [2]。\n- 若组件需要用到该 ID，应把它作为单独的 prop 传入，例如 `<Profile key={id} userId={id} />` [5]。\n\n**key 的作用与取值：**\n\n- key 可以是字符串或数字，只要能唯一标识各数组项即可，如 `<li key={person.id}>` [1]。\n- key 让 React 把每个组件与数组项匹配起来，在排序、插入、删除时正确更新 DOM 树 [1]。\n- 用作 key 的值应在数据中提前准备好，而不是运行时随手生成 [1]。\n\n资料未覆盖其他场景（如 Fragment 包裹时 key 的具体写法）的详细说明。",
+      "answer_ms": 2062,
+      "cost": 0.00129,
+      "citations": [
+        1,
+        2,
+        5
+      ],
+      "context": "[1] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/}\n如果把上面任何一个沙盒示例在新标签页打开，你就会发现控制台有这样一个报错：\n\n<ConsoleBlock level=\"error\">\n\nWarning: Each child in a list should have a unique \"key\" prop.\n\n</ConsoleBlock>\n\n这是因为你必须给数组中的每一项都指定一个 `key`——它可以是字符串或数字的形式，只要能唯一标识出各个数组项就行：\n\n```js\n<li key={person.id}>...</li>\n```\n\n<Note>\n\n直接放在 `map()` 方法里的 JSX 元素一般都需要指定 `key` 值！\n\n</Note>\n\n这些 key 会告诉 React，每个组件对应着数组里的哪一项，所以 React 可以把它们匹配起来。这在数组项进行移动（例如排序）、插入或删除等操作时非常重要。一个合适的 `key` 可以帮助 React 推断发生了什么，从而得以正确地更新 DOM 树。\n\n用作 key 的值应该在数据中提前就准备好，而不是在运行时才随手生成：\n\n<Sandpack>\n\n```js src/App.js\nimport { people } from './data.js';\nimport { getImageUrl } from './utils.js';\n\n[2] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表项提取成一个组件 {/*extracting-a-list-item-component*/}\nmus',\n    name: '鹰嘴豆泥',\n    ingredients: ['鹰嘴豆', '橄榄油', '蒜瓣', '柠檬', '芝麻酱'],\n  },\n];\n```\n\n</Sandpack>\n\n这里的 `<Recipe {...recipe} key={recipe.id} />` 是一种简写方式，它表示“把 `recipe` 对象里的每个属性都作为 props 传给 `Recipe` 组件”。这和直接写明每一个 prop 是等价的：`<Recipe id={recipe.id} name={recipe.name} ingredients={recipe.ingredients} key={recipe.id} />`。\n\n**注意这里的 `key` 是写在 `<Recipe>` 组件本身上的，不要写在 `Recipe` 内部返回的 `<div>` 上。** 这是因为 `key` 只有在就近的数组上下文中才有意义。之前的写法里，我们生成了一个 `<div>` 的数组所以其中的每一项需要一个 `key`，但是现在的写法里，生成的实际上是 `<Recipe>` 的数组。换句话说，在提取组件的时候，`key` 应该写在复制粘贴的 JSX 的外层组件上。\n\n</Solution>\n\n[3] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 带有分隔符的列表 {/*list-with-a-separator*/}\n    {i > 0 && <hr />}\n          <p>{line}</p>\n        </Fragment>\n      )}\n    </article>\n  );\n}\n```\n\n```css\nbody {\n  text-align: center;\n}\np {\n  font-family: Georgia, serif;\n  font-size: 20px;\n  font-style: italic;\n}\nhr {\n  margin: 0 120px 0 120px;\n  border: 1px dashed #45c3d8;\n}\n```\n\n</Sandpack>\n\n记住，使用 Fragment 语法（通常写作 `<> </>`）来包裹 JSX 节点可以避免引入额外的 `<div>` 元素！\n\n</Solution>\n\n</Challenges>\n\n[4] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/} > 把列表项提取成一个组件 {/*extracting-a-list-item-component*/}\nme: '鹰嘴豆泥',\n    ingredients: ['鹰嘴豆', '橄榄油', '蒜瓣', '柠檬', '芝麻酱'],\n  },\n];\n```\n\n</Sandpack>\n\n<Solution>\n\n你可以将外层 `map` 里的 JSX 复制粘贴到新的 `Recipe` 组件中，并作为这个新组件的返回值。接着把原先的 `recipe.name` 改成 `name`，`recipe.id` 改成 `id`，以此类推，最后把它们作为 props 传给 `Recipe`：\n\n<Sandpack>\n\n```js\nimport { recipes } from './data.js';\n\nfunction Recipe({ id, name, ingredients }) {\n  return (\n    <div>\n      <h2>{name}</h2>\n      <ul>\n        {ingredients.map(ingredient =>\n          <li key={ingredient}>\n            {ingredient}\n          </li>\n        )}\n      </ul>\n    </div>\n  );\n}\n\n[5] 《渲染列表》 用 `key` 保持列表项的顺序 {/*keeping-list-items-in-order-with-key*/} > React 中为什么需要 key？ {/*why-does-react-need-keys*/}\n一个 ID，那么请把它作为一个单独的 prop 传给组件： `<Profile key={id} userId={id} />`。\n\n</Pitfall>\n\n<Recap>\n\n在这篇文章中，你学习了：\n\n* 如何从组件中抽离出数据，并把它们放入像数组、对象这样的数据结构中。\n* 如何使用 JavaScript 的 `map()` 方法来生成一组相似的组件。\n* 如何使用 JavaScript 的 `filter()` 方法来筛选数组。\n* 为何以及如何给集合中的每个组件设置一个 `key` 值：它使 React 能追踪这些组件，即便后者的位置或数据发生了变化。\n\n</Recap>\n\n<Challenges>",
+      "judge": {
+        "correctness": 2,
+        "faithfulness": "yes",
+        "citation_correct": true,
+        "reason": "覆盖要点：key加在map返回的JSX元素或外层组件上，作用为识别列表项身份，引用均对应片段。"
+      },
+      "judge_cost": 0.000761
+    }
+  ]
+}

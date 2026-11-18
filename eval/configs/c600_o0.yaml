@@ -1,0 +1,8 @@
+name: exp-c600_o0
+collection: kb_exp_c600_o0
+chunk_size: 600
+chunk_overlap: 0
+top_k: 5
+retrieval: dense # dense | hybrid
+with_answer: false # 分块对比只看检索指标 + 库外拒答，省 LLM 成本
+stamp: "20261027"
